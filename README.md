@@ -1,2 +1,4 @@
-# oracle-solaris-quick-reference
-Oracle Solaris Quick Reference
+# Oracle Solaris and Linux Quick Reference Guides (aka Cheat Sheets)
+Oracle Solaris 11
+RHEL 5/6/7
+
