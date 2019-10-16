@@ -28,5 +28,7 @@ Variables
 echo ${NAME}
 echo "$NAME"
 echo "${NAME}!"
+
+echo "${NAME/J/j}         #-> Regex substitution
 ```
 
