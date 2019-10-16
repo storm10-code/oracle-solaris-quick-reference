@@ -25,7 +25,7 @@ $*, $@ |	All arguments on command line ($1 $2 …).
 Variables
 ---------
 ```NAME="John"
-echo {$NAME}
+echo ${NAME}
 echo "$NAME"
 echo "${NAME}!"
 ```
