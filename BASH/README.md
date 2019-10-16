@@ -90,3 +90,37 @@ while true; do
   ···
 done
 ```
+
+
+Functions
+Defining functions
+```
+myfunc() {
+    echo "hello $1"
+}
+```
+# Same as above (alternate syntax)
+```
+function myfunc() {
+    echo "hello $1"
+}
+myfunc "John"
+Returning values
+```
+myfunc() {
+    local myresult='some value'
+    echo $myresult
+}
+result="$(myfunc)"
+```
+Raising errors
+```
+myfunc() {
+  return 1
+}
+if myfunc; then
+  echo "success"
+else
+  echo "failure"
+fi
+```
