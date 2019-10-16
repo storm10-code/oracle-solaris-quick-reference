@@ -38,3 +38,9 @@ echo "${NAME:0:3}"         #-> Slicing Joh (position 0 print first three chars))
 
 ```
 
+Brace expansion
+```
+echo {A,B}.js
+{A,B}	Same as A B
+{A,B}.js	Same as A.js B.js```
+{1..5}	Same as 1 2 3 4 5
