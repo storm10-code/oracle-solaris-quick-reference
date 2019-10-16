@@ -34,7 +34,11 @@ echo "${NAME::2}"          #-> Slicing Jo
 echo "${NAME::-1}"         #-> Joh
 echo "${NAME:1:2}"         #-> Slicing oh (position 1 print first two chars)
 echo "${NAME:0:3}"         #-> Slicing Joh (position 0 print first three chars))
+echo ${food:-Cake}         #=> If defined $food or "Cake"
 
+SRC="/path/to/foo.cpp"
+BASE=${SRC##*/}   #=> "foo.cpp" (basepath) or basename $SRC
+DIR=${SRC%$BASE}  #=> "/path/to/" (dirpath) or DIR="${SRC%foo.cpp}"
 
 ```
 
@@ -42,5 +46,47 @@ Brace expansion
 ```
 echo {A,B}.js
 {A,B}	Same as A B
-{A,B}.js	Same as A.js B.js```
+{A,B}.js	Same as A.js B.js
 {1..5}	Same as 1 2 3 4 5
+```
+
+Substitution
+```
+FOO="Daddy.go"
+echo ${FOO%go}	Remove suffix
+echo ${FOO#Daddy}	Remove prefix
+echo ${FOO%%suffix}	Remove long suffix
+echo ${FOO##prefix}	Remove long prefix
+echo ${FOO/from/to}	Replace first match
+echo ${FOO//from/to}	Replace all
+echo ${FOO/%from/to}	Replace suffix
+echo ${FOO/#Daddy/Mummy}	Replace prefix
+```
+
+#Loops
+```
+Basic for loop
+for i in /etc/rc.*; do
+  echo $i
+done
+C-like for loop
+for ((i = 0 ; i < 100 ; i++)); do
+  echo $i
+done
+Ranges
+for i in {1..5}; do
+    echo "Welcome $i"
+done
+With step size
+for i in {5..50..5}; do
+    echo "Welcome $i"
+done
+Reading lines
+< file.txt | while read line; do
+  echo $line
+done
+Forever
+while true; do
+  ···
+done
+```
