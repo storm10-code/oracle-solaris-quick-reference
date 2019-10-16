@@ -29,6 +29,10 @@ echo ${NAME}
 echo "$NAME"
 echo "${NAME}!"
 
-echo "${NAME/J/j}         #-> Regex substitution
+echo "${NAME/J/j}"         #-> Regex substitution
+echo "${NAME::2}"          #-> Slicing Jo
+echo "${NAME::-1}"         #-> Joh
+echo "${NAME:1:2}"         #-> Slicing oh (poistion 1 print first two chars)
+echo "${NAME:0:3}"         #-> Slicing oh (poistion 0 print first three chars))
 ```
 
