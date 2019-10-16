@@ -8,7 +8,8 @@ Special Variables
 
 A quick guide to Bash special inbuilt variables. These are kinda of the building blocks of most shell scripts. Learn them and master them.
 
-
+Header 1 | Header 2
+---------|----------
 $# |:	Number of command-line arguments.
 $_ |	The underscore variable is set at shell startup and contains the absolute file name of the shell or script being executed as passed in the argument list. Subsequently, it expands to the last argument to the previous command, after expansion. It is also set to the full pathname of each command executed and placed in the environment exported to that command. When checking mail, this parameter holds the name of the mail file.
 $- |	A hyphen expands to the current option flags as specified upon invocation, by the set built-in command, or those set by the shell itself (such as the -i).
