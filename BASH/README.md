@@ -22,8 +22,8 @@ $*, $@ |	All arguments on command line ($1 $2 …).
 “$*” |	All arguments on command line as one string (“$1 $2…”). The values are separated by the first character in $IFS.
 “$@” |	All arguments on command line, individually quoted (“$1” “$2” …).
 
-Variables
----------
+Variables/Parameters
+--------------------
 ```NAME="John"
 echo ${NAME}
 echo "$NAME"
@@ -32,7 +32,9 @@ echo "${NAME}!"
 echo "${NAME/J/j}"         #-> Regex substitution
 echo "${NAME::2}"          #-> Slicing Jo
 echo "${NAME::-1}"         #-> Joh
-echo "${NAME:1:2}"         #-> Slicing oh (poistion 1 print first two chars)
-echo "${NAME:0:3}"         #-> Slicing oh (poistion 0 print first three chars))
+echo "${NAME:1:2}"         #-> Slicing oh (position 1 print first two chars)
+echo "${NAME:0:3}"         #-> Slicing Joh (position 0 print first three chars))
+
+
 ```
 
