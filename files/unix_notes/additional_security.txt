@@ -1,0 +1,12 @@
+Additional Security
+
+    Determine the limit of the tmpfs file system according to the size
+    of your disks.
+    # pfedit /etc/vfstab
+    ...
+    swap  -  /tmp  tmpfs  -  yes  size=sz
+    # reboot
+	
+	# pfedit /etc/vfstab
+    ...
+    /dev/zvol/dsk/rpool/swap     -       -      swap     - no    encrypted

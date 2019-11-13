@@ -1,0 +1,17 @@
+ rsync -avzhe ssh backup.tar.gz root@192.168.0.20:/var/tmp/backup
+  rsync -avhe ssh backup.tar.gz root@192.168.0.20:/var/tmp/backup
+ 
+   rsync -av -e "ssh -l ssh-user" rsync-user@host::module /dest
+
+ 
+ rsync --dry-run -avhe ssh /proddb/arch/ftaprod root@172.30.252.13:/restore/ftaprod
+ 
+ -a, --archive               archive mode;
+ -v, --verbose               increase verbosity
+ -z, --compress              compress file data during the transfer
+ -h, --human-readable        output numbers in a human-readable format
+ -e, --rsh=COMMAND           specify the remote shell to use
+
+
+
+rsync -avzm --relative --stats --safe-links --size-only --human-readable {} /StoragePod/ > /home/misha/Desktop/rsync_logs_syncs/Datahoarder_Mount_result.log

@@ -1,0 +1,17 @@
+£8,060
+12 months
+671.666
+
+HBA Port WWN: 10000000c9959163
+        OS Device Name: /dev/cfg/c2
+        Manufacturer: Emulex
+        Model: LPe12002-S
+        Firmware Version: 1.11a5 (U3D1.11A5)
+        FCode/BIOS Version: Boot:5.03a0 Fcode:3.01a1
+        Serial Number: 0999BT0-09490000SZ
+        Driver Name: emlxs
+        Driver Version: 2.50o (2010.01.08.09.45)
+        Type: N-port
+        State: online
+        Supported Speeds: 2Gb 4Gb 8Gb
+        Current Speed: 8Gb

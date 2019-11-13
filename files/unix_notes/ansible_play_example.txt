@@ -1,0 +1,5 @@
+ ansible-playbook -i hosts pb_support_tools.yml
+ 
+ ansible -i hosts.test solaris11 -m shell -a "uptime"
+ 
+ ansible-playbook -i hosts.test pb_sol_bmc_ds.yml -vvv

@@ -1,0 +1,35 @@
+dev-aliases: See by all VSANS
+or 
+fcaliases: assigned to a particular VSAN
+
+As I continue on my journey of learning how to manage storage I have learned about using device aliases instead of pwwn’s directly. The benefit to using device-alias in this manner makes it easy when a device has new pwwn’s assigned to it (due to hardware replacement or in the case of a blade a move to a new chassis) that you can update the device-alias and not have to make any other storage assignments or changes.
+To create a device alias, you’ll use the device-alias database command in global configuration mode. Once you are in database configuration mode, you can create device aliases using the device-alias command, like this:
+fc1 # config
+fc1(config)# device-alias database 
+fc1(config-device-alias-db)# device-alias name <Friendly name> pwwn <Fibre Channel WWPN> 
+fc1(config-device-alias-db)# exit
+Now that we have defines our device aliases you must also commit the changes to the device alias database.
+fc1(config)# device-alias commit
+This commits the changes to the device alias database and makes the device aliases active in the switch. To view our changes just use the following command
+fc1 # show device-alias database
+Another benefit is once you create a device alias it will now show in any cpommands that display the pwwn. For example if we want to show what pwwn are active in a zone.
+# show zone name VNXMYZONE active
+zone name VNXMYZONE vsan 1
+* fcid 0x8a9856 [pwwn xx:xx:xx:xx:xx:xx:xx:xx] [DEVICE-1]
+* fcid 0x8xyzpd [pwwn xx:xx:xx:xx:xx:xx:xx:xx] [VNX1-B4]
+You can also create device aliases for your target devices in the same manner. The use of the device alias alos makes it easy to add members to zones. In this example we are creating a zone and adding using device aliases.
+ 
+config
+zoneset name Fabric1_VSAN1 vsan 1
+zone name VNXMYZONE
+member device-alias DEVICE-1 initiator
+member device-alias VNX1-B4 target
+exit
+zoneset activate name Fabric1_VSAN1 vsan 1
+zone commit vsan 1
+A few other commands that are handy as well. Need to delete a device-alias or rename it?
+Removes the device name for the device that is identified by its pwwn.
+fc1(config-device-alias-db)# no device-alias name device-name
+Renames an existing device alias with a new name.
+fc1(config-device-alias-db)# device-alias rename old-device-name new-device-name
+Hope this helps you as much as it has helped me!

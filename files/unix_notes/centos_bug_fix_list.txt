@@ -1,0 +1,9 @@
+sudo chcon system_u:object_r:bin_t:s0 /etc/cron.hourly/man-db.cron
+-rwx------. root root system_u:object_r:mandb_exec_t:s0 /etc/cron.daily/man-db.cron
+
+
+change permissions of /etc/cron.hourly/man-db.cron to 700 
+
+audit.log.2018-02-17_04:01:01.gz:type=AVC msg=audit(1518838141.838:32575): avc:  denied  { dac_override } for  pid=25674 comm="man-db.cron" capability=1  scontext=system_u:system_r:mandb_t:s0-s0:c0.c1023 tcontext=system_u:system_r:mandb_t:s0-s0:c0.c1023 tclass=capability
+
+chcon system_u:object_r:mandb_exec_t:s0 /etc/cron.daily/man-db.cron

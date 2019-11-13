@@ -1,0 +1,19 @@
+/u01/app/oracle/diag/rdbms/rmanprod/rmanprod/trace/
+
+find /u01 -name "alert*log"  -exec ls -1Vd {} \;
+
+/usr/bin/chmod -R A+user:solarwin:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmanemvp/rmanemvp/trace
+/usr/bin/chmod -R A+user:ptrladm:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmanemvp/rmanemvp/trace
+
+/u01/app/oracle/diag/rdbms/rmancpap/rmancpap/trace/alert_rmancpap.log
+/usr/bin/chmod -R A+user:solarwin:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmancpap/rmancpap/trace
+/usr/bin/chmod -R A+user:ptrladm:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmancpap/rmancpap/trace
+
+/usr/bin/chmod -R A+user:solarwin:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmanprod/rmanprod/trace
+/usr/bin/chmod -R A+user:ptrladm:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmanprod/rmanprod/trace
+
+/usr/bin/chmod -R A+user:solarwin:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmanhops/rmanhops/trace
+/usr/bin/chmod -R A+user:ptrladm:read_data/execute:file_inherit:allow /u01/app/oracle/diag/rdbms/rmanhops/rmanhops/trace
+
+/usr/bin/chmod -R A+user:ptrladm:read_data/execute:file_inherit:allow /u01/app/grid/diag/asm/+asm/+ASM/trace
+/usr/bin/chmod -R A+user:solarwin:read_data/execute:file_inherit:allow /u01/app/grid/diag/asm/+asm/+ASM/trace

@@ -1,0 +1,30 @@
+2015 August Scratch Tapes
+	========	====
+	 UX0416 	   4
+	 UX0413 	  13
+	 UX0434 	  23
+	 UX0417 	  46
+	 UX0435 	 113
+	 UX0458 	 121
+
+	 --------------------------------------------------------------------
+08/03/2015 15:00:51
+Robot: TLD(2) on dcs01-bkup
+Operation: Inventory and Update
+EMM Server: nbmaster
+--------------------------------------------------------------------
+Generating list of recommended changes ...
+
+Proposed Change(s) to Update the Volume Configuration
+=====================================================
+Logically move media ID CLN004 (barcode CLN004L1) from standalone to slot 1.
+Updating volume configuration ...
+
+Processing existing media added to or moved within the robotic library by
+logically moving media as follows...
+	Media ID	Slot
+	========	====
+	 CLN004 	   1
+
+
+Volume configuration successfully updated.

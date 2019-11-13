@@ -1,0 +1,181 @@
+Bare Metal Builds
+
+Server Configuration
+
+Server Name: dchops01u
+HW Model: Oracle SPARC T7-1
+Admin IP: 10.28.23.96/24
+Default Gateway: 10.28.23.1
+Net boot MAC Address: 90:e2:ba:cf:fa:18
+Net boot vanity names: net8 or net14
+Net aggregates: net8, net14
+Administrative account: cubicadm
+Adminsitrative password: <secret server>
+
+Build Process:
+
+Prerequisites:
+- iLO access (serial or network)
+- AIServer setup and configured
+- Oracle Solaris Repository Server (Patch Server)
+- Custom Solaris Repositroy -  ormally hosted on the same server as above for custom packages
+- Minimum 10GbE Network card FCode: 4.2.0
+  Notes: Check by running 
+         # /usr/sbin/fwupdate list all
+         Model Code: 0x10fb
+		 Update using latest FCode from Oracle Support https://support.oracle.com
+		 unzip niantic-lp-1-210-9.zip
+         # /usr/sbin/fwupdate update all -x metadata.xml
+
+		 
+iLO - Console
+Hostname: dc5hops02u-ilo
+-> start /host/console
+Are you sure you want to start /HOST/console (y/n)? y
+Serial console started.  To stop, type #.
+{0} ok show-nets
+a) /pci@303/pci@2/network@0,1
+b) /pci@303/pci@2/network@0
+c) /pci@303/pci@1/network@0,3
+d) /pci@303/pci@1/network@0,2
+e) /pci@303/pci@1/network@0,1
+f) /pci@303/pci@1/network@0
+g) /pci@300/pci@3/network@0,1
+h) /pci@300/pci@3/network@0
+i) /pci@300/pci@1/network@0,1
+j) /pci@300/pci@1/network@0
+m) MORE SELECTIONS
+q) NO SELECTION
+Enter Selection, q to quit: b
+/pci@303/pci@2/network@0 has been selected.
+Type ^Y ( Control-Y ) to insert it in the command line.
+e.g. ok nvalias mydev ^Y
+         for creating devalias mydev for /pci@303/pci@2/network@0
+{0} ok nvalias net-boot0 /pci@303/pci@2/network@0
+
+Confirm the MAC-Address for the Ansible Playbook
+{0} ok cd /pci@303/pci@2/network@0
+{0} ok .properties
+vf-assigned-addresses    83020000 00000001 10084000 00000000 00004000
+                         83020003 00000001 10184000 00000000 00004000
+assigned-addresses       83020010 00000001 10000000 00000000 00080000
+                         81020018 00000000 00000000 00000000 00000020
+                         83020020 00000001 10080000 00000000 00004000
+                         82020030 00000000 00800000 00000000 00080000
+vf-reg                   03020000 00000000 00000000 00000000 00004000
+                         03020003 00000000 00000000 00000000 00004000
+reg                      00020000 00000000 00000000 00000000 00000000
+                         03020010 00000000 00000000 00000000 00080000
+                         01020018 00000000 00000000 00000000 00000020
+                         03020020 00000000 00000000 00000000 00004000
+                         02020030 00000000 00000000 00000000 00080000
+local-mac-address        90 e2 ba cf fd 2c
+phy-type                 xgf
+version                  Sun Dual 10GbE SFP+ PCIe 2.0 LP FCode 4.2 2/10/2017
+board-model              375-3617-01
+model                    X1109a-z/1109a-z
+compatible               pciex8086,10fb.108e.7b11.1
+                         pciex8086,10fb.108e.7b11
+                         pciex8086,10fb.1
+                         pciex8086,10fb
+                         pciexclass,020000
+                         pciexclass,0200
+address-bits             00000030
+max-frame-size           00002400
+network-interface-type   ethernet
+device_type              network
+name                     network
+fcode-rom-offset         00018800
+vf-stride                00000002
+first-vf-offset          00000080
+total-vfs                00000040
+initial-vfs              00000040
+#vfs                     00000040
+port-type                PCIE-Endpoint
+interrupts               00000001
+cache-line-size          00000010
+class-code               00020000
+subsystem-id             00007b11
+subsystem-vendor-id      0000108e
+revision-id              00000001
+device-id                000010fb
+vendor-id                00008086
+
+Update the Ansible hosts inventory file under:
+~/inventeries/test/host_vars/dchops02u.yml
+  sol_ai_client_state: present
+  sol_ai_client_uar_name: ""
+  sol_ai_client_name: dc5hops02u
+  sol_ai_client_mac_address: 90:e2:ba:cf:fd:2c
+  sol_ai_client_static_address_v4: "10.28.23.97/24"
+  sol_ai_client_default_route_v4: "10.28.23.1"
+  sol_ai_user_profile_root_passwd_hash: "{{ lookup('csvfile', 'root file=secrets/pw_hash.csv' ) }}"
+  sol_ai_client_boot_net: net8
+  sol_ai_client_boot_net_aggr: net14
+  # This variable is a hint to determine the size of the swap volume. For example, 0.5 = 50% of physical memory
+  # Note: If sol_rpool_swap_volsize_hint is undefined the default is equal to physical memory
+  sol_rpool_swap_volsize_hint: 0.5
+  
+NOTES: 
+If you require a different inventory location other then the default ~/inventories/test as defined in the ansible.cfg please use
+   -i inventories/<environment>/
+i.e,. ansible-playbook -i inventories/test/hosts pb_cub_ai_client.yml --extra-vars="sol_ai_client_name=dc5hops02u"
+
+ansible@zmgtans01u:~$ ansible-playbook pb_cub_ai_client.yml --extra-vars="sol_ai_client_name=dc5hops02u"
+Overwrite existing AI client information? (yes/no) : yes
+Is this an unified archive installation? (yes/no) : no
+Wednesday 29 November 2017  13:25:28 +0000 (0:00:00.066)       0:00:15.112 ****
+skipping: [dc5mgt01u]
+ok: [zmgtai01u] => {
+    "msg": "setenv network-boot-arguments host-ip=10.28.23.97,router-ip=10.28.23.1,subnet-mask=255.255.255.0,hostname=dc5hops02u,file=http://10.28.23.101:5555/cgi-bin/wanboot-cgi"
+}
+TASK [cub_ai_client : debug] *******************************************************************************************************************
+Wednesday 29 November 2017  13:25:28 +0000 (0:00:00.050)       0:00:15.163 ****
+skipping: [dc5mgt01u]
+ok: [zmgtai01u] => {
+    "msg": "ok> boot net - install"
+	
+iLO - Console
+
+{0} ok setenv network-boot-arguments host-ip=10.28.23.97,router-ip=10.28.23.1,subnet-mask=255.255.255.0,hostname=dc5hops02u,file=http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+network-boot-arguments =  host-ip=10.28.23.97,router-ip=10.28.23.1,subnet-mask=255.255.255.0,hostname=dc5hops02u,file=http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+{0} ok boot net-boot0 - install
+Boot device: /pci@303/pci@2/network@0  File and args: - install
+10G full duplex link up.
+<time unavailable> wanboot info: WAN boot messages->console
+<time unavailable> wanboot info: configuring /pci@303/pci@2/network@0
+10G full duplex link up.
+<time unavailable> wanboot info: http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+Requesting Ethernet address for: 10.28.23.101
+time unavailable> wanboot progress: wanbootfs: Read 368 of 368 kB (100%)
+<time unavailable> wanboot info: wanbootfs: Download complete
+Wed Nov 29 13:31:03 wanboot progress: miniroot: Read 204336 of 291870 kB (70%)
+.... wait 10 minutes.
+
+After the initial build, the following Ansible Play-books will need to be run.
+- pb_cub_emc.yml       *** VMAX SAN servers only
+If the Primary Domain runs Guest Domains
+- pb_ldom_setup.yml
+If the Guest Domains run Zones
+- pb_ldom_zones.yml
+
+If the Primary Domain run Zones only
+- pb_zones.yml  (Still needs to be written, but should be very similar to pb_ldom_zones.yml but with different LUN names.)
+
+After LDOM configuration the base build hardening and company customisation ansible plays can be run
+- pb_sol11-3_base.yml  *** All Servers
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+  

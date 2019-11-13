@@ -1,0 +1,19 @@
+ansible develpment setup - create an adhoc playbook
+
+yum -y install vim
+Management Server only packages
+yum -y install git
+
+[ansible@slcentos08t ~]$ export https_proxy=https://127.0.0.1:8880/
+[ansible@slcentos08t ~]$ curl -fLo ~/.vim/autoload/plug.vim --create-dirs     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 72204  100 72204    0     0  13565      0  0:00:05  0:00:05 --:--:-- 16710
+[ansible@slcentos08t ~]$ pwd
+/home/ansible
+[ansible@slcentos08t ~]$
+
+/home/ansible/.vimrc
+call plug#begin('~/.vim/plugged')
+Plug '~/ansible-vim-master'
+call plug#end()

@@ -1,0 +1,12 @@
+Copying ssh public keys
+
+ssh-copy-id -i ~/.ssh/id_rsa.pub cubicadm@dc2cs01p
+ssh-copy-id -i ~/.ssh/id_rsa.pub cubicadm@dc2cs02p
+ssh-copy-id -i ~/.ssh/id_rsa.pub cubicadm@dc5cs01p
+ssh-copy-id -i ~/.ssh/id_rsa.pub cubicadm@dc5cs02p
+
+Test
+----
+ssh 'cubicadm@dc5cs02p'
+
+

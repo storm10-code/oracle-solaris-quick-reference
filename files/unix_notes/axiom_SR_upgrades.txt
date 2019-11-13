@@ -1,0 +1,29 @@
+Health Checks
+
+Hi Oracle Support Team, 
+
+We are currently planning an upgrade on our Production Axiom 600 storage arrays from software release 05.04.14 to 05.04.18.
+
+Our current process when upgrading the software is to log SR# with yourselves for a pre-health check. Additionally for Axioms with two slammers
+we currently perform a two stage Alternative Non Disruptive Upgrade to avoid upgrade failing during Brick Firmware phase (Doc ID 1560210.1), 
+as previous software upgrades resulted in Cold restarts of the storage array; this is currently agreed by our Service Account Manager.
+
+Details
+
+1.) Perform a pre-health check of the storage array in view that it will be upgraded to 05.04.18 
+2.) WebEx session to perform the "Alternative Non Disruptive Upgrade Procedure" from 05.04.14 -> 05.04.18
+
+Model: Axiom 600 
+Storage Array Name: wkftpaxiom01p 
+Slammer Number: 2 
+Bricks: 6 (FC 600GB)
+Current software release: 05.04.14 
+SN: A004192BDK 
+Planned Upgrade Date: 21/07/2015 @10:30am BST (July 21st)*
+
+*Upgrade is pending change-control but will confirm when approved.
+
+I will upload initial logs for review.
+
+Kind Regards, 
+Darren 

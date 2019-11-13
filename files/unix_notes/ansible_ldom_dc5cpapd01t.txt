@@ -1,0 +1,18 @@
+
+login to the ansible server tvmgt01
+
+As the ansible user
+
+cd roles/cub_sparc/ldom_setup/vars
+
+create dc5cpapd01t.yml
+
+edit the files as such
+
+update defaults/main.yml
+
+
+create files/vmax0942.csv file entries required
+
+
+

@@ -1,0 +1,17 @@
+To do this, follow:
+
+Install package named yum-plugin-versionlock (called yum-versionlock in RHEL 5).
+
+Raw
+# yum install yum-plugin-versionlock
+The /etc/yum/pluginconf.d/versionlock.list will be created on the system.
+
+To install or lock the version of the gcc package, add that package name to the /etc/yum/pluginconf.d/versionlock.list file by running:
+
+Raw
+# yum versionlock gcc-*
+
+[root@tvmgt01 ~]# yum versionlock ansible
+Loaded plugins: fastestmirror, langpacks, versionlock
+Adding versionlock on: 0:ansible-2.4.2.0-2.el7
+versionlock added: 1

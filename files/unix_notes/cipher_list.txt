@@ -1,0 +1,15 @@
+
+Explicit Cipher List for sshd_config
+# Specifies the ciphers allowed for protocol version 2
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,arcfour128,arcfour256,arcfour,aes128-cbc
+
+For Solaris 11
+Valid ciphers are: aes128-ctr,  aes192-ctr,  aes256-ctr, aes128-cbc, aes192-cbc, aes256-cbc, arcfour, arcfour128, arcfour256, 3des-cbc, and blowfish-cbc.
+
+The default cipher list is: aes128-ctr,aes192-ctr,aes256-ctr,arcfour128,arcfour256,arcfour
+
+Recommend Cipher List - QSA - No CBC allowed
+
+Ciphers aes128-ctr,aes192-ctr,aes256-ctr,arcfour128,arcfour256,arcfour
+file: /etc/ssh/sshd_config
+

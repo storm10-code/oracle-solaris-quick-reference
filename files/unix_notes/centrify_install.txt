@@ -1,0 +1,44 @@
+### Centrify 2018 Agent upgrade
+
+## Install instructions Solaris 11
+
+# Steps
+
+# Centrify 2018 Core Packages
+CentrifyDC
+CentrifyDC-openssl
+CentrifyDC-openldap
+CentrifyDC-curl
+
+
+# The core agent package for auditing is CentrifyDA. Other packages
+# you might have installed include:
+CentrifyDC-nis  					- not-installed
+CentrifyDC-krb5 					- deprecrated no-longer required uninstall
+CentrifyDC-ldapproxy 				- not-installedd
+CentrifyDC-openssh   				- not-installed
+CentrifyDC-web						- not-installed
+CentrifyDC-apache					- not-installed
+CentrifyDC-adbindproxy				- not-installed
+
+Remove and re-install agent features
+If yon have problems upgrading any agent features, such as access
+control and privilege management or auditing services, you should do
+the following:
+ Log on as root and disable auditing on UNIX computers where
+auditing is enabled:
+dacontrol -d
+ Use the adleave command to remove the UNIX computer from its
+current zone and Active Directory domain.
+ Use the DirectAuthorize Agent Control Panel to remove the local
+Windows computer from its current zone, then use the Windows
+Control Panel application to remove the agent services from the
+local computer.
+ Rerun the install.sh script or the agent setup program to install
+the agent cleanly.
+You can join the domain from the installation script on UNIX
+computers or join a zone from the agent configuration wizard on
+Windows computers.
+ Log on as root and enable auditing on UNIX computers where you
+want auditing enabled
+dacontrol -e

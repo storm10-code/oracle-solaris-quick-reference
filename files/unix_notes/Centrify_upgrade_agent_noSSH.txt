@@ -1,0 +1,107 @@
+Centrify Installation/Upgrade
+
+Additional NOTES: 
+Pre-
+PRESTIGE.TEST/Centrify/UNIX Servers
+
+Upgrade Procedure steps 
+
+
+1.) mkdir /var/tmp/centrify_2015.1/
+2.) extract software and then solaris agent
+     - unzip Centrify-Suite-2015.1-agents-DM.zip
+     - gzcat centrify-suite-2015.1-sol8-sparc.tgz | tar xvf -
+3.) Edit centrifydc-install.cfg	
+centrifydc-install.cfg	  
+# Copyright (C) 2004-2015 Centrify, All Rights Reserved.
+#CDC_VER=5.2.1-151
+ADCHECK="N"
+ADLICENSE="Y"
+# Solaris 10 -G option, installation in global zone only
+GLOBAL_ZONE_ONLY="N"
+ADJOIN="N"
+ADJ_LIC= # server/workstation
+ADJ_FORCE="N"
+ADJ_TRUST="N"
+DOMAIN="company.com"
+USERID=administrator
+PASSWD="password"
+#COMPUTER=my_host_name
+#CONTAINER="my computers"
+#ZONE="my_zone"
+#SERVER=server_name
+DA_ENABLE="K"
+DA_INST_NAME=""
+REBOOT="N"
+# valid action keys (case insensitive):
+# Y - (yes) install if it's not installed
+# U - update; same as Y plus update if it's installed already,
+#     keep current if the same or newer version is installed
+# R - reinstall (repair); if package is installed, reinstall (same version)
+#     or downgrade (install older version)
+# E - erase (remove or uninstall)
+# K - keep current (do not change)
+INSTALL="U" # core package
+CentrifyDC_nis="K"
+CentrifyDC_krb5="K"
+CentrifyDC_ldapproxy=
+CentrifyDC_openssh="N"
+CentrifyDC_web=
+CentrifyDC_apache=
+CentrifyDC_samba=
+CentrifyDC_idmap=
+CentrifyDA="U"
+
+# Uninstall of all packages, including add-on(s), works with INSTALL="E" only:
+#UNINSTALL="N
+
+Step 5.)  Update the agent
+          ./install.sh -n
+
+
+Child Zones --> Computer Roles --> AllServers --< Members --> prestige-CentrifyComputerROle-AllServers-G@PRESTIGE.TEST
+<right click - AD properties>
+  Members (TAB)
+  ADD
+    Objects (Computers - TICK BOX)
+    Location --> PRESTIGE.TEST/Centrify/Unix Servers
+    Enter Object Name to Select
+      Examples cpaaaccdb2 (Check Names - should underline if found)
+
+	  DirectAudit
+	  
+	  Port: 5063
+	  dacontrol -i Prestige.Test
+	  dainfo --diag
+
+	  check for missing homedir in pam.d - if used will not set permissions correctly - owned by root:root need to check if good or /bad
+	  /etc/pam.d/other 
+	     session       required        pam_centrifydc.so homedir
+		 
+"
+
+Step 5.) Check Entrify has kept the following lines in pam.d configuration file other and login
+
+/etc/pam.d/other
+# lines inserted by Centrify Direct Control { CentrifyDC 5.2.3-429 }
+auth    sufficient      pam_centrifydc.so unix_cred
+auth    requisite       pam_centrifydc.so deny
+account sufficient      pam_centrifydc.so
+account requisite       pam_centrifydc.so deny
+session required        pam_centrifydc.so homedir
+password        sufficient      pam_centrifydc.so try_first_pass
+password        requisite       pam_centrifydc.so deny
+
+/etc/pam.d/login
+auth sufficient         pam_centrifydc.so unix_cred
+auth requisite          pam_centrifydc.so deny
+
+Checks
+
+
+
+  
+	  Preperate UNIX Computer
+	  Zone: PRESTIGE.TEST/Centrify/Zones/prestige.test/Unix
+	  adjoin -S prestige.test -V
+	  

@@ -1,0 +1,32 @@
+
+awk -F" " '{print$2,$3,$5",",$4,$6}' stagingdg_vxstat.2015.17.06.18.00.00.csv > stagingdg_vxstat.2015.17.06.18.00.00.csv1
+/usr/gnu/bin/awk -F"," '{gsub(/[m ]/,"",$5)}1' OFS="," stagingdg_vxstat.2015.17.06.18.00.00.csv1 > stagingdg_vxstat.2015.17.06.18.00.00_sort.csv1
+/usr/gnu/bin/awk -F"," '{gsub(/[m ]/,"",$6)}1' OFS="," stagingdg_vxstat.2015.17.06.18.00.00_sort.csv1 > stagingdg_vxstat.2015.17.06.18.00.00_sort1.csv1
+
+
+    zonestat_type=parts[3].replace('[','').replace(']','')
+    zonestat_cpu_used=parts[4]
+    zonestat_cpu_part=parts[5].replace('%','')
+    zonestat_PhysMem_used=parts[8]
+    # Normalize to MB
+    if "K" in zonestat_PhysMem_used:
+        zonestat_PhysMem_used = "%.2f" % (int(zonestat_PhysMem_used.replace('K','')) / 1024.0)
+    if "M" in zonestat_PhysMem_used:
+        zonestat_PhysMem_used = zonestat_PhysMem_used.replace('M','')
+    if "G" in zonestat_PhysMem_used:
+        zonestat_PhysMem_used = "%.2f" % (int(zonestat_PhysMem_used.replace('G','')) * 1024.0)
+    zonestat_PhysMem_Pused=parts[9].replace('%','')
+
+
+	now=int(time.time())
+    memstat_pages=parts[0]
+    memstat_bytes=parts[1]
+    memstat_tot=parts[2].replace('%','')
+    memstat_type=parts[3]
+    # Normalize to MB
+    if "K" in memstat_bytes:
+        memstat_bytes = "%.2f" % (int(memstat_bytes.replace('K','')) / 1024.0)
+    if "M" in memstat_bytes:
+        memstat_bytes = memstat_bytes.replace('M','')
+    if "G" in memstat_bytes:
+        memstat_bytes = "%.2f" % (int(memstat_bytes('G','')) * 1024.0)

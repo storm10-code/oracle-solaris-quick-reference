@@ -1,0 +1,4 @@
+
+This is regarding a issue we hit when trying an online disk drive replacement of mirrored rpool c0t0d0 on a M5000 server. 
+
+During the procedure  after inserting the disk drive after performing a successful cfgadm -c unconfigure, but after inserting the disk drive and then performing a cfgadm -al command the M5000 domain (0) hung and panic'd.  

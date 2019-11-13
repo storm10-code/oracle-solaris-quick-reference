@@ -1,0 +1,373 @@
+Setup yum Repository Server
+
+yum install -y createrepo rsync nginx yum-utils setools perl-LWP-Protocol-https
+
+
+Assign /dev/sdb storage thin provisioned to VM using vCenter 50GB
+echo "- - -" > /sys/class/scsi_host/host2/scan
+
+pvcreate /dev/sdc
+vgcreate pkgrepo /dev/sdc
+lvcreate --wipesignatures y -n thinpool pkgrepo -l 95%VG
+lvcreate --wipesignatures y -n thinpoolmeta pkgrepo -l 1%VG
+# this will convert the meta device into the thinpool.
+lvconvert -y \
+--zero n \
+-c 512K \
+--thinpool pkgrepo/thinpool \
+--poolmetadata pkgrepo/thinpoolmeta
+
+mkfs.xfs /dev/pkgrepo/thinpool
+mkdir /repo
+mount 
+# if need to start a fresh - 
+lvremove docker/docker-pool
+
+export http_proxy=http://localhost:8880/
+export https_proxy=http://localhost:8880/
+
+\wget -e use_proxy=yes -e http_proxy=127.0.0.1:8880 -O - http://get.repositor.io/ | bash ** NOT Working
+\curl http://get.repositor.io/ | bash
+
+yum install perl-Expect createrepo 
+---- Rex
+RepositoryRoot = /var/www/html/repo/
+
+# how often a failed download should be retried.
+DownloadRetryCount = 3
+
+# specify repo tag style. either TopDir (default) or BottomDir
+TagStyle = TopDir
+
+LogFile = /var/log/repositorio.log
+LogFileLevel = info
+
+<Repository centos-6-x86-64>
+  url    = http://ftp.hosteurope.de/mirror/centos.org/6/os/x86_64/
+  local  = centos-6-x86-64/CentOS/6/os/x86_64/
+  type   = Yum
+  images = true
+</Repository>
+
+<Repository epel-centos-6-x86-64>
+  url   = http://ftp.uni-koeln.de/mirrors/fedora/epel/6/x86_64/
+  local = epel-centos-6-x86-64/epel/6/x86_64/
+  type  = Yum
+</Repository>
+
+<Repository centos-6-x86-64-custom>
+  local = centos-6-x86-64-custom/custom/6/x86_64/
+  type  = Yum
+</Repository>
+
+# CentOS Packages
+<Repository cub-centos-7-x86-64>
+  url    = http://mirror.bytemark.co.uk/centos/7/os/x86_64/
+  #url    = http://mirrors.clouvider.net/CentOS/7/os/x86_64/
+  #url    = http://mirrors.ukfast.co.uk/sites/ftp.centos.org/7/os/x86_64/
+  local  = centos-7-x86-64/CentOS/7/os/x86_64/
+  type   = Yum
+  images = true
+</Repository>
+
+# CentOS Custom Repository - CTSL
+<Repository cub-centos-7-x86-64_custom-repo>
+  local = centos-7-x86_64/custom/CentOS/7/os/x86_64/
+  type  = Yum
+</Repository>
+
+# EPEL Packages
+<Repository cub-epel-centos-7-x86-64>
+  url   = http://anorien.csc.warwick.ac.uk/mirrors/epel/7/x86_64/
+  local = epel-centos-7-x86-64/epel/7/x86_64/
+  type  = Yum
+</Repository>
+
+# Docker Packages
+<Repository cub-docker-ce-centos-7-x86-64>
+  url   = http://download.docker.com/linux/centos/7/x86_64/stable/
+  local = docker-ce-centos-7-x86-64/docker-ce/7/x86_64/
+  type  = Yum
+</Repository>
+
+----
+mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig
+
+for example:
+# reposync --gpgcheck -l --repoid=cub-centos-7-x86-64 --download_path=/var/www/html/repo/local-test
+vi /etc/nginx/nginx.conf
+---
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log;
+pid /run/nginx.pid;
+
+events {
+    worker_connections 1024;
+}
+
+http {
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile            on;
+    tcp_nopush          on;
+    tcp_nodelay         on;
+    keepalive_timeout   65;
+    types_hash_max_size 2048;
+
+    include             /etc/nginx/mime.types;
+    default_type        application/octet-stream;
+
+    include /etc/nginx/conf.d/*.conf;
+}
+vi /etc/nginx/conf.d/repo.conf
+server {
+    listen  80;
+    server_name  localhost;
+    root  /var/www/html/repos;
+
+    location  / {
+        autoindex  on;
+    }
+
+}
+systemctl enable nginx.service && systemctl enable firewalld.service   # Enable services
+systemctl start firewalld.service   # Ensure firewalld is running
+firewall-cmd --permanent --add-service=http
+firewall-cmd --reload
+
+
+repositorio --tag=test --repo=cub-centos-7-x86-64
+repositorio --tag=test --repo=cub-centos-7-updates-x86-64
+repositorio --tag=test --repo=cub-centos-7-extras-x86-64
+repositorio --tag=test --repo=cub-epel-centos-7-x86-64
+repositorio --tag=test --repo=cub-centos-7-docker-ce-x86-64
+repositorio --tag=test --repo=cub-centos-7-docker-ce-debug-x86-64
+[ansible@slcentos08t cub-repos]$ cat /etc/rex/repositorio.conf | grep cub
+<Repository cub-centos-7-x86-64>
+<Repository cub-centos-7-updates-x86-64>
+<Repository cub-centos-7-extras-x86-64>
+<Repository cub-centos-7-x86-64_custom-repo>
+<Repository cub-epel-centos-7-x86-64>
+<Repository cub-epel-centos-7-x86-64-debug>
+<Repository cub-centos-7-docker-ce-x86-64>
+<Repository cub-centos-7-docker-ce-debug-x86-64>
+
+Create our local test repository - set a particular date
+# Centos 7 Repository Base, Updates and Extras
+mkdir -p /repos/local-test/CentOS/7/os/x86_64/
+mkdir -p /repos/local-test/CentOS/7/updates/x86_64/
+mkdir -p /repos/local-test/CentOS/7/extras/x86_64/
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/CentOS/7/os/x86_64/ /repos/local-test/CentOS/7/os/x86_64/   # CentOS Base Repo
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/CentOS/7/updates/x86_64/ /repos/local-test/CentOS/7/updates/x86_64/   # CentOS Updates Repo
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/CentOS/7/extras/x86_64/ /repos/local-test/CentOS/7/extras/x86_64/   # CentOS Updates Repo
+
+# Docker CE Repository Stable and Debug
+mkdir -p /repos/local-test/docker-ce/CentOS/7/x86_64/
+mkdir -p /repos/local-test/docker-ce/CentOS/7/debug-x86_64/
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/docker-ce/7/x86_64/ /repos/local-test/docker-ce/CentOS/7/x86_64/   # Docker CE CentOS 7 - Stable
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/docker-ce/7/debug-x86_64 /repos/local-test/docker-ce/CentOS/7/debug-x86_64/debug   # Docker CE CentOS 7 - Debug
+
+# Create our repo databases
+createrepo --update /repos/local-test/CentOS/7/os/x86_64/
+createrepo --update /repos/local-test/CentOS/7/updates/x86_64/
+createrepo --update /repos/local-test/CentOS/7/extras/x86_64/
+#
+createrepo --update /repos/local-test/docker-ce/CentOS/7/x86_64/
+createrepo --update /repos/local-test/docker-ce/CentOS/7/debug-x86_64/
+
+# Centos 7 EPEL ,Debug 
+======================
+mkdir -p /repos/local-test/CentOS/7/epel/x86_64/
+mkdir -p /repos/local-test/CentOS/7/epel/debug-x86_64/
+CentOS - EPEL 
+-------------
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/epel/7/x86_64/ /repos/local-test/CentOS/7/epel/x86_64/    # EPEL Base
+rsync -avz --exclude='repo*' /repos/test/centos-7-x86-64/epel/7/debug-x86_64/ /repos/local-test/CentOS/7/epel/debug-x86_64/   # EPEL Debug
+createrepo --update  /repos/local-test/CentOS/7/epel/x86_64/
+createrepo --update /repos/local-test/CentOS/7/epel/debug-x86_64/   
+
+
+SELINUX
+getsebool -a
+[root@slcentos08t local]# getsebool -a | grep httpd | grep network
+httpd_can_network_connect --> off
+httpd_can_network_connect_cobbler --> off
+httpd_can_network_connect_db --> off
+httpd_can_network_memcache --> off
+httpd_can_network_relay --> off
+[root@slcentos08t local]# semanage boolean -l | grep httpd_can_network_connect
+httpd_can_network_connect_db   (off  ,  off)  Allow httpd to can network connect db
+httpd_can_network_connect      (off  ,  off)  Allow httpd to can network connect
+httpd_can_network_connect_cobbler (off  ,  off)  Allow httpd to can network connect cobbler
+[root@slcentos08t local]# setsebool -P httpd_can_network_connect 1
+
+grep denied /var/log/audit/audit.log
+type=AVC msg=audit(1502964899.912:1282): avc:  denied  { getattr } 
+for  pid=20317 comm="nginx" path="/etc/nginx/nginx.conf" dev="dm-0" 
+ino=50980477 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
+
+[root@slcentos08t ~]# grep 1502964899.912:1281 /var/log/audit/audit.log | audit2why
+type=AVC msg=audit(1502964899.912:1281): avc:  denied  { read } for  pid=20317 comm="nginx" name="nginx.conf" dev="dm-0" ino=50980477 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+type=AVC msg=audit(1502964899.912:1281): avc:  denied  { open } for  pid=20317 comm="nginx" path="/etc/nginx/nginx.conf" dev="dm-0" ino=50980477 scontext=system_u:system_r:httpd_t:s0 tcontext=unconfined_u:object_r:admin_home_t:s0 tclass=file
+
+        Was caused by:
+                Missing type enforcement (TE) allow rule.
+
+                You can use audit2allow to generate a loadable module to allow this access.
+
+allow httpd_t unlabeled_t:dir read;
+[root@slcentos08t ~]# grep nginx /var/log/audit/audit.log | audit2allow -m nginx > nginx.tt
+[root@slcentos08t ~]# grep nginx /var/log/audit/audit.log | audit2allow -M nginx
+[root@slcentos08t Packages]# grep nginx /var/log/audit/audit.log | grep denied | audit2allow -m nginx
+
+module nginx 1.0;
+
+require {
+        type unlabeled_t;
+        type httpd_t;
+        class lnk_file read;
+        class file getattr;
+}
+
+#============= httpd_t ==============
+
+
+allow httpd_t unlabeled_t:file getattr;
+allow httpd_t unlabeled_t:lnk_file read;
+[root@slcentos08t Packages]# grep nginx /var/log/audit/audit.log | grep denied | audit2allow -M nginx
+
+******************** IMPORTANT ***********************
+To make this policy package active, execute:
+
+semodule -i nginx.pp
+
+[root@slcentos08t ~]# semodule -i nginx.pp
+
+
+Setup local repositories
+meb_url: http://cpdc5yum001.london.afc/prod/mysql/meb/
+meb_grpkey: http://cpdc5yum001.london.afc/prod/mysql/RPM-GPG-KEY-mysql
+
+pvcreate /dev/sdc
+umount /repo
+vgextend pkgrepo /dev/sdd
+lvextend  -L+20G /dev/pkgrepo/thinpool
+xfs_growfs /repos (maxsize of lvs volume)
+
+Set the context of these files to httpd_sys_contetn_t
+chcon -Rv --type=httpd_sys_content_t /repos/
+[root@slcentos08t /]# semanage fcontext -a -t httpd_sys_content_t /var/www/html/*
+chcon -Rv --type=httpd_sys_content_t /repos/
+# make persistent at the file-system level
+semanage fcontext -a -t httpd_sys_content_t "/html(/.*)?" 
+
+
+Instruction on how to manage updates and local repo
+[root@slcentos08t local]# repositorio --list
+repositorio started.
+repositorio: 1.2.1
+--------------------------------------------------------------------------------
+cub-centos-7-docker-ce-debug-x86-64 
+cub-centos-7-updates-x86-64
+cub-centos-7-docker-ce-x86-64
+cub-epel-centos-7-x86-64-debug
+cub-epel-centos-7-x86-64
+cub-centos-7-x86-64_custom-repo
+cub-centos-7-x86-64 - BAse CentOS 7 repository
+cub-centos-7-extras-x86-64
+
+repositorio --mirror --repo=cub-centos-7-x86-64
+
+Update for RHEL 7
+-----------------
+
+[root@tvrhelmgt01 ~]# systemctl list-units --state=running
+
+
+Directory Structure For Kickstart and Repository
+
+# We will make these LVM volumes
+mkdir /www/ks
+mkdir /www/repo
+mkdir /www/repo_baseline
+
+# vi /etc/httpd/conf.d/ks.conf
+
+Alias /ks/ /www/ks/
+<directory /www/ks/>
+	Options Indexes FollowSymLinks
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+</directory>
+
+# vi /etc/httpd/conf.d/repo.conf
+
+Alias /repo/ /www/repo/
+<directory /www/repo>
+	Options Indexes FollowSymLinks
+	AllowOverride None
+	Order allow,deny
+	Allow from all
+</directory>
+
+chcon -R –type=httpd_sys_content_t /www/ks
+chcon -R –type=httpd_sys_content_t /www/repo
+
+Access
+------
+semanage fcontext -a -t httpd_sys_content_t "/www(/.*)?"
+Read-Write
+----------
+semanage fcontext -a -t httpd_sys_rw_content_t "/www(/*)?"
+restorecon -Rv /www
+
+ls -Zd /var/www/html/
+
+yum install -y policycoreutils-python
+yum install -y setroubleshooting
+
+systemctl restart httpd
+
+
+D. Files permissions
+One thing that most people do it wrong is configuring files permissions,
+
+The GOLDEN RULE is
+
+STARTS WITH NO PERMISSION AND ADD AS PER YOUR NEED
+
+In linux:
+
+Directories should have the Execute permission
+
+Files should have the Read permission
+
+YES, you are right DO NOT ADD Execute permission for files
+
+for instance, I use this script to setup the folders permissions
+
+# setting permissions for /var/www/mysite.com
+
+# read permission ONLY for the owner 
+chmod -R /var/www/mysite.com 400 
+
+# add execute for folders only
+find /var/www/mysite.com -type d -exec chmod -R u+x {} \;
+
+# allow file uploads 
+chmod -R /var/www/mysite.com/public/uploads u+w
+
+# allow log writing to this folder
+chmod -R /var/www/mysite.com/logs/ 

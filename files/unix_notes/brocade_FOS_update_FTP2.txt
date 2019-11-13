@@ -1,0 +1,96 @@
+
+slftpbrcd02t:admin> licenseshow
+cRQeSdRR9SdSRfTJ:
+    Fabric license
+S9bbdSccebTAgceu:
+    First Ports on Demand license - additional 8 port upgrade license
+WRWALWLHRtDX4FtBWrPBHZaJSRaXaZBDBJ4EN:
+    Enhanced Group Management license
+ERCR9a7Yf7TQRMMaFSr7aW44TTMg7rRTBJFtJ:
+    8 Gig FC license
+wkftpbrcd01p - Perform non-disruptive upgrade from Brocade FOS 7.0.2c -> 7.3.1b
+
+unzip 149139-03.zip
+unzip v7.0.2e1.zip
+- For a non-disruptive upgrade you will need to upgrade in this order 
+  v6.4.0c -->  v6.4.0c --> v6.4.3f3--> v7.0.2e1 --> v7.1.2b1 --> v7.2.1c1 --> v7.3.1b
+
+firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/149139-03/v7.0.2e1/,Yasmin34c!
+    Server IP: 10.26.46.50, Protocol IPv4
+    Checking system settings for firmwaredownload...
+    System settings check passed.
+
+    You can run firmwaredownloadstatus to get the status
+    of this command.
+
+    This command will cause a warm/non-disruptive boot but will
+    require that existing telnet, secure telnet or SSH sessions
+    be restarted.
+
+    Do you want to continue (Y/N) [Y]: y
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    Preparing for firmwaredownload...
+	Removing nonet-lib
+    Start to install packages...
+    dir                         ##################################################
+    ldconfig                    ##################################################
+	sysstat                     ##################################################
+    prom-440epx                 ##################################################
+	.....CONTINUED - REDUCED FOR READABILTIY....
+    Please avoid powering off the system during prom update.
+    ipv6                        ##################################################
+    awk                         ##################################################
+    ipsec                       ##################################################
+    Removing unneeded files, please wait ...
+    Finished removing unneeded files.
+	
+    All packages have been downloaded successfully.
+    Firmware has been downloaded to the secondary partition of the switch.
+    HA Rebooting ...
+    **** Reconnect ssh session to switch
+	
+	
+	Non-disruptive = confirmed v7.1.2b1
+	v7.0.2e1 --> v7.1.2b1
+	firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/151499-03/v7.1.2b1,Yasmin34c!
+	Non-disruptive = confirmed
+    v7.1.2b1 --> v7.2.1c1 v7.2.1c1
+    firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/151130-04/v7.2.1c1,Yasmin34c!
+	
+	/FOS/151680-02/v7.3.1
+	firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/151680-02/v7.3.1,Yasmin34c!
+	prom-440epx                 ##################################################
+    Please avoid powering off the system during prom update.
+    ipv6                        ##################################################
+    awk                         ##################################################
+    ipsec                       ##################################################
+    hss-diag                    ##################################################
+    Removing unneeded files, please wait ...
+    Finished removing unneeded files.
+
+    INFO: Ciphersuite change on switch  
+    HTTPS ciphers will be modified to be compatible with new firmware version
+    All packages have been downloaded successfully.
+    Firmware has been downloaded to the secondary partition of the switch.
+    HA Rebooting .
+	
+	Non-disruptive = confirmed
+	v6.4.0c --> v6.4.3f3
+	slftpbrcd01t
+	firmwaredownload -p ftp 10.26.46.50,cubicadm,/FOS/144882-12/v6.4.3f3,Blu5@Wat5r
+	/FOS/144882-12/v6.4.3f3
+	v6.4.3f3 --> v7.0.2e1
+	firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/149139-03/v7.0.2e1/,Yasmin34c!
+	
+	firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/151499-03/v7.1.2b1,Yasmin34c!
+	Non-disruptive = confirmed
+	
+	Non-disruptive = confirmed
+	v7.1.2b1 --> v7.2.1c1
+    firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/151130-04/v7.2.1c1,Yasmin34c!
+	
+	Non-disruptive = confirmed
+	v7.1.2b1 --> v7.3.1
+	/FOS/151680-02/v7.3.1
+	firmwaredownload -p ftp 10.26.46.50,ledgerd,/FOS/151680-02/v7.3.1,Yasmin34c!
+	

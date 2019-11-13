@@ -1,0 +1,140 @@
+####################################
+## Command List (initiator aliases) 
+## Fabric A
+####################################
+sw01# config t
+sw01(config)# device-alias database			
+sw01(config-device-alias-db)# device-alias name dc5cs01u_HBA0 pwwn 10:00:00:90:FA:D8:AB:50			
+sw01(config-device-alias-db)# device-alias name dc5cs02u_HBA0 pwwn 10:00:00:90:FA:D8:8C:C7			
+sw01(config-device-alias-db)# device-alias name dc5cpa01u_HBA0 pwwn 10:00:00:90:FA:D8:8E:89			
+sw01(config-device-alias-db)# device-alias name dc5cpa02u_HBA0 pwwn 10:00:00:90:FA:D8:8E:8E			
+sw01(config-device-alias-db)# device-alias name dc5emv01u_HBA0 pwwn 10:00:00:90:FA:D8:8E:2F			
+sw01(config-device-alias-db)# device-alias name dc5emv02u_HBA0 pwwn 10:00:00:90:FA:D8:AC:EF			
+sw01(config-device-alias-db)# device-alias name dc5hops01u_HBA0 pwwn 10:00:00:90:FA:D8:90:0F			
+sw01(config-device-alias-db)# device-alias name dc5hops02u_HBA0 pwwn 10:00:00:90:FA:D8:8F:CE			
+sw01(config-device-alias-db)# exit
+sw01(config)# end
+sw01# device-alias commit			
+
+####################################
+## Command List (initiator aliases) 
+## Fabric B
+####################################
+sw02# config t
+sw02(config)# device-alias database	
+sw02(config-device-alias-db)#device-alias name dc5cs01u_HBA1 pwwn 10:00:00:90:FA:D8:AC:A9			
+sw02(config-device-alias-db)#device-alias name dc5cs02u_HBA1 pwwn 10:00:00:90:FA:D8:8E:5C			
+sw02(config-device-alias-db)#device-alias name dc5cpa01u_HBA1 pwwn 10:00:00:90:FA:D8:8D:53			
+sw02(config-device-alias-db)#device-alias name dc5cpa02u_HBA1 pwwn 10:00:00:90:FA:D8:8D:AD			
+sw02(config-device-alias-db)#device-alias name dc5emv01u_HBA1 pwwn 10:00:00:90:FA:D8:8E:C5			
+sw02(config-device-alias-db)#device-alias name dc5emv02u_HBA1 pwwn 10:00:00:90:FA:D8:AC:BD			
+sw02(config-device-alias-db)#device-alias name dc5hops01u_HBA1 pwwn 10:00:00:90:FA:D8:90:0A			
+sw02(config-device-alias-db)#device-alias name dc5hops02u_HBA1 pwwn 10:00:00:90:FA:D8:8D:1C			
+sw02(config-device-alias-db)# exit
+sw02(config)# end
+sw02# device-alias commit
+
+#####################
+## Zoning: Fabric A		
+#####################
+sw01# config t
+sw01(config)# zoneset name <ZONE_SET_NAME> vsan 820
+
+sw01(config-zoneset)# zone name Z_dc5cs01u_PG_UNIX_CLUSTER2			
+sw01(config-zoneset-zone)# member device-alias dc5cs01u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5cs02u_PG_UNIX_CLUSTER2			
+sw01(config-zoneset-zone)# member device-alias dc5cs02u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5cpa01u_PG_UNIX_CLUSTER3			
+sw01(config-zoneset-zone)# member device-alias dc5cpa01u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5cpa02u_PG_UNIX_CLUSTER3			
+sw01(config-zoneset-zone)# member device-alias dc5cpa02u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5emv01u_PG_UNIX_CLUSTER4			
+sw01(config-zoneset-zone)# member device-alias dc5emv01u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5emv02u_PG_UNIX_CLUSTER4			
+sw01(config-zoneset-zone)# member device-alias dc5emv02u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5hops01u_PG_UNIX_CLUSTER5			
+sw01(config-zoneset-zone)# member device-alias dc5hops01u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+			
+sw01(config-zoneset-zone)# zone name Z_dc5hops01u_PG_UNIX_CLUSTER5			
+sw01(config-zoneset-zone)# member device-alias dc5hops02u_HBA0 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_01D_05 			
+sw01(config-zoneset-zone)# member device-alias VMAX0942_02D_05 			
+
+sw01(config-zoneset-zone)# zone commit vsan 820
+sw01(config)# zoneset activate name <ZONE_SET_NAME> vsan 820
+sw01(config)# zone commit vsan 820
+
+#####################
+## Zoning: Fabric B		
+#####################
+
+sw02# config t
+sw02(config)# zoneset name <ZONE_SET_NAME> vsan 820
+			
+sw02(config-zoneset-zone)# zone name Z_dc5cs01u_PG_UNIX_CLUSTER2			
+sw02(config-zoneset-zone)# member device-alias dc5cs01u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5cs02u_PG_UNIX_CLUSTER2			
+sw02(config-zoneset-zone)# member device-alias dc5cs02u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5cpa01u_PG_UNIX_CLUSTER3			
+sw02(config-zoneset-zone)# member device-alias dc5cpa01u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5cpa02u_PG_UNIX_CLUSTER3			
+sw02(config-zoneset-zone)# member device-alias dc5cpa02u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5emv01u_PG_UNIX_CLUSTER4			
+sw02(config-zoneset-zone)# member device-alias dc5emv01u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5emv02u_PG_UNIX_CLUSTER4			
+sw02(config-zoneset-zone)# member device-alias dc5emv02u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5hops01u_PG_UNIX_CLUSTER5			
+sw02(config-zoneset-zone)# member device-alias dc5hops01u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+			
+sw02(config-zoneset-zone)# zone name Z_dc5hops01u_PG_UNIX_CLUSTER5			
+sw02(config-zoneset-zone)# member device-alias dc5hops02u_HBA1 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_01D_29 			
+sw02(config-zoneset-zone)# member device-alias VMAX0942_02D_29 			
+
+sw02(config-zoneset-zone)# zone commit vsan 820
+sw02(config)# zoneset activate name <ZONE_SET_NAME> vsan 820
+sw02(config)# zone commit vsan 820
+
+Watching for CDP packet on net8 for 60 seconds...
+  device-id:    actdcb-chsw01-test(SSI1945015A)
+  port-id:      Ethernet1/13

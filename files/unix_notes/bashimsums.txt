@@ -1,0 +1,44 @@
+Pointless use of echo.
+
+echo -e is used when assigning variables for some odd reason.
+
+# Screenfetch
+mydistro=$(echo -e "$labelcolor OS:$textcolor $distro $sysArch")
+
+# Correct way
+mydistro="$labelcolor OS:$textcolor $ditro $sysArch"
+
+# Screenfetch
+for l in $(echo $distrib_id); do
+
+# Correct way
+for l in "$distrib_id"; do
+
+# Screenfetch
+if [ $(echo $cpu_mhz) -gt 999 ]; then
+
+# Correct way
+if ((cpu_mhz > 999)); then
+
+# Screenfetch
+[[ "$(cat /etc/os-release)" =~ "Raspbian" ]]
+
+# Bash - No external processes.
+[[ "$(< /etc/os-release)" =~ "Raspbian" ]]
+
+# Screenfetch
+distro_more="$(cat /usr/share/doc/tc/release.txt)"
+
+# Bash - No external processes.
+distro_more="$(< /usr/share/doc/tc/release.txt)"
+
+Test syntax is inconsistent.
+
+Sometimes [ is used, other times [[ is used.
+
+[[ should be used over [.
+[[ is bash syntax whereas [ is a builtin command.
+[[ is safer since variables don't have to be quoted.
+[[ supports more features like combining tests.
+
+(Exception: "$@" to expand to the list of positional parameters, e.g. "$@ is equivalent to "$1" "$2" "$3" if there are three positional parameters. See What is the difference between $* and $@?)

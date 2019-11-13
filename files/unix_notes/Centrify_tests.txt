@@ -1,0 +1,64 @@
+#!/bin/bash
+
+adi="/usr/bin/adinfo"
+adq="/usr/bin/adquery"
+output_file="/var/tmp/centrify_testresults.out"
+
+# Tests
+# 1
+echo "Test 1 AD Info" > $output_file
+echo "--------------" >> $output_file
+$adi --all >> $output_file
+# 2
+echo "Test 2 AD Users" >> $output_file
+echo "---------------" >> $output_file
+$adq user >> $output_file
+# 3
+echo "Test 3 AD Groups" >> $output_file
+echo "----------------" >> $output_file
+$adq group | awk -F':' '{print $1}' >> $output_file
+# 4
+echo "Test 4 AD users " >> $output_file
+echo "----------------" >> $output_file
+for ad_user in `$adq user | awk -F':' '{print $1}'`
+do
+   echo "$ad_user"
+   echo "--------"
+   $adq user -a $ad_user | perl -pe "s/.*\///"
+   echo ""
+done >> $output_file
+# 5
+echo "Test 5 AD Groups" >> $output_file
+echo "----------------" >> $output_file
+$adq group -a >> $output_file
+# 6
+echo "Test 6 AD Groups Verbose" >> $output_file
+echo "----------------" >> $output_file
+$adq group --all >> $output_file
+# 7
+echo "Test 7 AD Info per AD user" >> $output_file
+echo "--------------------------" >> $output_file
+for ad_user in `$adq user | awk -F':' '{print $1}'`
+do
+    echo "$ad_user"
+    echo "--------"
+    $adq user -a $ad_user
+    echo ""
+done >> $output_file
+# 8
+echo "Test 8 AD dzdo info commands" >> $output_file
+echo "----------------------------" >> $output_file
+for user in `$adq user | awk -F':' '{print $1}'`
+do
+    echo $user
+    echo "--------"
+    dzinfo $user -c
+done >> $output_file
+# 9
+echo "Test 8 AD dzdo info commands system accounts" >> $output_file
+echo "--------------------------------------------" >> $output_file
+for user in oracle grid tomcat ptrladm svqualys
+do
+   echo $user
+   dzinfo $user -c
+done  >> $output_file

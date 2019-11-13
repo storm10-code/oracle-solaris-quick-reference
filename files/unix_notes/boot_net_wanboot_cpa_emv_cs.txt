@@ -1,0 +1,89 @@
+10.28.23.100 dc5mgt01u - done
+10.28.23.101 zmgtai01u - done
+10.28.23.102 dc5cs01t - done
+10.28.23.103 dc5cpa01t - done
+10.28.23.104 dc5emv01t - done
+
+Gateway: 10.28.23.1
+Netmasks: 255.255.255.0 (/24)
+
+10GbE network interfaces: net8 and net14 (snoop to check)
+
+Please provide me with the mac-address of a working NIC so I can perform a boot net - install:
+dladm show-linkprop -p mac-address
+
+Fcode Update ( requires a working ip-address)
+
+copy software from dc5mgt01u to target machine
+source: /var/tmp/fcode
+file: p26439601_10_Generic.zip
+
+Instructions
+- unzip p26439601_10_Generic.zip
+- unzip niantic-lp-1-210-9.zip
+Run fwupdate as follows
+# fwupdate update all -x metadata.xml
+
+MAC Addresses
+
+dc5cpa01t.xml
+
+installadm create-client -n s11_3-sparc-large -e 90:e2:ba:c8:26:44
+installadm create-client -n s11_3-sparc-large -e 90:e2:ba:d0:00:38
+installadm create-client -n s11_3-sparc-large -e 90:e2:ba:cf:fc:fc
+installadm create-client -n s11_3-sparc-large-uar -e 0:14:4f:f9:42:52
+installadm create-profile -n s11_3-sparc-large -f /export/install/configs/profiles/dc5cpa01t.xml -c ipv4=10.28.23.103
+installadm create-profile -n s11_3-sparc-large -f /export/install/configs/profiles/dc5emv01t.xml -c ipv4=10.28.23.104
+
+# installadm list -p
+Service Name      Profile Name  Environment Criteria
+------------      ------------  ----------- --------
+s11_3-sparc-large dc5cpa01t.xml system      ipv4 = 10.28.23.103
+                  dc5cs01t.xml  system      ipv4 = 10.28.23.102
+                  dc5emv01t.xml system      ipv4 = 10.28.23.104
+                  general.xml   system      none
+                  user.xml      system      none
+				  
+{}0 ok> setenv network-boot-arguments host-ip=10.28.23.103,router-ip=10.28.23.1,subnet-mask=255.255.255.0,hostname=dc5cpapd01t,file=http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+{}0 ok> setenv network-boot-arguments host-ip=10.28.23.104,router-ip=10.28.23.1,subnet-mask=255.255.255.0,hostname=dc5emv01t,file=http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+setenv network-boot-arguments host-ip=10.26.45.238,router-ip=10.26.45.1,subnet-mask=255.255.255.0,hostname=slsefgd01s,file=http://10.26.45.93:5555/cgi-bin/wanboot-cgi
+
+Sun Dual 10GbE SFP+ PCIe 2.0 LP FCode 4.2 2/10/2017
+
+{0} ok show-nets
+a) /pci@303/pci@2/network@0,1
+b) /pci@303/pci@2/network@0
+c) /pci@303/pci@1/network@0,3
+d) /pci@303/pci@1/network@0,2
+e) /pci@303/pci@1/network@0,1
+f) /pci@303/pci@1/network@0
+g) /pci@300/pci@3/network@0,1
+h) /pci@300/pci@3/network@0
+i) /pci@300/pci@1/network@0,1
+j) /pci@300/pci@1/network@0
+m) MORE SELECTIONS
+q) NO SELECTION
+Enter Selection, q to quit: b
+/pci@303/pci@2/network@0 has been selected.
+Type ^Y ( Control-Y ) to insert it in the command line.
+e.g. ok nvalias mydev ^Y
+         for creating devalias mydev for /pci@303/pci@2/network@0
+{0} ok nvalias net /pci@303/pci@2/network@0
+{0} ok nvstore
+{0} ok boot net - install
+Boot device: /pci@303/pci@2/network@0  File and args: - install
+10G full duplex link up.
+<time unavailable> wanboot info: WAN boot messages->console
+<time unavailable> wanboot info: configuring /pci@303/pci@2/network@0
+
+10G full duplex link up.
+<time unavailable> wanboot info: http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+
+Requesting Ethernet address for: 10.28.23.101
+<time unavailable> wanboot progress: wanbootfs: Read 368 of 368 kB (100%)
+<time unavailable> wanboot info: wanbootfs: Download complete
+Thu Aug 31 10:48:39 wanboot progress: miniroot: Read 87472 of 291585 kB (29%)
+
+dc5cs01u: 90:e2:ba:ac:f4:14
+dc5cs02u: 90:e2:ba:cf:fb:f4
+

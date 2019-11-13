@@ -1,0 +1,49 @@
+Action Plan After Restoration of Axiom 600 
+
+1.) Confirm all LUNs can be seen from all hosts and paths
+    Commands#
+	$ format
+	$ mpathadm list LU
+	Check format output looks healthy and we have no single-path disks. Disks should all start c0t00*
+	If some paths are missing.. may have to do a forcelip of the HBA's (One at time)..
+	fcinfo hba-port | egrep "Port WWN|Device|State" | paste - - - | grep online
+      HBA Port WWN: 10000000c9dfa4f4          OS Device Name: /dev/cfg/c8             State: online
+      HBA Port WWN: 10000000c9dfcd74          OS Device Name: /dev/cfg/c6             State: online
+
+    luxadm -e forcelip /dev/cfg/c* or fcadm force-lip PWWN . 
+	
+	format analyze read some luns to confirm they are okay, and  check messages file /var/adm/message
+
+2.) Fix all zpools using the following commands below, example is shown:
+    # fmadm faulty | grep Affects
+    Affects     zfs://pool=f547bd4064237316/vdev=66e694e2953bd38d/pool_name=zcpaapp01p/vdev_name=id1,ssd@x000b080003004192/a
+    Affects     zfs://pool=6ee2e2d08956c851/vdev=35511e778d8260b4/pool_name=zcpadb01p/vdev_name=id1,ssd@x000b080000004192/a
+    # fmadm repaired zfs://pool=f547bd4064237316/vdev=66e694e2953bd38d/pool_name=zcpaapp01p/vdev_name=id1,ssd@x000b080003004192/a
+    # fmadm repaired zfs://pool=6ee2e2d08956c851/vdev=35511e778d8260b4/pool_name=zcpadb01p/vdev_name=id1,ssd@x000b080000004192/a
+
+    This should fix the zpools, if not we will need investigate further, pending the status of the zpool
+	
+3.) It is possible that some or all ASM LUNS that suffered transient failures may have disappeared from the Oracle Solaris Zone.
+    The current work-around is to make sure these LUNS are not used by ASM (may require an outage) and then perform the following
+    commands below from the Global Zone. 
+
+	root@dkcpa01p # cd /dev/rdsk
+    root@dkcap01p # mkdir test
+    root@dkcpa01p # rmdir test
+	
+	Unfortunately, if the database has the LUNs still open you will need to shutdown the database/zone like below:
+	WARNING: Requires an agreed OUTAGE......
+	root@dkcpa01p # hares –offline ora_cpaprod –sys dkcpa01p
+    root@dkcpa01p # hares –offline asmdg_ASM –sys dkcpa01p
+    root@dkcpa01p # cd /dev/rdsk
+    root@dkcap01p # mkdir test
+    root@dkcpa01p # rmdir test
+    root@dkcpa01p # hares –online ora_cpaprod –sys dkcpa01p
+    root@dkcpa01p # hares –online asmdg_ASM –sys dkcpa01p
+
+	
+After this the database team may need to re-silver any ASM LUNS affected by the outage. 
+NOTE: For the ASM LUNS there is a 24 hour period before a complete block to block copy will occur, 
+otherwise only changes need to be resilver between the source and target.
+
+

@@ -1,0 +1,52 @@
+  Centrify Installation/Upgrade Notes
+
+install-bundle.sh [-n|--ent-suite|--std-suite|--express] [-e] [-h] [-V] [-v ver] [-l log_file]
+
+
+  ./install-bundle.sh        -n  --override="INSTALL=R,CentrifyDC_nis=Y,CentrifyDC_openssh=N,CentrifyDA=Y"
+
+  ./install-bundle.sh -n --suite-config ./centrifydc-install.cfg
+  
+centrifydc-install.cfg (root:root r--r--r--)
+# valid action keys (case insensitive):
+# Y - (yes) install if it's not installed
+# U - update; same as Y plus update if it's installed already,
+#     keep current if the same or newer version is installed
+# R - reinstall (repair); same as U plus reinstall (same version)
+#     or downgrade (install older version)
+# E - erase (remove or uninstall)
+# K - keep current (do not change)
+INSTALL="U" # core package
+CentrifyDC_nis="K"
+CentrifyDC_krb5=
+CentrifyDC_ldapproxy=
+#Comment the following line (add a # in front of it) to not install/update
+#CentrifyDC_openssh=
+CentrifyDC_web=
+CentrifyDC_apache=
+CentrifyDC_samba=
+CentrifyDC_idmap=
+CentrifyDA="U"
+ADJOIN="Y"
+DOMAIN="prestige.test"
+USERID=ledgerd
+PASSWD=********
+CONTAINER="OU=Centrify"
+ZONE=Zones,prestige,test,Unix
+
+
+PRESTIGE.TEST/Centrify/Zones/prestige.test
+'CN=slcpa01t.PRESTIGE.TEST,CN=Computers,CN=Unix,CN=prestige.test,CN=Zones,OU=Centrify,DC=PRESTIGE,DC=TEST'
+CN=slcpa01t,OU=UNIX Servers,OU=Centrify,DC=PRESTIGE,DC=TEST
+CN=prestige.test,CN=Zones,OU=Centrify,DC=PRESTIGE,DC=TEST (Type: Hierarchical  RFC2307 Standard Zone)
+CN=Unix,CN=prestige.test,CN=Zones,OU=Centrify,DC=PRESTIGE,DC=TEST (Type: Hierarchical  RFC2307 Standard Zone)
+CN=slcpa01t.prestige.test:zone,CN=Computers,CN=Unix,CN=prestige.test,CN=Zones,OU=Centrify,DC=PRESTIGE,DC=TEST (Type: Hierarchical  Computer Zone)
+===============System Health===================
+
+
+
+An improvement to your script could also be that you don't use a cleartext password in the .cfg file.
+To do this, create a keytab file (using adkeytab) that will effectively create an AD service account.
+  You can then delegate the ability to join computers to the "OU=servers,OU=USA Datacenters,OU=Production" 
+- in your Chef script you can issue a /usr/share/centrifydc/kerberos/bin/kinit -T "/path/to/keytab" before you run install.sh
+

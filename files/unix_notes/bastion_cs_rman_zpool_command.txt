@@ -1,0 +1,1 @@
+zpool import -d /dev/vx/dmp/emc0_010es0 -d /dev/vx/dmp/emc0_010fs0 -d /dev/vx/dmp/emc0_0110s0  -d /dev/vx/dmp/emc0_0111s0 -d /dev/vx/dmp/emc0_0112s0 zcsrman01p

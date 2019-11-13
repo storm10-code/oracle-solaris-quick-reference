@@ -1,0 +1,208 @@
+
+Change Steps (22/06/2016)
+
+Create the disk-group/Volume/File-system and Mount
+--------------------------------------------------
+# vxvol -g dcs02dg stop dcs02swap
+# vxedit -g dcs02dg -rf rm dcs02swap
+# vxdg destroy dcs02dg 
+# vxdg init sftpjaildg sftpjaildg01p=st6580_6780-0_82
+# vxdg -g sftpjaildg adddisk sftpjaildg01m=st6580_6780-1_79
+	
+# vxassist -g sftpjaildg maxsize layout=mirror
+# vxassist -g sftpjaildg make zsftpjailvol 145991680 layout=mirror init=active
+# /usr/lib/fs/vxfs/mkfs -F vxfs /dev/vx/rdsk/sftpjaildg/zsftpjailvol
+
+Create zones mount-points
+Server_list: wcs01, wcs02, dcs01 and dcs02
+root@wcs01 # mkdir /zones/zsftpjail
+root@wcs02 # mkdir /zones/zsftpjail
+root@dcs01 # mkdir /zones/zsftpjail
+root@dcs02 # mkdir /zones/zsftpjail
+
+On Passive Node DCS02
+---------------------
+# mount -F vxfs /dev/vx/dsk/sftpjaildg/sftpjailvol /zones/zsftpjail
+# chmod 700 /zones/zsftpjail; chown root:root /zones/zsftpjail
+
+Create the zonecf
+-----------------
+zonecfg:zsftpjail> create
+zonecfg:zsftpjail> set zonepath=/zones/zsftpjail
+zonecfg:zsftpjail> set autoboot=false
+zonecfg:zsftpjail> add net
+zonecfg:zsftpjail:net> set address=172.31.51.112
+zonecfg:zsftpjail:net> set physical=bge0
+zonecfg:zsftpjail:net> set defrouter=172.31.51.1
+zonecfg:zsftpjail:net> end
+zonecfg:zsftpjail> info
+zonecfg:zsftpjail> verify
+zonecfg:zsftpjail> commit
+zonecfg:zsftpjail> exit
+Install zone
+------------
+root@dcs02 # zoneadm -z zsftpjail install
+<some warning message about some failed package to do with VERITAS ignore>
+root@dcs02 # zoneadm -z zsftpjail boot
+root@dcs02 # zoneadm list -cv
+  ID NAME             STATUS     PATH                           BRAND    IP
+   0 global           running    /                              native   shared
+   4 zsftpjail        running    /zones/zsftpjail               native   shared
+   - nbmaster         configured /zones/nbmaster                native   shared
+
+
+root@dcs02 # zlogin -C zsftpjail
+[Connected to zone 'zsftpjail' console]
+    Select a Language  0. English
+    Please make a choice (0 - 1), or press h or ? for help: 0
+    Select a Locale: 4. Great Britain (ISO8859-1
+    Host name for bge0:1 zsftpjail
+    Configure Kerberos Security  [X] No
+    Name service [X] None
+    NFSv4 Domain Name [X] Use the NFSv4 domain derived by the system
+    Continents and Oceans [X] Europe
+    Countries and Regions [X] Britain (UK)
+    Time Zone [X] Great Britain
+
+Setup Zone Environment
+----------------------
+root@zsftpjail# groupadd -g 103 weblogic
+root@zsftpjail# useradd -u 1036 -g weblogic -d /export/home/weblogic -s /bin/false -c "WebLogic Installation" weblogic
+root@zsftpjail# passwd -l weblogic
+
+Setup SFTP tflex user
+---------------------
+root@wcs01# useradd -u 1037 -g weblogic -d /tflex -s /bin/false -c "TfL Extract Account" tflex
+root@wcs01# passwd -l tflex
+root@dcs01# useradd -u 1037 -g weblogic -d /tflex -s /bin/false -c "TfL Extract Account" tflex
+root@dcs01# passwd -l tflex
+root@wcs02# useradd -u 1037 -g weblogic -d /tflex -s /bin/false -c "TfL Extract Account" tflex
+root@wcs02# passwd -l tflex
+root@dcs02# useradd -u 1037 -g weblogic -d /tflex -s /bin/false -c "TfL Extract Account" tflex
+root@dcs02# passwd -l tflex
+root@zsftpjail# useradd -u 1037 -g weblogic -d /tflex -s /bin/false -c "TfL Extract Account" tflex
+root@zsftpjail# passwd -l tflex
+
+Zone zsftpjail
+--------------
+zsftpjail# chown tflex:weblogic /tflex
+zsftpjail# chmod 700 /tflex
+
+ON WCS02 Create new /app directoreis and setfacl for VxFS (ZFS)
+---------------------------------------------------------------
+weblogic@wcs02$ cd /app/weblogic/domains/ftaprod/prestige/outbound/
+weblogic@wcs02$ mkdir oyrexport oytexport oysexport
+
+weblogic@wcs02$ cd /app/weblogic/domains/ftaprod/prestige/inbound/
+weblogic@wcs02$ mkdir oyt oytexport oyr
+
+Setfacl
+-------
+"/var/tmp/set_facl_jail.txt"
+  user::rwx
+  user:weblogic:rwx               #effective:rwx
+  user:tflex:rwx                #effective:rwx
+  group::r-x              #effective:rwx
+  mask:rwx
+  other:---
+  default:user::rwx
+  default:user:weblogic:rwx
+  default:user:tflex:rwx
+  default:group::r-x
+  default:mask:rwx
+  default:other:---
+
+weblogic@wcs02$ cd /app/weblogic/domains/ftaprod/prestige/inbound/
+weblogic@wcs02$ setfacl -f /var/tmp/set_facl_jail.txt oyr oyt
+
+weblogic@wcs02$ cd /app/weblogic/domains/ftaprod/prestige/outbound/
+weblogic@wcs02$ setfacl -f /var/tmp/set_facl_jail.txt oyrexport oytexport oysexport
+
+Add loop back mounts to zonecfg zsftpjail.xml 
+root@dcs02 # zonecfg -z zsftpjail
+zonecfg:zsftpjail>
+  add fs
+  set dir=/tflex/OyRefBOoutbound
+  set special=/app/weblogic/domains/ftaprod/prestige/outbound/oyrexport
+  set type=lofs
+  end
+
+  add fs
+  set dir=/tflex/OyBOInbound
+  set special=/app/weblogic/domains/ftaprod/prestige/inbound/oyt
+  set type=lofs
+  end
+
+  add fs
+  set dir=/tflex/OyRefBOInbound
+  set special=/app/weblogic/domains/ftaprod/prestige/inbound/oyr
+  set type=lofs
+  end
+
+  add fs
+  set dir=/tflex/OyBOoutbound
+  set special=/app/weblogic/domains/ftaprod/prestige/outbound/oytexport
+  set type=lofs
+  end
+
+  add fs
+  set dir=/tflex/OyCardBOoutbound
+  set special=/app/weblogic/domains/ftaprod/prestige/outbound/oysexport
+  set type=lofs
+  end
+verify
+commit
+exit
+
+Create the cluster service group and resources and setup dependencies - via the GUI/CLI
+---------------------------------------------------------------------------------------
+First create the service group using hazonesetup
+root@dcs02 # haconf -makerw
+root@dcs02 # /opt/VRTS/bin/hazonesetup SftpJailGroup SftpJailGroup_Zone zsftpjail 0QRAdFtMWU7 0 0 wcs02 dcs02 wcs01 dcs01
+
+Using cluster GUI add follwing resources
+- Diskgroup Resource
+SftpJailGroupDG Type DiskGroup
+SftpJailGroupDG Critical 0
+SftpJailGroupDG Enabled 1
+SftpJailGroupDG DiskGroup sftpjaildg
+- Mount Resource 
+SftpJailGroup_Mount Critical 0
+SftpJailGroup_Mount Enabled 1
+SftpJailGroup_Mount BlockDevice /dev/vx/dsk/sftpjaildg/zsftpjailvol
+SftpJailGroup_Mount FSType vxfs
+SftpJailGroup_Mount FsckOpt -y
+SftpJailGroup_Mount MountPoint /zones/zsftpjail
+
+Dependancies (Parent to Child)
+Zone --> Mount --> DiskGroup
+
+Perform basic offline/online tests on DCS02
+
+Copy and update zone configuration file across node
+- /etc/zones/zsftpjail.xml
+- /etc/zones/index (running node)
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident "@(#)zones-index        1.2     04/04/01 SMI"
+#
+# DO NOT EDIT: this file is automatically generated by zoneadm(1M)
+# and zonecfg(1M).  Any manual changes will be lost.
+#
+global:configured:/:
+nbmaster:configured:/zones/nbmaster:
+zsftpjail:installed:/zones/zsftpjail:d78e39e4-85ac-cb00-b750-9535797e3a4d
+
+Passive Nodes /etc/zones/index
+# Copyright 2004 Sun Microsystems, Inc.  All rights reserved.
+# Use is subject to license terms.
+#
+# ident "@(#)zones-index        1.2     04/04/01 SMI"
+#
+# DO NOT EDIT: this file is automatically generated by zoneadm(1M)
+# and zonecfg(1M).  Any manual changes will be lost.
+#
+global:configured:/:
+nbmaster:configured:/zones/nbmaster:
+zsftpjail:configured:/zones/zsftpjail:

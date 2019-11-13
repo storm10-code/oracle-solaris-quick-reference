@@ -1,0 +1,501 @@
+Check ZFS File-system is installed and ptrladm account and groups are set correctly
+===================================================================================
+
+patrol_base_filesys:
+  - { name: rpool/patrol, mountpoint: /opt/patrol, quota: 20g, compression: on }
+# Application software directories definitions
+patrol_temp_install_dir:
+  - { path: /opt/patrol/installable_images, state: directory, owner: ptrladm, group: ptrlgrp, mode: "0755" }
+# BMC Distribution Client Media Directory
+patrol_ds_install_attribs:
+  - { src: /data/media/dsclient, dest: /opt/patrol/installable_images, owner: ptrladm, group: ptrlgrp, image: DS_Client_7.9.20.tar.gz, binary: ds_listener  }
+
+
+SOurce File: wkmgt01p:/export/home/ledgerd/dsclient/DS_Client_7.9.20.tar.gz
+
+
+Installation of dsclient steps
+
+1.) Installs steps
+ df -hl /opt/patrol
+ mkdir /opt/patrol/installable_images
+ cp -p /var/tmp/DS_Client_7.9.20.tar.gz /opt/patrol/installable_images
+ cd /opt/patrol/installable_images
+ cp /var/tmp/install.ctl /opt/patrol/installable_images
+ gzcat DS_Client_7.9.20.tar.gz | tar xvf -
+ chown -R ptrladm:ptrlgrp /opt/patrol/installable_images
+ cp /var/tmp/install.ctl /opt/patrol/installable_images
+  
+--> nOTE: Edit the install.ctl file and ensure the root password
+          is set correctly and BMC Server hostname is valid
+
+ su - ptrladm
+ cd /opt/patrol/installable_images
+  ./install.sh
+  wait
+  - name: Install DS Client and Startup
+    shell: ./install.sh
+    become: true
+    become_user: "{{ item.owner }}"
+    args:
+      chdir: "{{ item.path }}"
+    with_items:pwd
+
+      - "{{ patrol_temp_install_dir }}"
+  when: dsClientInstalled.stat.exists == False
+
+# Check if ds_listener process is running
+- name: Check if ds_listener process is running
+
+#  Clean up after the installation
+- name: Clean up
+  file: >
+    path=/opt/patrol/installable_images
+    state=absent
+  when: ( ds_listener_status.results[0].rc == 0 )
+[cubicadm@slcentos01t tasks]$
+
+
+Directory Structure
+-rw-r--r--   1 ptrladm  root     214924517 Jun 12 16:29 DS_Client_7.9.20.tar.gz
+drwx------  10 root     root          10 Jun 12 16:29 Products
+root@slunix02t # cd Products/
+root@slunix02t # ls -lrt
+total 132
+drwxrwxr-x   2 ptrladm  ptrlgrp       39 Apr 25 13:36 VDSuxclient
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSsx8621132c
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSsx8621032c
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSsssp2932c
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSsssp2832c
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSsssp21032c
+drwxrwxr-x   2 ptrladm  ptrlgrp       37 Apr 25 13:36 VDSsecmisc
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSlirhxxc
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSlirh40c
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSlirh30c
+drwxrwxr-x   2 ptrladm  ptrlgrp        4 Apr 25 13:36 VDSclient
+drwxrwxr-x   2 ptrladm  ptrlgrp       23 Apr 25 13:36 unixconfssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp        4 Apr 25 13:36 unixbinssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp        5 Apr 25 13:36 unixadm
+drwxrwxr-x   2 ptrladm  ptrlgrp        9 Apr 25 13:36 uninst_ux
+drwxrwxr-x   2 ptrladm  ptrlgrp       84 Apr 25 13:36 uninst_s86
+drwxrwxr-x   2 ptrladm  ptrlgrp       83 Apr 25 13:36 uninst_s25
+drwxrwxr-x   2 ptrladm  ptrlgrp       78 Apr 25 13:36 uninst_l64
+drwxrwxr-x   2 ptrladm  ptrlgrp      848 Apr 25 13:36 uninst_common
+drwxrwxr-x   2 ptrladm  ptrlgrp        8 Apr 25 13:36 Thorsssp2632c
+drwxrwxr-x   2 ptrladm  ptrlgrp        8 Apr 25 13:36 Thorlnin2264c
+drwxrwxr-x   2 ptrladm  ptrlgrp        8 Apr 25 13:36 Thorlnin2232c
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol2xx86v3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol2xx8664v3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol2xssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol2x64ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol29ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol2964ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol210x86v3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol210x8664v3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol210ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 sol21064ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp        4 Apr 25 13:36 pspiv3
+drwxrwxr-x   2 ptrladm  ptrlgrp        5 Apr 25 13:36 pspfamv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       15 Apr 25 13:36 providersunixssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       32 Apr 25 13:36 linx26_x86ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 linx24ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       32 Apr 25 13:36 linux_suse9_x8664ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       32 Apr 25 13:36 linux_rhes30_x86ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       32 Apr 25 13:36 linux_rhes30_x8664ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 linux_rhes21_x86ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       13 Apr 25 13:36 kdbv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       11 Apr 25 13:36 itools
+drwxrwxr-x   2 ptrladm  ptrlgrp       24 Apr 25 13:36 VDSsssp21132c
+drwxrwxr-x   2 ptrladm  ptrlgrp        5 Apr 25 13:36 VDSsecc
+drwxrwxr-x   2 ptrladm  ptrlgrp        5 Apr 25 13:36 unixcfam
+drwxrwxr-x   2 ptrladm  ptrlgrp        7 Apr 25 13:36 uninst_scr_ux
+drwxrwxr-x   2 ptrladm  ptrlgrp       84 Apr 25 13:36 uninst_l22
+drwxrwxr-x   2 ptrladm  ptrlgrp        8 Apr 25 13:36 Thorsx8621132c
+drwxrwxr-x   2 ptrladm  ptrlgrp        8 Apr 25 13:36 Thorsx8621032c
+drwxrwxr-x   2 ptrladm  ptrlgrp       32 Apr 25 13:36 linx26_8664ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       33 Apr 25 13:36 linx22ssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp        4 Apr 25 13:36 linuxbinssv3
+drwxrwxr-x   2 ptrladm  ptrlgrp       32 Apr 25 13:36 linux_suse9_x86ssv3
+
+Important
+
+Update the install.ctl with the current root password - need to test this
+
+
+sudoers.d
+#((ansible_managed }}
+User_Alias      PATROL = ptrladm
+Cmnd_Alias      PATROLCMD = /opt/patrol/Patrol3/agent_configure.sh
+# Patrol user can run the any of the commands in PATROLCMD alias as root
+PATROL          ALL = (root) NOPASSWD:  PATROLCMD
+
+ledgerd@wkmgt01p:~$ cat /var/tmp/install.ctl
+###########################################################
+# Control File for INSTALLABLE IMAGE                      #
+# Generated Automatically on Tue Apr 25 12:34:13 2017 GMT #
+###########################################################
+
+PRODUCT=uninst_common
+#DESC=&Common Install for Common
+
+PRODUCT=VDSsx8621032c
+#DESC=&Distribution Server Client
+
+PRODUCT=Thorlnin2232c
+#DESC=&Thorium backend
+
+PRODUCT=Thorsssp2632c
+#DESC=&Thorium backend
+
+PRODUCT=sol29ssv3
+#DESC=&PATROL Security for solaris-2-9-sparc
+
+PRODUCT=sol2xx8664v3
+#DESC=&PATROL Security for solaris-%{/BMC/OS/OsMajorVer}-%{/BMC/OS/OsMinorVer}-x86-64
+
+PRODUCT=providersunixssv3
+#DESC=&Lands provider template files for the Unix platform.
+
+PRODUCT=VDSsssp2832c
+#DESC=&Distribution Server Client
+
+PRODUCT=uninst_l64
+#DESC=&Common Install for Linux
+
+PRODUCT=kdbv3
+#DESC=&PATROL Security Product ESI
+
+PRODUCT=pspfamv3
+#DESC=&PATROL Security Family
+
+PRODUCT=VDSlirh40c
+#DESC=&Distribution Server Client
+
+PRODUCT=linux_rhes21_x86ssv3
+#DESC=&PATROL Security for Red Hat Enterprise Linux ES 2.1 (x86)
+
+PRODUCT=sol2x64ssv3
+#DESC=&PATROL Security for solaris-%{/BMC/OS/OsMajorVer}-%{/BMC/OS/OsMinorVer}-sparc-64
+
+PRODUCT=sol2964ssv3
+#DESC=&PATROL Security for solaris-2-9-sparc-64
+
+PRODUCT=VDSclient
+#DESC=Distribution Server Client v7.9.20
+
+PRODUCT=linx24ssv3
+#DESC=&PATROL Security for linux-2-4-x86
+
+PRODUCT=VDSsssp2932c
+#DESC=&Distribution Server Client
+
+PRODUCT=VDSuxclient
+#DESC=&Distribution Server Client
+
+PRODUCT=VDSsssp21032c
+#DESC=&Distribution Server Client
+
+PRODUCT=linux_suse9_x8664ssv3
+#DESC=&PATROL Security for SuSE Linux Enterprise Server 9.0 - Intel (x86-64)
+
+PRODUCT=VDSlirh30c
+#DESC=&Distribution Server Client
+
+PRODUCT=linux_rhes30_x86ssv3
+#DESC=&PATROL Security for Red Hat Enterprise Linux ES 3.0 (x86)
+
+PRODUCT=sol210x8664v3
+#DESC=&PATROL Security for solaris-2-10-x86-64
+
+PRODUCT=itools
+#DESC=&Install Toolset
+
+PRODUCT=sol2xssv3
+#DESC=&PATROL Security for solaris-%{/BMC/OS/OsMajorVer}-%{/BMC/OS/OsMinorVer}-sparc
+
+PRODUCT=VDSlirhxxc
+#DESC=&Distribution Server Client
+
+PRODUCT=linux_rhes30_x8664ssv3
+#DESC=&PATROL Security for Red Hat Enterprise Linux ES 3.0 (x86-64)
+
+PRODUCT=Thorlnin2264c
+#DESC=&Thorium backend
+
+PRODUCT=unixconfssv3
+#DESC=&PATROL Security Configuration For Unix
+
+PRODUCT=sol210ssv3
+#DESC=&PATROL Security for solaris-2-10-sparc
+
+PRODUCT=pspiv3
+#DESC=&PATROL Security For Unix
+
+PRODUCT=uninst_ux
+#DESC=&Common Install for Unix Common
+
+PRODUCT=uninst_s25
+#DESC=&Common Install for Solaris
+
+PRODUCT=sol210x86v3
+#DESC=&PATROL Security for solaris-2-10-x86
+
+PRODUCT=VDSsecmisc
+#DESC=&PATROL Security for Distribution Client
+
+PRODUCT=uninst_s86
+#DESC=&Common Install for Solaris 10 x86
+
+PRODUCT=sol2xx86v3
+#DESC=&PATROL Security for solaris-%{/BMC/OS/OsMajorVer}-%{/BMC/OS/OsMinorVer}-x86
+
+PRODUCT=unixadm
+#DESC=&Unix Family Product Installation Directory
+
+PRODUCT=linx26_x86ssv3
+#DESC=&PATROL Security for Red Hat 3.0 Opteron
+
+PRODUCT=VDSsx8621132c
+#DESC=&Distribution Server Client
+
+PRODUCT=unixbinssv3
+#DESC=&PATROL Security Binaries For Unix
+
+PRODUCT=sol21064ssv3
+#DESC=&PATROL Security for solaris-2-10-sparc-64
+
+PRODUCT=VDSsssp21132c
+#DESC=&Distribution Server Client
+
+PRODUCT=linuxbinssv3
+#DESC=&PATROL Security Binaries For Linux
+
+PRODUCT=Thorsx8621132c
+#DESC=&Thorium backend
+
+PRODUCT=unixcfam
+#DESC=&Unix Family Product Installation Directory
+
+PRODUCT=uninst_scr_ux
+#DESC=&Common Install for Unix Common
+
+PRODUCT=linx26_8664ssv3
+#DESC=&PATROL Security for Red Hat Enterprise Linux ES 3.0 (x86-64)
+
+PRODUCT=VDSsecc
+#DESC=&Distribution Client/Server communication security
+
+PRODUCT=uninst_l22
+#DESC=&Common Install for Linux
+
+PRODUCT=linux_suse9_x86ssv3
+#DESC=&PATROL Security for SuSE Linux Enterprise Server 9.0 - Intel (x86)
+
+PRODUCT=linx22ssv3
+#DESC=&PATROL Security for linux-2-2-x86
+
+PRODUCT=Thorsx8621032c
+#DESC=&Thorium backend
+
+# Unix_Platforms / Unix Platforms
+# Solaris_Sparc / Solaris (Sparc)
+# Solaris_2_11_64bit / Solaris 2.11 64bit
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000B) OsArch("==","sparc") OsKernelBits("==",0x00000040) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_Sparc / Solaris (Sparc)
+# Solaris_2_11_32bit / Solaris 2.11 32bit
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000B) OsArch("==","sparc") OsKernelBits("==",0x00000020) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_Sparc / Solaris (Sparc)
+# Solaris_2_10_64bit / Solaris 2.10 64bit
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000A) OsArch("==","sparc") OsKernelBits("==",0x00000040) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_Sparc / Solaris (Sparc)
+# Solaris_2_10_32bit / Solaris 2.10 32bit
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000A) OsArch("==","sparc") OsKernelBits("==",0x00000020) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_Sparc / Solaris (Sparc)
+# Solaris_sparc_64bit / Solaris sparc 64bit
+[TARGET] OsType("==","SunOS") OsArch("==","sparc") OsKernelBits("==",0x00000040) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_Sparc / Solaris (Sparc)
+# Solaris_sparc_32bit / Solaris sparc 32bit
+[TARGET] OsType("==","SunOS") OsArch("==","sparc") OsKernelBits("==",0x00000020) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_x86 / Solaris (x86)
+# Solaris_2_11_64bit_x86 / Solaris 2.11 64bit x86
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000B) OsCpuType("==","i86pc") OsArch("==","x86-64") OsKernelBits("==",0x00000040) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_x86 / Solaris (x86)
+# Solaris_2_11_32bit_x86 / Solaris 2.11 32bit x86
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000B) OsCpuType("==","i86pc") OsArch("==","x86") OsKernelBits("==",0x00000020) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_x86 / Solaris (x86)
+# Solaris_2_10_64bit_x86 / Solaris 2.10 64bit x86
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000A) OsCpuType("==","i86pc") OsArch("==","x86-64") OsKernelBits("==",0x00000040) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_x86 / Solaris (x86)
+# Solaris_2_10_32bit_x86 / Solaris 2.10 32bit x86
+[TARGET] OsType("==","SunOS") OsMajorVer("==",0x00000005) OsMinorVer("==",0x0000000A) OsCpuType("==","i86pc") OsArch("==","x86") OsKernelBits("==",0x00000020) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_x86 / Solaris (x86)
+# Solaris_64bit_x86 / Solaris 64bit x86
+[TARGET] OsType("==","SunOS") OsCpuType("==","i86pc") OsArch("==","x86-64") OsKernelBits("==",0x00000040) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Solaris_x86 / Solaris (x86)
+# Solaris_32bit_x86 / Solaris 32bit x86
+[TARGET] OsType("==","SunOS") OsCpuType("==","i86pc") OsArch("==","x86") OsKernelBits("==",0x00000020) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_Redhat_Enterprise_AS_and_ES_7_x / Linux Redhat Enterprise AS and ES 7.x
+[TARGET] OsType("==","Linux") OsArch("==","x86") OsKernelBits("==",0x00000020) OsVendor("==","RedHat") OsVendorBundle("==","EL") OsVendorMajor("==",0x00000007) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_Redhat_Enterprise_AS_and_ES_6_x / Linux Redhat Enterprise AS and ES 6.x
+[TARGET] OsType("==","Linux") OsArch("==","x86") OsKernelBits("==",0x00000020) OsVendor("==","RedHat") OsVendorBundle("==","EL") OsVendorMajor("==",0x00000006) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_Redhat_Enterprise_AS_and_ES_5_x / Linux Redhat Enterprise AS and ES 5.x
+[TARGET] OsType("==","Linux") OsArch("==","x86") OsKernelBits("==",0x00000020) OsVendor("==","RedHat") OsVendorBundle("==","EL") OsVendorMajor("==",0x00000005) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Oracle_Redhat_Enterprise_Linux_6_0 / Oracle Enterprise Linux 6.x
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","RedHat") OsVendorMajor("==",0x00000006) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Oracle_Redhat_Enterprise_Linux_5_0 / Oracle Enterprise Linux 5.x
+[TARGET] OsType("==","Linux") OsArch("==","x86") OsKernelBits("==",0x00000020) OsVendor("==","RedHat") OsVendorMajor("==",0x00000005) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_SuSE_11_0 / Linux SuSE 11.0
+[TARGET] OsType("==","Linux") OsArch("==","x86") OsVendor("==","SuSE") OsVendorMajor("==",0x0000000B) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_SuSE_10_0 / Linux SuSE 10.0
+[TARGET] OsType("==","Linux") OsArch("==","x86") OsVendor("==","SuSE") OsVendorMajor("==",0x0000000A) OsVendorMinor("==",0x00000000) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_Generic_3_x / Linux Kernel 3.x
+[TARGET] OsType("==","Linux") OsMajorVer("==",0x00000003) OsArch("==","x86") PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_Generic_2_6 / Linux Kernel 2.6
+[TARGET] OsType("==","Linux") OsMajorVer("==",0x00000002) OsMinorVer("==",0x00000006) OsArch("==","x86") PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_Intel / Linux (x86)
+# Linux_Generic_2_4 / Linux Kernel 2.4
+[TARGET] OsType("==","Linux") OsMajorVer("==",0x00000002) OsMinorVer("==",0x00000004) OsArch("==","x86") PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_Redhat_Enterprise_AS_and_ES_7_x / Linux Redhat Enterprise AS and ES 7.x
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","RedHat") OsVendorMajor("==",0x00000007) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_Redhat_Enterprise_AS_and_ES_6_x / Linux Redhat Enterprise AS and ES 6.x
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","RedHat") OsVendorMajor("==",0x00000006) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_Redhat_Enterprise_AS_and_ES_5_x / Linux Redhat Enterprise AS and ES 5.x
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","RedHat") OsVendorMajor("==",0x00000005) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Oracle_AMD64_EM64T_Redhat_Enterprise_Linux_6_0 / Oracle Enterprise Linux 6.x
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","RedHat") OsVendorMajor("==",0x00000006) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Oracle_AMD64_EM64T_Redhat_Enterprise_Linux_5_0 / Oracle Enterprise Linux 5.x
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","RedHat") OsVendorMajor("==",0x00000005) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_SuSE_11_0 / Linux SuSE 11.0
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","SuSE") OsVendorMajor("==",0x0000000B) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_SuSE_10_0 / Linux SuSE 10.0
+[TARGET] OsType("==","Linux") OsArch("==","x86-64") OsVendor("==","SuSE") OsVendorMajor("==",0x0000000A) OsVendorMinor("==",0x00000000) PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_Generic_3_x / Linux Kernel 3.x
+[TARGET] OsType("==","Linux") OsMajorVer("==",0x00000003) OsArch("==","x86-64") PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_Generic_2_6 / Linux Kernel 2.6
+[TARGET] OsType("==","Linux") OsMajorVer("==",0x00000002) OsMinorVer("==",0x00000006) OsArch("==","x86-64") PatrolReleaseVer("==","7.4")
+
+# Unix_Platforms / Unix Platforms
+# Linux_AMD64_EM64T / Linux (x86_64)
+# Linux_AMD64_EM64T_Generic_2_4 / Linux Kernel 2.4
+[TARGET] OsType("==","Linux") OsMajorVer("==",0x00000002) OsMinorVer("==",0x00000004) OsArch("==","x86-64") PatrolReleaseVer("==","7.4")
+
+[SETP]/BMC/PATROL/TARGET=SunOS
+[SETP]/BMC/PERFORM/TARGET=SunOS
+[SETP]/BMC/PATROL/RELEASEVERSION=7.4
+[SETP]/BMC/BASE=/opt/patrol
+[SETP]/NP/BMC/CTL/CREATOR=CI
+[SETP]/BMC/INSTBASE=/opt/patrol/
+[SETP]/BMC/INSTBASE/NOSLASH=/opt/patrol
+[SETP]/NP/BMC/MAYBE=TRUE
+[SETP]/NP/BMC/CI/INSTALL_MODE=EXPORT
+[SETP]/NP/BMC/CI/INSTALL_TYPE=CUSTOM
+[SETP]/BMC/APACHE/HTTPD/PORT=80
+[SETP]/BMC/APACHE/HTTPD/SSLPORT=443
+[SETP]/BMC/COMMON/DIR=common
+[SETP]/BMC/DS/DSL/STOP=TRUE
+[SETP]/BMC/DS/HOSTNAME=vbmccde02.london.afc
+[SETP]/BMC/DSC/Account=ptrladm
+[SETP]/BMC/DSC/BMC_DS_DSC_HOST_ID=-1
+[SETP]/BMC/DSC/BMC_DS_DSC_HOST_NAME=
+[SETP]/BMC/DSC/BMC_DS_DSL_PORT=50005
+[SETP]/BMC/DSC/BMC_DS_DSL_VALID_HOSTS=
+[SETP]/BMC/DSC/BMC_DS_DSL_WAKEUP_PERIOD=0
+[SETP]/BMC/DSC/BMC_DS_DSL_WAKEUP_TIME=0:00
+[SETP]/BMC/DSC/BMC_DS_DSTC_CACHE_DIR=/opt/patrol/cache
+[SETP]/BMC/DSC/BMC_DS_DSTC_CACHE_SIZE=300
+[SETP]/BMC/DSC/BMC_DS_DSTC_FILE_RETENTION_TIME=7
+[SETP]/BMC/DSC/BMC_DS_DSTC_HTTP_TIMEOUT=200
+[SETP]/BMC/DSC/BMC_DS_DSTC_MAX_RETRY_COUNT=3
+[SETP]/BMC/DSC/BMC_DS_TSERVER_URL=http://vbmccde02.london.afc:80
+[SETP]/BMC/DSC/DIR=dsclient
+[SETP]/BMC/DSC/SECURITY/LEVEL=0
+[SETP]/BMC/DSC/STARTONREBOOT=TRUE
+[SETP]/BMC/DSC_INSTALL/DIR=InstallEngine
+[SETP]/BMC/SECURITY/ADVANCED=Basic
+[SETP]/BMC/SECURITY/LEVEL=0
+[SETP]/BMC/SECURITY/OVERWRITE=TRUE
+[SETP]/BMC/UNINSTALL/DIR=Uninstall
+[SETP]/Blank/Root/Password/Continue=FALSE
+[SETP]/ROOT/CONFIRMATION/PASSWORD=
+[SETP]/root/login=root
+[SETP]/root/passwd=BcECsC5t
+[SETP]/BMC/KMDS=FALSE
+

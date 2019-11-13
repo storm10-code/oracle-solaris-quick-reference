@@ -1,0 +1,15 @@
+All,
+CAB meeting – TUE 4th July at 13:30hrs.  HOLBORN
+The purpose of this meeting is to discuss and approve open CCRF’s
+Dial in Details: - Conference Call Phone No: 020 8609 3631 or 080 0358 5230, Password: 997653#
+
+Number	Requested by	Assigned to	Short description	State	Type	Approval	Planned start date	Approval Conditions	
+CHG0015184	Butler, Carl	Kazianis, Nikolaos	LCHS - SPI upgrade & installation	Open	Normal	Requested	2017-07-05 11:00:00	 	
+CHG0015964	Deshi, Joshua	Deshi, Joshua	Qualys Middle Office Vulnerability Scanning	Open	Normal	Requested	2017-07-05 10:00:00	 	
+CHG0016013	Borwick, James	Borwick, James	Configure all of the Acton data centre switches to use the new Cisco ACS servers for authentication	Open	Normal	Requested	2017-07-05 06:00:00	 	
+CHG0016103	Ledger, Darren	Ledger, Darren	Tfl - Upgrade Tripwire Enterprise Server (Console) and Tripwire Agents	Open	Normal	Requested	2017-07-05 09:00:00	 	
+CHG0016170	Welch, Paul	Hodgson, Steve	Change timezone setting to UTC on SPI servers	Open	Normal	Requested	2017-07-04 15:00:00	 	
+CHG0016173	Miller, Nick	Miller, Nick	Deploy new runbook for Ibus to DGC check	Open	Normal	Requested	2017-07-05 15:00:00	 	
+CHG0016202	Baldwin, Phil	Baldwin, Phil	Implement “NotPetya” mitigation in RCC MO	Open	Emergency	Approved	2017-07-03 10:00:00	 	
+CHG0016203	Baldwin, Phil	Baldwin, Phil	Change Citrix Group Policy to trust EOS Sites	Open	Emergency	Approved	2017-07-03 10:00:00	 	
+CHG0016224	Bristow, Candy	Kent, David	Change to Firewall rules to enable FUL on Riverbus	Closed Complete	Emergency	Approved	2017-07-03 10:00:00	 	

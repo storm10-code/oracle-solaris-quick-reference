@@ -1,0 +1,120 @@
+Upgrade all the agents on the Solaris and Redhat servers
+
+- dkcpa01p
+- dkemv01p
+- vridgmx01
+- vridgmx02
+- vridgmx03
+- wkcpa01p
+- wkemv01p
+- zcpaapp01p
+- zcpadb01p
+- zemvapp01p
+- zemvdb01p
+
+Upgrade Procedure steps 
+====================
+1.)	Extract Software located under /var/tmp/centrify_2018.0_sparc_upgrade/
+  # cd /var/tmp/centrify_2018.0_sparc_upgrade/
+  # gtar -xvf centrify-infrastructure-services-18.8-sol10-sparc.tgz 
+2.)	Update the Centrify configuration file 
+
+centrifydc-install.cfg
+ADJOIN="N"
+ADJ_LIC= # server/workstation
+ADJ_FORCE="N"
+ADJ_TRUST="N"
+DOMAIN="company.com"
+USERID=administrator
+PASSWD="password"
+#COMPUTER=my_host_name
+#CONTAINER="my computers"
+#ZONE="my_zone"
+#SERVER=server_name
+DA_ENABLE="K"
+DA_INST_NAME=""
+REBOOT="N"
+
+# valid action keys (case insensitive):
+# Y - (yes) install if it's not installed
+# U - update; same as Y plus update if it's installed already,
+#     keep current if the same or newer version is installed
+# F - freshen; upgrade package, but only if an earlier version is installed
+# R - reinstall (repair); same as U plus reinstall package even if the same version is installed
+# E - erase (remove or uninstall)
+# K - keep current (do not change)
+INSTALL="U" # core package
+CentrifyDC_openssl="U"
+CentrifyDC_openldap="U"
+CentrifyDC_curl="U"
+CentrifyDC_ldapproxy=
+CentrifyDC_nis=
+CentrifyDC_cifsidmap=
+CentrifyDC_openssh="F"
+CentrifyDA="U"
+CentrifyDS=
+CentrifyDC_krb5=
+CentrifyDC_web=
+CentrifyDC_apache=
+CentrifyDC_samba=
+CentrifyDC_idmap=
+
+# Uninstall of all packages, including add-on(s), works with INSTALL="E" only:
+#UNINSTALL="N"
+
+ # valid action keys (case insensitive):
+  # Y - (yes) install if it's not installed
+  # U - update; same as Y plus update if it's installed already,
+  #     keep current if the same or newer version is installed
+  # F - freshen; upgrade package, but only if an earlier version is installed
+  # R - reinstall (repair); same as U plus reinstall package even if the same version is installed
+  # E - erase (remove or uninstall)
+  # K - keep current (do not change)
+  INSTALL="U" # core package
+  CentrifyDC_nis="K"
+  CentrifyDC_ldapproxy=
+  CentrifyDC_openssh="N"
+  CentrifyDA="U"
+  CentrifyDC_krb5="K"
+  CentrifyDC_web=
+  CentrifyDC_apache=
+  CentrifyDC_samba=
+  CentrifyDC_idmap=
+  # Uninstall of all packages, including add-on(s), works with INSTALL="E" only:
+  #UNINSTALL="N"
+----------------------------------------------
+3.)	Temporarily disable DirectAudit first (regardless if enable or not – the installation script will shutdown the service during the upgrade using – systemctl/rc scripts)
+    # dacontrol -d
+Additional Steps: First disable DirectAudit in all zones before upgrading the Global Zones
+i.e  zcpaapp01p $ dacontrol -d
+   Proceed with upgrade procedure and update Global and than Zones
+
+NOTES: zcpadb01p and zcpaapp01p and zemvdb01p, zemvapp01p DirectAudit stopped first
+4.)	 Upgrade the Centrify Agents (DirectControl & DirectAudit) using the install.sh script
+          # ./install.sh –n
+          [Note: The –n means non-interactive install and will read the centrifydc-install.cfg if it exists or specified otherwise]
+          The installation will take to 1-2 minutes to complete and will automatically start DirectControl and DirectAudit daemon
+
+5.) Enable DirectAudit if used by issuing
+         # dacontrol -e
+
+Post Checks
+-----------
+1)	Check the log file /var/log/centrifydc-install.log – It may be worth moving/rotating the old log first as it just appends to the existing log file so will have previous installation/upgrade logs.
+2)	/etc/centrifydc/centrifydc.conf adclient.sntp.enabled: false
+3)	Review pam files under /etc/pam.d before and after on one system – all merges/updates will be logged in /var/log/centrifydc-intall.log – So, far the installer does a good job here.
+4)	/etc/nsswitch.conf or equivalent on Redhat 7 –check if centrifyda  centrifydc  has been added to passwd field etc… centrifydc to group field… 
+5)	# dainfo –v # adinfo –v (check versions are correct)
+	dainfo output looks normal (DirectAudit systems only)
+6) Perform a adflush followed by Centrify Health Checks to confirm all is working as expected
+              # adflush
+              # adquery user
+              # adquery group --all
+              # dzinfo --all
+7) Confirm that the configuration file /etc/centrifyda/centrifyda.conf contains ptrladm and svqualys user is omitted from direct audit sessions. 
+            > dash.user.skiplist: ptrladm
+            > dash.user.skiplist: svqualys
+
+Server list 
+-----------			
+- wkcpa01p 

@@ -1,0 +1,8 @@
+curl --insecure -v https://r.sqills.com/v2/ 2>&1 | awk 'BEGIN { cert=0 } /^\* Server certificate:/ { cert=1 } /^\*/ { if (cert) print }'
+* Server certificate:
+*       subject: CN=r.sqills.com,OU=PositiveSSL,OU=Domain Control Validated
+*       start date: Jan 05 00:00:00 2016 GMT
+*       expire date: Jan 04 23:59:59 2019 GMT
+*       common name: r.sqills.com
+*       issuer: CN=COMODO RSA Domain Validation Secure Server CA,O=COMODO CA Limited,L=Salford,ST=Greater Manchester,C=GB
+* Connection #0 to host r.sqills.com left intact

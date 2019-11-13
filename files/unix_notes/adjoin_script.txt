@@ -1,0 +1,25 @@
+#!/bin/bash
+
+echo "Obtaining TGT ..."
+sleep 1
+env KRB5_CONFIG=/centrify/scripts/krb5.conf  /usr/share/centrifydc/kerberos/bin/kinit -kt /centrify/scripts/ad-joiner.keytab ad-joiner
+sleep 1
+
+echo "Joining the domain"
+adjoin -z Global -c "ou=servers,ou=centrify,ou=bootcamp" corp.centrifying.net
+sleep 10
+
+echo "Joining the Web Servers Computer Role"
+sh  adedit /centrify/scripts/add-member.tcl -d `adinfo -d` -n `adinfo -n` -r webservers
+sleep 2
+
+echo "Flushing the Cache"
+/usr/sbin/adflush --force
+# Older versions of CDC required restart
+#/etc/init.d/centrifydc restart
+
+echo "Destroying Kerberos Tickets"
+/usr/share/centrifydc/kerberos/bin/kdestroy
+
+echo "Complete."
+ 

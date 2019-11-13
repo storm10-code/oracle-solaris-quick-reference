@@ -1,0 +1,5 @@
+http://www.oracle.com/technetwork/articles/servers-storage-admin/howto-update-11dot1-ips-1866781.html
+http://www.oracle.com/technetwork/articles/servers-storage-admin/howto-update-11dot1-ips-1866781.html
+http://www.oracle.com/technetwork/articles/servers-storage-admin/o11-148-cluster-failover-zone-1395591.html
+http://docs.oracle.com/cd/E29086_01/html/E29294/glplh.html
+http://docs.oracle.com/cd/E19735-01/820-7821/gimqd/index.html

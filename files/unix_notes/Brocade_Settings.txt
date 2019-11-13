@@ -1,0 +1,159 @@
+
+
+Summary
+-------
+
+Fabric 1 Overview
+------------------
+WUX5100A1N: port 16 <--- 85 Km ---> port 16 DUX5100A5N:
+
+Fabric 2 Overview
+------------------
+WUX5100ANS: port 16 <--- 85 Km ---> port 16 DUX5100A1S:
+
+IOD Settings
+------------
+WUX5100A1N: IOD is set
+DUX5100A5N: IOD is not set
+
+WUX5100A5S: IOD is not set
+DUX5100A1S: IOD is set
+
+DETAILS OF LONG-DISTANCE LINK
+-----------------------------
+WUX5100A5S:FID128:admin> switchshow
+16  16   021000   id    4G   Online      FC  LD E-Port  10:00:00:05:1e:ca:26:1d "DUX5100A1S" (downstream)
+DUX5100A1S:FID128:admin> switchshow
+16  16   031000   id    4G   Online      FC  LD E-Port  10:00:00:05:1e:c8:c4:8e "WUX5100A5S" (upstream)
+WUX5100A1N:FID128:admin> switchshow
+16  16   031000   id    4G   Online      FC  LD E-Port  10:00:00:05:1e:ca:24:1d "DUX5100A5N" (downstream)
+DUX5100A5N:FID128:admin> switchshow 
+16  16   041000   id    4G   Online      FC  LD E-Port  10:00:00:05:1e:c4:29:d5 "WUX5100A1N" (upstream)
+
+
+
+WUX5100A1N:FID128:admin> iodshow
+
+IOD is set
+
+WUX5100A1N:FID128:admin> portcfgshow 16
+Area Number:              16
+Speed Level:              4G
+Fill Word:                0(Idle-Idle)
+AL_PA Offset 13:          OFF
+Trunk Port                ON
+Long Distance             LD
+VC Link Init              OFF
+Desired Distance          85 Km
+Reserved Buffers          176
+Locked L_Port             OFF
+Locked G_Port             OFF
+Disabled E_Port           OFF
+ISL R_RDY Mode            ON
+RSCN Suppressed           OFF
+Persistent Disable        OFF
+NPIV capability           ON
+QOS E_Port                OFF
+Port Auto Disable:        OFF
+Rate Limit                OFF
+EX Port                   OFF
+Mirror Port               OFF
+Credit Recovery           ON
+F_Port Buffers            OFF
+
+DUX5100A5N:FID128:admin> iodshow
+
+IOD is not set
+
+DUX5100A5N:FID128:admin> portcfgshow 16
+Area Number:              16
+Speed Level:              4G
+Fill Word:                0(Idle-Idle)
+AL_PA Offset 13:          OFF
+Trunk Port                ON
+Long Distance             LD
+VC Link Init              OFF
+Desired Distance          85 Km
+Reserved Buffers          176
+Locked L_Port             OFF
+Locked G_Port             OFF
+Disabled E_Port           OFF
+ISL R_RDY Mode            ON
+RSCN Suppressed           OFF
+Persistent Disable        OFF
+NPIV capability           ON
+QOS E_Port                OFF
+Port Auto Disable:        OFF
+Rate Limit                OFF
+EX Port                   OFF
+Mirror Port               OFF
+Credit Recovery           ON
+F_Port Buffers            OFF
+
+WUX5100A5S:FID128:admin> iodshow
+
+IOD is not set
+
+WUX5100A5S:FID128:admin> switchshow | grep LD
+ 16  16   021000   id    4G   Online      FC  LD E-Port  10:00:00:05:1e:ca:26:1d "DUX5100A1S" (downstream)
+WUX5100A5S:FID128:admin> portcfgshow 16
+Area Number:              16
+Speed Level:              4G
+Fill Word:                0(Idle-Idle)
+AL_PA Offset 13:          OFF
+Trunk Port                ON
+Long Distance             LD
+VC Link Init              OFF
+Desired Distance          65 Km
+Reserved Buffers          136
+Locked L_Port             OFF
+Locked G_Port             OFF
+Disabled E_Port           OFF
+ISL R_RDY Mode            ON
+RSCN Suppressed           OFF
+Persistent Disable        OFF
+NPIV capability           ON
+QOS E_Port                OFF
+Port Auto Disable:        OFF
+Rate Limit                OFF
+EX Port                   OFF
+Mirror Port               OFF
+Credit Recovery           ON
+F_Port Buffers            OFF
+
+
+DUX5100A1S:FID128:admin> iodshow
+
+IOD is set
+
+DUX5100A1S:FID128:admin>
+
+DUX5100A1S:FID128:admin> switchshow | grep LD
+ 16  16   031000   id    4G   Online      FC  LD E-Port  10:00:00:05:1e:c8:c4:8e "WUX5100A5S" (upstream)
+DUX5100A1S:FID128:admin>
+
+-----------------------------------------------------------------
+DUX5100A1S:FID128:admin> portcfgshow 16
+Area Number:              16
+Speed Level:              4G
+Fill Word:                0(Idle-Idle)
+AL_PA Offset 13:          OFF
+Trunk Port                ON
+Long Distance             LD
+VC Link Init              OFF
+Desired Distance          65 Km
+Reserved Buffers          136
+Locked L_Port             OFF
+Locked G_Port             OFF
+Disabled E_Port           OFF
+ISL R_RDY Mode            ON
+RSCN Suppressed           OFF
+Persistent Disable        OFF
+NPIV capability           ON
+QOS E_Port                OFF
+Port Auto Disable:        OFF
+Rate Limit                OFF
+EX Port                   OFF
+Mirror Port               OFF
+Credit Recovery           ON
+F_Port Buffers            OFF

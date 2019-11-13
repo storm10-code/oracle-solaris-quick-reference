@@ -1,0 +1,32 @@
+This port
+Is used for
+Centrify software component
+22
+Encrypted TCP communication for OpenSSH connections
+Deployment Manager for secure shell connections on remote clients.
+You can change the default port for secure shell connections by setting an option in Deployment Manager. For more information about setting this option, see the Deployment Manager User’s Guide.
+23
+TCP communication for Telnet connections
+Deployment Manager for telnet connections on remote clients if you cannot use secure shell (ssh).
+By default, telnet connections are not allowed because passwords are transferred over the network as plain text. If you configure Deployment Manager to allow telnet connections, this port is used if an attempt to use a secure shell connection fails.
+53
+TCP/UDP communication
+Clients use the Active Directory DNS server for DNS lookup requests.
+88
+Encrypted UDP communication
+Kerberos ticket validation and authentication, agents, Centrify PuTTY
+123
+UDP communication for simple network time protocol (NTP)
+Keeps time synchronized between clients and Active Directory for Kerberos ticketing.
+389
+Encrypted TCP/UDP communication
+Active Directory authentication and client LDAP service.
+443
+Cloud proxy server to Centrify cloud service
+Centrify for mobile device management.
+445
+Encrypted TCP/UDP communication for delivery of group policies
+The adclient and adgpupdate use Samba (SMB) and Windows file sharing to download and update group policies, if applicable.
+464
+Encrypted TCP/UDP communication for Kerberos password changes
+Kerberos ticket validation and authentication for agents, Centrify PuTTY, adpasswd, and passwd.

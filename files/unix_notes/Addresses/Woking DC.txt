@@ -1,0 +1,28 @@
+WOKING DATA CENTRE
+The address of Sentrum is:
+Adapt Suite
+Data Hall 4
+Sentrum IV
+Kestrel Way  [Goldsworth Park Trading Estate]
+WOKING
+Surrey
+GU21 3BA
+
+The Cubic suite is located on the first floor in Datahall 4 (Telstra Datahall).
+
+
+            Cubic Transportation Systems Ltd
+            Adapt Suite,C1
+            Global Switch House
+            3 Nutmeg Lane
+            Docklands
+            LONDON
+            E14 2AX
+
+
+# ndd -set /dev/tcp tcp_conn_req_max_q 16384 
+# ndd -set /dev/tcp tcp_conn_req_max_q0 16384 
+# ndd -set /dev/tcp tcp_max_buf 4194304 
+# ndd -set /dev/tcp tcp_cwnd_max 2097152 
+# ndd -set /dev/tcp tcp_recv_hiwat 400000 
+# ndd -set /dev/tcp tcp_xmit_hiwat 400000 

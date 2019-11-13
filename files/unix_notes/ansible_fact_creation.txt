@@ -1,0 +1,116 @@
+---
+# file: roles/custom-facts/tasks/main.yaml
+# vim:ft=ansible:
+
+- name: "Install fact gatherer dependencies"
+  apt:
+    state: "latest"
+    name: "{{ item }}"
+  with_items:
+    - libjson-perl
+    - libyaml-perl
+
+- name: "Create custom facts directory"
+  file: 
+    path: "/etc/ansible/facts.d"
+    recurse: "yes"
+    state: "directory"
+
+- name: "Install custom fact gatherers"
+  template:
+    src: "{{ item }}"
+    dest: "/etc/ansible/facts.d/{{ item|basename }}"
+    mode: 0755
+  register: install_facts
+  with_fileglob: "*.fact"
+
+- name: "Reload ansible_local facts"
+  setup: filter=ansible_local
+  when: install_facts.changed
+  
+Example python fact.d 
+#!/usr/bin/perl -wT
+
+use strict;
+use warnings;
+
+use English qw(-no_match_vars);
+use JSON qw(encode_json);
+
+use constant NETSTAT_CMD => ($EFFECTIVE_USER_ID != 0
+	                     ? ('/usr/bin/sudo', '/bin/netstat', '-ltnup')
+	                     : ('/bin/netstat', '-ltnup'));
+
+%ENV = ();
+
+my @listen;
+my %daemon;
+my %ports;
+
+if (open(my $fh, '-|', +NETSTAT_CMD())) {
+	while (local $_ = <$fh>) {
+		chomp;
+		if (m/^(?:udp|tcp)6?\s+/i) {
+			my @cols = qw(proto recvq sendq local_addr foreign_addr state pid);
+			@cols = qw(proto recvq sendq local_addr foreign_addr pid) if m/^udp/i;
+
+			my %data;
+			@data{@cols} = split(/\s+/, $_, scalar(@cols));
+			@data{qw(pid program)} = split(m![/: ]+!, $data{pid});
+			($data{port}) = $data{local_addr} =~ m/([0-9]+)$/;
+			push @listen, \%data; 
+
+			$daemon{$data{program}} //= [];
+			push @{$daemon{$data{program}}}, $data{port} if !grep($_ eq $data{port}, @{$daemon{$data{program}}});
+
+			$ports{$data{port}} //= [];
+			push @{$ports{$data{port}}}, $data{program} if !grep($_ eq $data{program}, @{$ports{$data{port}}});
+		}
+	}
+	close($fh);
+}
+
+print encode_json({
+	netstat => \@listen,
+	daemons => \%daemon,
+	ports   => \%ports
+	});
+
+exit;
+
+
+#!/usr/bin/env python
+# 
+# Get cloudstack zone name/id and add to ansible facts
+# requires cloudmonkey >= v5 with json output set
+
+import json
+import os
+
+# ugly.. use subprocess
+str_output = os.popen('cloudmonkey list zones').read()
+# remove ansi escape char
+str_output = str_output.replace('\x1b[?1034h', '')
+
+# create the dict structure, must contain a key ansible_facts, within which we'll 
+# add our custom facts 
+facts = {
+    'ansible_facts': {
+        'cloudstack': {
+            'zone': {}
+        }
+    }
+}
+
+try:
+    decoded = json.loads(str_output)
+except (ValueError, KeyError, TypeError):
+    print "JSON format error"
+    sys.exit(1)
+
+# if there are zone's, loop through and add to facts dict
+if decoded['count'] > 0:
+    for item in decoded['zone']:
+        facts['ansible_facts']['cloudstack']['zone'][item['name']] = item['id']
+
+print json.dumps(facts)

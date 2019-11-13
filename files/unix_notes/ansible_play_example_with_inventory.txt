@@ -1,0 +1,1 @@
+ansible-playbook -i environments/prestige.test/hosts pb_ora_utils.yml --limit "slunix01t"

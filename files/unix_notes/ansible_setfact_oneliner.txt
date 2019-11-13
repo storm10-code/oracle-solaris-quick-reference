@@ -1,0 +1,1 @@
+- set_fact: ansible_os="{{ ansible_os_name | d([ansible_distribution, ansible_system, 'release', ansible_distribution_version, '(' + ansible_distribution_release + ')'] | join(' ')) }}"

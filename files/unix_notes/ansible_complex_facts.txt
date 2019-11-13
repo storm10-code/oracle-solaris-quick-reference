@@ -1,0 +1,40 @@
+Accessing complex variable data
+We already described facts a little higher up in the documentation.
+
+Some provided facts, like networking information, are made available as nested data structures. To access them a simple {{ foo }} is not sufficient, but it is still easy to do. Here’s how we get an IP address:
+
+{{ ansible_facts["eth0"]["ipv4"]["address"] }}
+OR alternatively:
+
+{{ ansible_facts.eth0.ipv4.address }}
+Similarly, this is how we access the first element of an array:
+
+{{ foo[0] }}
+Accessing information about other hosts with magic variables
+Whether or not you define any variables, you can access information about your hosts with the Special Variables Ansible provides, including “magic” variables, facts, and connection variables. Magic variable names are reserved - do not set variables with these names. The variable environment is also reserved.
+
+The most commonly used magic variables are hostvars, groups, group_names, and inventory_hostname.
+
+hostvars lets you access variables for another host, including facts that have been gathered about that host. You can access host variables at any point in a playbook. Even if you haven’t connected to that host yet in any play in the playbook or set of playbooks, you can still get the variables, but you will not be able to see the facts.
+
+If your database server wants to use the value of a ‘fact’ from another node, or an inventory variable assigned to another node, it’s easy to do so within a template or even an action line:
+
+{{ hostvars['test.example.com']['ansible_facts']['distribution'] }}
+groups is a list of all the groups (and hosts) in the inventory. This can be used to enumerate all hosts within a group. For example:
+
+{% for host in groups['app_servers'] %}
+   # something that applies to all app servers.
+{% endfor %}
+A frequently used idiom is walking a group to find all IP addresses in that group.
+
+{% for host in groups['app_servers'] %}
+   {{ hostvars[host]['ansible_facts']['eth0']['ipv4']['address'] }}
+{% endfor %}
+You can use this idiom to point a frontend proxy server to all of the app servers, to set up the correct firewall rules between servers, etc. You need to make sure that the facts of those hosts have been populated before though, for example by running a play against them if the facts have not been cached recently (fact caching was added in Ansible 1.8).
+
+group_names is a list (array) of all the groups the current host is in. This can be used in templates using Jinja2 syntax to make template source files that vary based on the group membership (or role) of the host:
+
+{% if 'webserver' in group_names %}
+   # some part of a configuration file that only applies to webservers
+{% endif %}
+inventory_hostna

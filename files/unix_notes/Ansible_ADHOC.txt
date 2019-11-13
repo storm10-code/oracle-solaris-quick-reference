@@ -1,0 +1,17 @@
+Ansible ADHOC
+ansible-playbook -i hosts.test pb_sol_bmc_ds.yml --extra-vars "target=slunix02t" --list-hosts
+ansible-playbook -i hosts.test pb_sol_bmc_ds.yml --extra-vars "target=slunix02t" --list-tasks
+ansible-playbook -i hosts.test pb_sol_bmc_ds.yml --extra-vars "target=slunix02t"
+ansible-playbook -i hosts.test pb_sol_bmc_ds.yml --limit "slunix02t" --list-hosts
+ansible-playbook -i hosts.test pb_sol_bmc_ds.yml --limit "slunix02t"
+
+ansible -i hosts.test solaris11 -a '/opt/patrol/Patrol3/PatrolAgent -version'
+
+
+ansible -i hosts.test solaris11 -m shell -a 'z="$(zonename)" && pgrep -l -u ptrladm -z $z ds_listener'
+ansible -i hosts management-vms -m setup --tree /tmp/facts
+# ansible all -m setup -a 'gather_subset=network,virtual'
+ansible localhost -m setup -a 'gather_subet=device' --tree
+
+ansible -i inventories/test/hosts globals -a hostid
+ansible -i inventories/test/hosts globals -m shell -a '/usr/sbin/fcinfo hba-port | egrep "Port WWN|Device|State" | paste - - -' -become_user=root

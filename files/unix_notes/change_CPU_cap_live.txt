@@ -1,0 +1,18 @@
+Product License Username: I4MZ3FTBST
+Product License Password: ckbytetgrc
+
+prctl -n zone.cpu-cap -v 4800 -r -i zone slhops01t
+
+formula (dynamically changing)
+need to test
+
+root@slhops01t #  pgrep -l -z zhopsdb01t init | grep -v ohasd | awk '{print $1}'
+2159
+
+root@slhops01t # /bin/prctl -n zone.cpu-cap 2159
+process: 2159: /usr/sbin/init -m verbose
+NAME    PRIVILEGE       VALUE    FLAG   ACTION                       RECIPIENT
+zone.cpu-cap
+        usage               3
+        privileged      3.20K       -   deny                                 -
+        system          4.29G     inf   deny                                 -

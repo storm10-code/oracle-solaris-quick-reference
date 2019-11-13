@@ -1,0 +1,43 @@
+beadm list -H
+beadm destroy <be_name>
+
+Destroy old BE
+root@zcpadb01p # beadm list
+BE         Active Mountpoint Space  Policy Created
+--         ------ ---------- -----  ------ -------
+solaris    !R     -          15.79M static 2013-07-04 15:57
+solaris-1  !R     -          19.90M static 2013-07-22 09:58
+solaris-10 !R     -          3.0K   static 2014-10-07 15:23
+solaris-11 !R     -          3.0K   static 2014-12-15 14:20
+solaris-12 !R     -          3.0K   static 2015-02-12 20:00
+solaris-13 !R     -          3.0K   static 2015-03-11 10:04
+solaris-14 !R     -          3.0K   static 2015-05-13 14:28
+solaris-15 !R     -          3.0K   static 2015-08-11 11:06
+solaris-2  !R     -          21.26M static 2014-02-13 20:04
+solaris-3  !R     -          3.0K   static 2014-04-09 10:11
+solaris-4  !R     -          47.76M static 2014-05-07 21:11
+solaris-5  !R     -          3.0K   static 2014-06-11 11:37
+solaris-6  !R     -          3.0K   static 2014-07-09 20:12
+solaris-7  !R     -          19.99M static 2014-07-09 21:08
+solaris-8  !R     -          3.0K   static 2014-09-08 15:54
+solaris-9  NR     /          43.57G static 2014-09-08 20:11
+zfs set org.opensolaris.libbe:active=off rpool/ROOT/solaris-1
+zfs set org.opensolaris.libbe:active=off rpool/ROOT/solaris-2
+zfs set org.opensolaris.libbe:active=off rpool/ROOT/solaris-3
+zfs set org.opensolaris.libbe:active=off rpool/ROOT/solaris-4
+
+root@cpauatapp01 # beadm list
+BE         Flags Mountpoint Space   Policy Created
+--         ----- ---------- -----   ------ -------
+solaris-14 !R    -          33.77M  static 2014-08-20 19:54
+solaris-16 NR    /          120.69G static 2016-08-08 19:41
+solaris-19 !R    -          122.0K  static 2017-02-01 09:33
+root@cpauatapp01 # zfs set org.opensolaris.libbe:active=off rpool/ROOT/solaris-14
+root@cpauatapp01 # beadm list
+BE         Flags Mountpoint Space   Policy Created
+--         ----- ---------- -----   ------ -------
+solaris-14 !     -          33.77M  static 2014-08-20 19:54
+solaris-16 NR    /          120.69G static 2016-08-08 19:41
+solaris-19 !R    -          122.0K  static 2017-02-01 09:33
+root@cpauatapp01 # beadm destroy solaris-14
+Are you sure you want to destroy solaris-14?  This action cannot be undone(y/[n]): y

@@ -1,0 +1,41 @@
+Anisble Solaris Introduction
+
+ansible all -i hosts -m setup
+ansible all -m user -a "name=foo password=<crypted password here>" 
+
+# run once
+ssh-agent
+# find where what pid it is running on 
+eval $(ssh-agent) > /dev/null
+# add the key
+ssh-add
+
+
+ansible all -m user -a "name=foo password=<crypted password here>" 
+
+---
+- name: Add the OS specific variables
+  include_vars: '{{ ansible_os_family }}.yml'
+  tags: [ 'configuration', 'passwd' ]
+
+- name: Change root password
+  user: name=root update_password=always password=$5$cV2+CgU2V58=$MfQQLmkrcjOxlDYzzv7qhuZ/eqgZBPacM8o8eIcFXS2
+  register: password
+
+- debug: var=password
+# Example playbook sending mail to root
+# - local_action: mail subject='System {{ ansible_hostname }} has been successfully provisioned.'
+
+ok: [slsol11301t] => {
+    "password": {
+        "append": false,
+        "changed": false,
+        "comment": "Super-User",
+        "group": 0,
+        "home": "/root",
+        "move_home": false,
+        "name": "root",
+        "password": "NOT_LOGGING_PASSWORD",
+        "shell": "/usr/bin/bash",
+        "state": "present",
+        "uid": 0

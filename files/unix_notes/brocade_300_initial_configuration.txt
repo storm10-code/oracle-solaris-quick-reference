@@ -1,0 +1,129 @@
+tstimezone Europe/London
+switchname  wksefbrcd01p
+tsclockserver "10.70.150.3;10.70.150.4" (requires firewall changes)
+wksefbrcd01p:FID128:admin> syslogdipshow
+wksefbrcd01p:FID128:admin> help syslogipadd
+wksefbrcd01p:FID128:admin> syslogdipadd <ipaddrofserver>
+
+
+wksefbrcd01p:FID128:admin> switchdisable
+wksefbrcd01p:FID128:admin> configure
+Configure...
+Fabric parameters (yes, y, no, n): [no] y
+Domain: (1..239) [1]
+wksefbrcd01p:FID128:admin> 10
+
+wksefbrcd01p:FID128:admin> no
+Switch PID Format: (1..2) [1] ?
+1- Core PID format
+2- Extended PID format
+
+wksefbrcd01p:FID128:admin> 1 (default)
+<snip>
+R_A_TOV: (4000..120000) [10000]
+E_D_TOV: (1000..5000) [2000]
+Data field size: (256..2112) [2112]
+Sequence Level Switching: (0..1) [0]
+<snip>
+
+
+switch:admin> defzone --noaccess
+You are about to set the Default Zone access mode to No Access
+Do you want to set the Default Zone access mode to No Access ? (yes, y, no, n):
+[no] y
+switch:admin> cfgsave
+You are about to savedefzone --noaccess
+
+swd77:admin> tstimezone Europe/London
+System Time Zone change will take effect at next reboot
+swd77:admin> switchname  wksefbrcd01p
+Committing configuration...
+Done.
+Switch name has been changed.Please re-login into the switch for the change to be applied.
+swd77:admin> tsclockserver "10.70.150.3;10.70.150.4"
+Updating Clock Server configuration...NTP Query Failed. No server is reachable
+swd77:admin> switchdisable
+swd77:admin> configure
+
+Configure...
+
+  Fabric parameters (yes, y, no, n): [no] yes
+
+    Domain: (1..239) [1] 10
+    WWN Based persistent PID (yes, y, no, n): [no]
+    Dynamic D-Port (on, off): [on]
+    Location ID: (0..4) [0]
+    R_A_TOV: (4000..120000) [10000]
+    E_D_TOV: (1000..5000) [2000]
+    WAN_TOV: (0..30000) [0]
+    MAX_HOPS: (7..19) [7]
+    Data field size: (256..2112) [2112]
+    Sequence Level Switching: (0..1) [0]
+    Disable Device Probing: (0..1) [0]
+    Suppress Class F Traffic: (0..1) [0]
+    Per-frame Route Priority: (0..1) [0]
+    Long Distance Fabric: (0..1) [0] 1
+    BB credit: (1..27) [16]
+    Disable FID Check (yes, y, no, n): [no]
+  Insistent Domain ID Mode (yes, y, no, n): [no]
+  Disable Default PortName (yes, y, no, n): [no]
+    Edge Hold Time(Low(80ms), Medium(220ms), High(500ms), UserDefined(80-500ms): (80..500) [220]
+  Virtual Channel parameters (yes, y, no, n): [no]
+  F-Port login parameters (yes, y, no, n): [no]
+  Zoning Operation parameters (yes, y, no, n): [no]
+  RSCN Transmission Mode (yes, y, no, n): [no]
+  Arbitrated Loop parameters (yes, y, no, n): [no]
+  System services (yes, y, no, n): [no]
+  Portlog events enable (yes, y, no, n): [no]
+  ssl attributes (yes, y, no, n): [no]
+  rpcd attributes (yes, y, no, n): [no]
+  cfgload attributes (yes, y, no, n): [no]
+  webtools attributes (yes, y, no, n): [no]
+
+
+WARNING: The domain ID will be changed. The port level zoning may be affected
+
+
+swd77:admin> defzone --noaccess
+You are about to set the Default Zone access mode to No Access
+Do you want to set the Default Zone access mode to No Access ? (yes, y, no, n): [no] yes
+swd77:admin> cfgsave
+You are about to save the Defined zoning configuration. This
+action will only save the changes on Defined configuration.
+Do you want to save the Defined zoning configuration only?  (yes, y, no, n): [no] yes
+Updating flash ...
+swd77:admin>
+swd77:admin>
+swd77:admin> switchshow
+switchName:     wksefbrcd01p
+switchType:     71.2
+switchState:    Offline
+switchMode:     Native
+switchRole:     Disabled
+switchDomain:   1 (unconfirmed)
+switchId:       fffc01
+switchWwn:      10:00:50:eb:1a:3d:67:80
+zoning:         OFF
+switchBeacon:   OFF
+
+
+
+tstimezone Europe/London
+switchname  dksefbrcd01p
+switchdisable
+configure
+
+tstimezone Europe/London
+switchname  wksefbrcd02p
+switchdisable
+configure
+
+tstimezone Europe/London
+switchname  dksefbrcd02p
+switchdisable
+configure
+
+
+svccfg -s svc:/network/smtp:sendmail setprop config/local_only = true
+svcadm refresh svc:/network/smtp:sendmail
+svcadm restart svc:/network/smtp:sendmail

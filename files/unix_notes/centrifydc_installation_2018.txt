@@ -1,0 +1,59 @@
+root@slcpa01t # vi centrifydc-install.cfg
+ADJOIN="N"
+ADJ_LIC= # server/workstation
+ADJ_FORCE="N"
+ADJ_TRUST="N"
+DOMAIN="company.com"
+USERID=administrator
+PASSWD="password"
+#COMPUTER=my_host_name
+#CONTAINER="my computers"
+#ZONE="my_zone"
+#SERVER=server_name
+DA_ENABLE="K"
+DA_INST_NAME=""
+REBOOT="N"
+
+# valid action keys (case insensitive):
+# Y - (yes) install if it's not installed
+# U - update; same as Y plus update if it's installed already,
+#     keep current if the same or newer version is installed
+# F - freshen; upgrade package, but only if an earlier version is installed
+# R - reinstall (repair); same as U plus reinstall package even if the same version is installed
+# E - erase (remove or uninstall)
+# K - keep current (do not change)
+INSTALL="U" # core package
+CentrifyDC_openssl="U"
+CentrifyDC_openldap="U"
+CentrifyDC_curl="U"
+CentrifyDC_ldapproxy=
+CentrifyDC_nis=
+CentrifyDC_cifsidmap=
+CentrifyDC_openssh="F"
+CentrifyDA="U"
+CentrifyDS=
+CentrifyDC_krb5=
+CentrifyDC_web=
+CentrifyDC_apache=
+CentrifyDC_samba=
+CentrifyDC_idmap=
+
+# Uninstall of all packages, including add-on(s), works with INSTALL="E" only:
+#UNINSTALL="N"
+
+
+                                                                                    
+
+Some notes: disable centrify audit is zones
+dacontrol -d
+
+root@slemv02t # svcs -a | grep centrify
+disabled       Aug_29   svc:/application/security/centrify-kcm:default
+online         Oct_05   svc:/application/security/centrifyda:default
+online         Oct_05   svc:/application/security/centrifydc:default
+
+./install.sh -n 
+
+Join a domain
+
+adjoin domain -z prestige.test/Centrify/Zones/prestige.test/Unix --createComputerZone -u ledgerd

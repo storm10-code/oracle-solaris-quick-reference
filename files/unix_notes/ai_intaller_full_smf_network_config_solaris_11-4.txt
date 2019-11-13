@@ -1,0 +1,1 @@
+https://blogs.oracle.com/solaris/customize-network-configuration-with-solaris-automated-installs-v2

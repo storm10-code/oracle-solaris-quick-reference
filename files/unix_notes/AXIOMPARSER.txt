@@ -1,0 +1,82 @@
+axiomcli system_log -collect
+ [ { -all
+ | [-eventLog] [-statistics] [-systemConfig]
+[-pilot] [-sanhostLogs]
+ [-slammerBackup] [-slammerInMemory]
+[-slammerLogs] [-brickLogs]
+ [-replicationAppliance] [-client]
+ } ]
+ [-slammerNode slammer-node-id-or-fqn [,slammer-node-id-orfqn]...]
+
+ [-brick brick-id-or-fqn [,brick-id-or-fqn]...]
+Appendix B Pillar Axiom CLI Commands
+system_log 287
+[-sanhost sanhost-id-or-fqn [, sanhost-id-or-fqn]... ]
+ [-sendToCallHome]
+ [-withinLastHours number-of-hours]
+ [-collectionReason reason-description]
+ [-uploadClientLogsFirst]
+ [-verify]
+ [{–outputformat | -o} {text | xml}]
+ [-sessionKey session-key]
+ [-timeout timeout-in-seconds]
+
+ 12000000000
+ 120000000000 
+ 12000000000
+ 
+ axiomcli login -u admin-user -p admin-password axiom-system
+ axiomcli login -u administrator -p pillar 10.26.46.30
+ axiomcli system_log -collect -statistics -withinLastHours 24 -collectionReason dailyperformancestats --sessionKey ${ 
+ axiomcli system_log -download 
+ 
+ axiomcli system_log -list 
+ 
+ axiomcli system_log -download -file A004197BHJ-150414092101-150421073851-MANUAL_COLLECTION-m-01-01.tar
+log-bundle-id-or-fqn] -file download-file
+ [-verify]
+ [{–outputformat | -o} {text | xml}]
+ [-sessionKey session-key]
+ [-timeout timeout-in-seconds]
+
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\dkhopsaxiom01p\27042015\PillarStatistics -o=dkhopsaxiom01p_perfstats_270415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=dkhopsaxiom01p_perfstats_270415.sps -c=SAN -s=LUN -t=UI -T=042715:00:00:00,042815:00:00:00 -o=dkhopsaxiom01p_270415_SANLun-UI.csv
+ 
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\wkftpaxiom01p\PillarStatistics -o=wkftpaxiom01p_perfstats_240415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=wkftpaxiom01p_perfstats_240415.sps -c=SAN -s=LUN -t=UI -T=042415:00:00:00,042515:00:00:00 -o=wkftpaxiom01p_240415_SANLun-UI.csv
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\wkftpaxiom01p\PillarStatistics -o=wkftpaxiom01p_perfstats_250415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=wkftpaxiom01p_perfstats_250415.sps -c=SAN -s=LUN -t=UI -T=042515:00:00:00,042615:00:00:00 -o=wkftpaxiom01p_250415_SANLun-UI.csv 
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\wkftpaxiom01p\PillarStatistics -o=wkftpaxiom01p_perfstats_260415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=wkftpaxiom01p_perfstats_260415.sps -c=SAN -s=LUN -t=UI -T=042615:00:00:00,042715:00:00:00 -o=wkftpaxiom01p_260415_SANLun-UI.csv 
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\wkftpaxiom01p\PillarStatistics -o=wkftpaxiom01p_perfstats_270415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=wkftpaxiom01p_perfstats_270415.sps -c=SAN -s=LUN -t=UI -T=042715:00:00:00,042815:00:00:00 -o=wkftpaxiom01p_270415_SANLun-UI.csv 
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\wkftpaxiom01p\PillarStatistics -o=wkftpaxiom01p_perfstats_280415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=wkftpaxiom01p_perfstats_280415.sps -c=SAN -s=LUN -t=UI -T=042815:00:00:00,042915:00:00:00 -o=wkftpaxiom01p_280415_SANLun-UI.csv 
+ 
+ 
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsparser -i=C:\Downloads\AXIOM\AXIOMPERFSTATS\wkftpaxiom01p\27042015\PillarStatistics -o=wkftpaxiom01p_perfstats_270415.sps
+C:\Downloads\AXIOM\AXIOMPERFSTATS\axiomstatsformatter -i=wkftpaxiom01p_perfstats_270415.sps -c=SAN -s=LUN -t=UI -T=042715:00:00:00,042815:00:00:00 -o=wkftpaxiom01p_270415_SANLun-UI.csv
+===============================================================
+Component:SAN
+Sub-component:Lun
+Type:UI
+===============================================================
+    statsTime - Sample time
+    duration - Sample duration
+    Nodename - World-wide name (WWN) of the node.
+    LUN_FQN - LUN fully-qualified name.
+    LUN_LUID - LUN globally unique ID.
+    Valid - Validity of the statistics for this LUN. 1 = valid,
+.
+    Owner - Owner of this LUN. 1 = LUN is owned by this control
+= LUN is not owned by this CU.
+    Optimized_Data_Access_Cmds - Number of optimized data acces
+    Non_Optimized_Data_Access_Cmds - Number of non-optimized da
+s.
+    Reads - Number of read commands.
+    Writes - Number of write commands.
+    Blocks_Read - Number of blocks read.
+    Blocks_Written - Number of blocks written.
+    Read_Response_Time_nS - Cumulative read response times.
+    Write_Response_Time_nS - Cumulative write response times.
+ 

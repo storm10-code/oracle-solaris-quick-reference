@@ -1,0 +1,12 @@
+Go-Live Check List
+------------------
+
+Centrify
+ - CentrifyDA is running and enabled
+ - CentrifyDC is running and enabled
+ 
+Sophos
+ 
+ - Is running and enabled
+ - Is Updating Signatures
+ 

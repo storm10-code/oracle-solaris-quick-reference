@@ -1,0 +1,1 @@
+adquery user ledgerd -a | /usr/gnu/bin/awk -F'/' '$0=$NF'

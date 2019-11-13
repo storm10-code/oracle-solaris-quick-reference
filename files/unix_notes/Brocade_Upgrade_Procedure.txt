@@ -1,0 +1,60 @@
+Brocade FOS Upgrade Procedure
+
+Before you execute a firmware download, be sure to perform the following tasks. In the unlikely event of a failure or
+timeout, the preparation tasks that are described in this section will enable you to provide Brocade Support all the
+information required to perform advanced troubleshooting.
+
+1. Establish a ssh session and log in to the Brocade switch.
+2. Verify that you have session logging enabled so that the output of your commands is saved to a file.
+3. Enter the switchShow command to display switch information.
+4. Enter the portCfgShow command to display current switch port settings.
+5. Enter the nsShow command to display the total number of devices in the switch local Name Server database.
+6. Enter the nsAllShow command to display the total number of devices in the switch global Name Server database.
+7. Enter the fabricShow command to display the total number of domains in the fabric. If you are changing a dual
+domain Brocade director to a single domain SilkWorm director this value will be one domain less after the
+operation.
+8. Display the MIB configuration information using the snmpMibCabShow or agtCfgShow commands.
+9. Upload the switch configuration settings to an SFTP server using the configUpload command. 
+10. Enter the supportShow and supportSave commands (these commands are version dependent) to provide baseline
+information for advanced support.
+The supportShow command outputs a large amount of data that you can browse, and the supportSave command
+produces a file that can only be viewed by your switch service provider. Make sure that you enter the supportSave
+command on the standby CP (in SilkWorm 12000, 24000) as well.
+
+
+PREPARATION TASKS:
+
+Get a view on the SAN topology and it’s connected devices. The easiest way is to use Brocade SAN Health or HP SAN Visibility.
+Verify the firmware compatibility between SAN switch firmware, host bus adapters, storage firmware, etc. For HP material, please refer to HP Single Point Of Connectivity Knowledge (SPOCK). Refer to the vendor documentation for any remaining information.
+Download the firmware files in advance. The firmware files can be rather big (up to 1GB a piece) and take some time to be downloaded.
+Update server components (HBA cards, MPIO, etc) upfront.
+Verify if all systems are redundantly connected/configured on the fiber channel fabrics. Do not conclude if the system is redundantly connected, all paths to the various storage components are available. My own experiences taught me storage paths can be unavailable even though it should not be the case.
+Schedule a blackout of the backup environment during the firmware updates. Tape drives do not support MPIO and power-cycling the switches tend to give hardware errors in the backup application.
+Validate the health state of the SAN switches by executing the command: “switchstatusshow“. In case something is faulty, the issue can be resolved before the maintenance.
+SANSWITCH:admin> switchstatusshow
+Switch Health Report Report time: 12/17/2015 08:50:16 AM
+Switch Name: SANSWITCH
+IP address: 192.168.101.220 
+SwitchState: HEALTHY
+Duration: 14016:36
+
+Power supplies monitor HEALTHY
+Temperatures monitor HEALTHY
+Fans monitor HEALTHY
+Flash monitor HEALTHY
+Marginal ports monitor HEALTHY
+Faulty ports monitor HEALTHY
+Missing SFPs monitor HEALTHY
+Error ports monitor HEALTHY
+
+PRE-UPGRADE TASKS:
+
+In order to prepare the intervention, the following steps should be executed:
+
+Before updating the firmware, it’s advised to reboot the SAN switch to release any pending commands and/or locks. The switch can be easily rebooted by executing the command “hareboot” and takes a few minutes. A switch reboot is transparent for redundantly configured servers.
+Collect a supportsave as a baseline (command: “supportsave” and follow the guidance outlined in the interactive prompt). This will allow reverse analysis in case of any issues without wasting time.
+Save the configuration of the switch to an FTP site by executing the command: “configdownload” and follow the steps in the interactive prompt.
+Verify the health state of the SAN switch before updating the SAN switch firmware. This can be performed in the GUI or by executing the CLI-command: “switchstatusshow“.
+Take a closer look the switch event logs by executing the command: “errshow” or “errdump“.
+Clear the counters on the fiber channel ports by executing the command “statsclear” or the command “portstatsclear -i <start-to-end-index>“.
+

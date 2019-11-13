@@ -1,0 +1,20 @@
+Ax600 Power-off and Power-On Procedure
+
+Version: 1.0
+
+Power Down
+
+1.) Use the Shutdown capability in the Pillar Axiom Storage Services Manager GUI
+2.) BRICKS: At the back of the system, turn-off the power switches for each Brick
+3.) SLAMMERS: At the back of the system, pull the four power cables for each Slammer
+4.) PILOT: At the back of the system, pull the power cable for each pilot
+
+
+Power-Up
+
+1.) BRICKS: At the back of the system, turn on the power switches for each Brick.
+2.) SLAMMER: At the back of the system, put in the four power cables for each Slammer
+3.) PILOT:   At the back of the system, pull in the power cable for each pilot
+ 
+IMPORTANT: You must turn on all of the PDUs within a period of 10 seconds. Ideally all items should be powered on 
+within 30 seconds of each other; Bricks, Slammers, Pilot etc...

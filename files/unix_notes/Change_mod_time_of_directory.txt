@@ -1,0 +1,14 @@
+#!/bin/bash
+DIR_WILDCARD="/PARE/outbound/FTM_20*"
+
+# for loop
+for dir in $(ls -1d ${DIR_WILDCARD})
+do
+  MODFILE="$(ls -rt ${dir}/*.csv.Z 2>/dev/null | tail -1)"
+  if [ ! -z "${MODFILE}" ]; then
+      echo "Changing modfication time of directory using ${MODFILE} to ${dir}"
+      #echo "${MODFILE} ${dir}"
+      /usr/bin/touch -r "${MODFILE}" "${dir}"
+  fi
+done
+

@@ -1,0 +1,283 @@
+
+Storage Systems
+================
+We have two storage system that are host-based mirrored across a DWDM link using VxVM.
+
+Datacentre 1 Storage System = WPROD_6780
+Datacentre 2 Storage System = DREP_6780
+
+Write performance is much slower intermittently on DREP_6780 storage array than WPROD_6780, especially on the RAID 6 volumes DRamnVX-01 subdisks; see vxstats figures...
+
+Controller Cache Sizes
+======================
+DREP_6780 - 4GB Cache
+WPROD_6780 - 8GB Cache
+
+vxprint-Aht
+=========== 
+v  rman_staging -            ENABLED  ACTIVE   19727400000 ROUND  -        fsgen
+pl rman_staging-01 rman_staging ENABLED ACTIVE 19727400960 STRIPE 24/1024  RW
+sd stagdgW92V2-01 rman_staging-01 stagdgW92V2 0 821975040 0/0     st6580_6780-0_51 ENA
+sd stagdgW94V2-01 rman_staging-01 stagdgW94V2 0 821975040 1/0     st6580_6780-0_53 ENA
+sd stagdgW96V2-01 rman_staging-01 stagdgW96V2 0 821975040 2/0     st6580_6780-0_55 ENA
+sd stagdgW98V2-01 rman_staging-01 stagdgW98V2 0 821975040 3/0     st6580_6780-0_57 ENA
+sd stagdgW9bV2-01 rman_staging-01 stagdgW9bV2 0 821975040 4/0     st6580_6780-0_59 ENA
+sd stagdgW9dV2-01 rman_staging-01 stagdgW9dV2 0 821975040 5/0     st6580_6780-0_61 ENA
+sd stagdgW91V2-01 rman_staging-01 stagdgW91V2 0 821975040 6/0     st6580_6780-0_101 ENA
+sd stagdgW93V2-01 rman_staging-01 stagdgW93V2 0 821975040 7/0     st6580_6780-0_103 ENA
+sd stagdgW95V2-01 rman_staging-01 stagdgW95V2 0 821975040 8/0     st6580_6780-0_105 ENA
+sd stagdgW97V2-01 rman_staging-01 stagdgW97V2 0 821975040 9/0     st6580_6780-0_107 ENA
+sd stagdgW99V2-01 rman_staging-01 stagdgW99V2 0 821975040 10/0    st6580_6780-0_109 ENA
+sd stagdgW9aV2-01 rman_staging-01 stagdgW9aV2 0 821975040 11/0    st6580_6780-0_111 ENA
+sd stagdgW9cV2-01 rman_staging-01 stagdgW9cV2 0 821975040 12/0    st6580_6780-0_113 ENA
+sd stagdgW9eV2-01 rman_staging-01 stagdgW9eV2 0 821975040 13/0    st6580_6780-0_115 ENA
+sd stagdgW9fV2-01 rman_staging-01 stagdgW9fV2 0 821975040 14/0    st6580_6780-0_117 ENA
+sd WRman_V1-01  rman_staging-01 WRman_V1 0     821975040 15/0     st6580_6780-0_132 ENA
+sd WRman_V2-01  rman_staging-01 WRman_V2 0     821975040 16/0     st6580_6780-0_84 ENA
+sd WRman_V3-01  rman_staging-01 WRman_V3 0     821975040 17/0     st6580_6780-0_133 ENA
+sd WRman_V4-01  rman_staging-01 WRman_V4 0     821975040 18/0     st6580_6780-0_85 ENA
+sd WRman_V5-01  rman_staging-01 WRman_V5 0     821975040 19/0     st6580_6780-0_86 ENA
+sd WRman_V6-01  rman_staging-01 WRman_V6 0     821975040 20/0     st6580_6780-0_134 ENA
+sd WRman_V7-01  rman_staging-01 WRman_V7 0     821975040 21/0     st6580_6780-0_87 ENA
+sd WRman_V8-01  rman_staging-01 WRman_V8 0     821975040 22/0     st6580_6780-0_135 ENA
+sd WRman_V9-01  rman_staging-01 WRman_V9 0     821975040 23/0     st6580_6780-0_88 ENA
+pl rman_staging-02 rman_staging ENABLED ACTIVE 19727400960 STRIPE 24/1024  RW
+sd stagdgR92V2-01 rman_staging-02 stagdgR92V2 0 821975040 0/0     st6580_6780-2_76 ENA
+sd stagdgR94V2-01 rman_staging-02 stagdgR94V2 0 821975040 1/0     st6580_6780-2_77 ENA
+sd stagdgR96V2-01 rman_staging-02 stagdgR96V2 0 821975040 2/0     st6580_6780-2_78 ENA
+sd stagdgR98V2-01 rman_staging-02 stagdgR98V2 0 821975040 3/0     st6580_6780-2_79 ENA
+sd stagdgR9aV2-01 rman_staging-02 stagdgR9aV2 0 821975040 4/0     st6580_6780-2_80 ENA
+sd stagdgR9cV2-01 rman_staging-02 stagdgR9cV2 0 821975040 5/0     st6580_6780-2_81 ENA
+sd stagdgR9eV2-01 rman_staging-02 stagdgR9eV2 0 821975040 6/0     st6580_6780-2_82 ENA
+sd stagdgR91V2-01 rman_staging-02 stagdgR91V2 0 821975040 7/0     st6580_6780-2_95 ENA
+sd stagdgR93V2-01 rman_staging-02 stagdgR93V2 0 821975040 8/0     st6580_6780-2_96 ENA
+sd stagdgR95V2-01 rman_staging-02 stagdgR95V2 0 821975040 9/0     st6580_6780-2_97 ENA
+sd stagdgR97V2-01 rman_staging-02 stagdgR97V2 0 821975040 10/0    st6580_6780-2_98 ENA
+sd stagdgR99V2-01 rman_staging-02 stagdgR99V2 0 821975040 11/0    st6580_6780-2_99 ENA
+sd stagdgR9bV2-01 rman_staging-02 stagdgR9bV2 0 821975040 12/0    st6580_6780-2_100 ENA
+sd stagdgR9dV2-01 rman_staging-02 stagdgR9dV2 0 821975040 13/0    st6580_6780-2_101 ENA
+sd stagdgR9fV2-01 rman_staging-02 stagdgR9fV2 0 821975040 14/0    st6580_6780-2_102 ENA
+sd DRman_V6-01  rman_staging-02 DRman_V6 0     821975040 15/0     st6580_6780-2_2 ENA
+sd DRman_V7-01  rman_staging-02 DRman_V7 0     821975040 16/0     st6580_6780-2_86 ENA
+sd DRman_V5-01  rman_staging-02 DRman_V5 0     821975040 17/0     st6580_6780-2_85 ENA
+sd DRman_V9-01  rman_staging-02 DRman_V9 0     821975040 18/0     st6580_6780-2_87 ENA
+sd DRman_V3-01  rman_staging-02 DRman_V3 0     821975040 19/0     st6580_6780-2_84 ENA
+sd DRman_V4-01  rman_staging-02 DRman_V4 0     821975040 20/0     st6580_6780-2_1 ENA
+sd DRman_V8-01  rman_staging-02 DRman_V8 0     821975040 21/0     st6580_6780-2_3 ENA
+sd DRman_V1-01  rman_staging-02 DRman_V1 0     821975040 22/0     st6580_6780-2_83 ENA
+sd DRman_V2-01  rman_staging-02 DRman_V2 0     821975040 23/0     st6580_6780-2_0 ENA
+
+Performance Stats 
+=================
+                     OPERATIONS          BLOCKS           AVG TIME(ms)
+TYP NAME              READ     WRITE      READ     WRITE   READ  WRITE
+Fri Jul 17 19:00:05 2015
+sd  DRman_V1-01          0        13        0m        5m   0.00 177.58
+sd  DRman_V2-01          0        22        0m        5m   0.00 174.33
+sd  DRman_V3-01          0        22        0m        5m   0.00 153.35
+sd  DRman_V4-01          0        14        0m        5m   0.00 156.40
+sd  DRman_V5-01          0        25        0m        6m   0.00 152.51
+sd  DRman_V6-01          0        28        0m        7m   0.00 139.77
+sd  DRman_V7-01          0        18        0m        8m   0.00 236.90
+sd  DRman_V8-01          0        28        0m        7m   0.00 287.26
+sd  DRman_V9-01          0        19        0m        8m   0.00 463.91
+sd  WRman_V1-01          0        30        0m        7m   0.00   3.24
+sd  WRman_V2-01          0        18        0m        8m   0.00   3.83
+sd  WRman_V3-01          0        31        0m        8m   0.00   3.07
+sd  WRman_V4-01          0        18        0m        8m   0.00   3.58
+sd  WRman_V5-01          0        31        0m        7m   0.00   2.88
+sd  WRman_V6-01          0        18        0m        7m   0.00   5.28
+sd  WRman_V7-01          0        29        0m        7m   0.00   3.25
+sd  WRman_V8-01          0        16        0m        7m   0.00   4.50
+sd  WRman_V9-01          0        28        0m        7m   0.00   3.07
+sd  stagdgR9aV2-01         0        14        0m        7m   0.00   8.31
+sd  stagdgR9bV2-01         0        16        0m        7m   0.00   8.76
+sd  stagdgR9cV2-01         0        29        0m        7m   0.00   6.05
+sd  stagdgR9dV2-01         0        34        0m        7m   0.00   6.07
+sd  stagdgR9eV2-01         0        14        0m        7m   0.00   7.34
+sd  stagdgR9fV2-01         0        16        0m        7m   0.00   7.43
+sd  stagdgR91V2-01         0        28        0m        7m   0.00   5.47
+sd  stagdgR92V2-01         0        15        0m        7m   0.00   7.81
+sd  stagdgR93V2-01         0        14        0m        7m   0.00  43.55
+sd  stagdgR94V2-01         0        27        0m        6m   0.00   7.04
+sd  stagdgR95V2-01         0        29        0m        7m   0.00   6.27
+sd  stagdgR96V2-01         0        13        0m        6m   0.00   8.81
+sd  stagdgR97V2-01         0        15        0m        7m   0.00  10.11
+sd  stagdgR98V2-01         0        26        0m        6m   0.00   6.66
+sd  stagdgR99V2-01         0        28        0m        7m   0.00   6.76
+sd  stagdgW9aV2-01         0        28        0m        7m   0.00   6.26
+sd  stagdgW9bV2-01         0        14        0m        7m   0.00  15.35
+sd  stagdgW9cV2-01         0        16        0m        7m   0.00   4.81
+sd  stagdgW9dV2-01         0        29        0m        7m   0.00  10.44
+sd  stagdgW9eV2-01         0        34        0m        7m   0.00   2.75
+sd  stagdgW9fV2-01         0        16        0m        7m   0.00  12.11
+sd  stagdgW91V2-01         0        14        0m        7m   0.00  13.87
+sd  stagdgW92V2-01         0        15        0m        7m   0.00   4.41
+sd  stagdgW93V2-01         0        28        0m        7m   0.00   9.59
+sd  stagdgW94V2-01         0        27        0m        6m   0.00   3.14
+sd  stagdgW95V2-01         0        14        0m        7m   0.00  15.37
+sd  stagdgW96V2-01         0        13        0m        6m   0.00   4.90
+sd  stagdgW97V2-01         0        29        0m        7m   0.00  10.92
+sd  stagdgW98V2-01         0        26        0m        6m   0.00   3.15
+sd  stagdgW99V2-01         0        15        0m        7m   0.00  15.67
+
+                     OPERATIONS          BLOCKS           AVG TIME(ms)
+TYP NAME              READ     WRITE      READ     WRITE   READ  WRITE
+Fri Jul 17 19:00:06 2015
+sd  DRman_V1-01          0        16        0m        7m   0.00 321.28
+sd  DRman_V2-01          0        25        0m        6m   0.00 305.65
+sd  DRman_V3-01          0        29        0m        7m   0.00 273.05
+sd  DRman_V4-01          0        16        0m        7m   0.00 207.96
+sd  DRman_V5-01          0        27        0m        7m   0.00 178.32
+sd  DRman_V6-01          0        28        0m        7m   0.00 224.21
+sd  DRman_V7-01          0        19        0m        8m   0.00 204.67
+sd  DRman_V8-01          0        32        0m        8m   0.00 478.65
+sd  DRman_V9-01          0        15        0m        7m   0.00 594.22
+sd  WRman_V1-01          0        26        0m        7m   0.00   3.89
+sd  WRman_V2-01          0        17        0m        7m   0.00   5.58
+sd  WRman_V3-01          0        25        0m        6m   0.00   5.56
+sd  WRman_V4-01          0        15        0m        6m   0.00   8.49
+sd  WRman_V5-01          0        24        0m        6m   0.00   5.58
+sd  WRman_V6-01          0        14        0m        6m   0.00   7.89
+sd  WRman_V7-01          0        28        0m        7m   0.00   6.51
+sd  WRman_V8-01          0        17        0m        8m   0.00   7.40
+sd  WRman_V9-01          0        33        0m        8m   0.00   5.90
+sd  stagdgR9aV2-01         0        18        0m        8m   0.00   9.43
+sd  stagdgR9bV2-01         0        18        0m        7m   0.00   7.75
+sd  stagdgR9cV2-01         0        30        0m        8m   0.00   7.47
+sd  stagdgR9dV2-01         0        30        0m        7m   0.00   6.38
+sd  stagdgR9eV2-01         0        18        0m        8m   0.00   8.93
+sd  stagdgR9fV2-01         0        17        0m        7m   0.00  10.59
+sd  stagdgR91V2-01         0        31        0m        8m   0.00   6.57
+sd  stagdgR92V2-01         0        21        0m        9m   0.00  10.36
+sd  stagdgR93V2-01         0        18        0m        8m   0.00   8.44
+sd  stagdgR94V2-01         0        37        0m        9m   0.00   8.11
+sd  stagdgR95V2-01         0        29        0m        7m   0.00   7.51
+sd  stagdgR96V2-01         0        20        0m        9m   0.00   9.57
+sd  stagdgR97V2-01         0        17        0m        7m   0.00   8.94
+sd  stagdgR98V2-01         0        33        0m        8m   0.00   7.80
+sd  stagdgR99V2-01         0        30        0m        7m   0.00   6.24
+sd  stagdgW9aV2-01         0        30        0m        7m   0.00  14.80
+sd  stagdgW9bV2-01         0        18        0m        8m   0.00  13.95
+sd  stagdgW9cV2-01         0        18        0m        7m   0.00   6.91
+sd  stagdgW9dV2-01         0        31        0m        8m   0.00  10.52
+sd  stagdgW9eV2-01         0        30        0m        7m   0.00   4.51
+sd  stagdgW9fV2-01         0        17        0m        7m   0.00  12.79
+sd  stagdgW91V2-01         0        18        0m        8m   0.00  15.12
+sd  stagdgW92V2-01         0        22        0m       10m   0.00   6.44
+sd  stagdgW93V2-01         0        31        0m        8m   0.00  11.04
+sd  stagdgW94V2-01         0        37        0m        9m   0.00   5.45
+sd  stagdgW95V2-01         0        18        0m        8m   0.00  14.97
+sd  stagdgW96V2-01         0        20        0m        9m   0.00   6.61
+sd  stagdgW97V2-01         0        29        0m        7m   0.00  11.11
+sd  stagdgW98V2-01         0        34        0m        9m   0.00   4.80
+sd  stagdgW99V2-01         0        17        0m        7m   0.00  15.42
+
+Good Performance
+================
+
+Below shows the stats for a normal performance - and we see the write(ms) for the DRman_vX-01 inline with the other VxVM subdisks.
+                     OPERATIONS          BLOCKS           AVG TIME(ms)
+TYP NAME              READ     WRITE      READ     WRITE   READ  WRITE
+Sun Jul 19 19:00:00 2015
+sd  DRman_V1-01          0        32        0m       16m   0.00  15.55
+sd  DRman_V2-01          0        65        0m       16m   0.00  10.73
+sd  DRman_V3-01          0        64        0m       16m   0.00  10.69
+sd  DRman_V4-01          0        33        0m       16m   0.00  11.92
+sd  DRman_V5-01          0        66        0m       16m   0.00  10.65
+sd  DRman_V6-01          0        75        0m       17m   0.00   6.92
+sd  DRman_V7-01          0        37        0m       16m   0.00  13.11
+sd  DRman_V8-01          0        64        0m       16m   0.00   9.74
+sd  DRman_V9-01          0        32        0m       16m   0.00  14.59
+sd  WRman_V1-01          0        74        0m       16m   0.00   7.54
+sd  WRman_V2-01          0        38        0m       17m   0.00   7.11
+sd  WRman_V3-01          0        67        0m       16m   0.00   8.59
+sd  WRman_V4-01          0        33        0m       16m   0.00   5.93
+sd  WRman_V5-01          0        65        0m       16m   0.00   4.99
+sd  WRman_V6-01          0        33        0m       16m   0.00  13.02
+sd  WRman_V7-01          0        64        0m       16m   0.00   6.64
+sd  WRman_V8-01          0        32        0m       16m   0.00  13.40
+sd  WRman_V9-01          0        64        0m       16m   0.00   7.22
+sd  stagdgR9aV2-01         0        31        0m       15m   0.00  15.54
+sd  stagdgR9bV2-01         0        36        0m       17m   0.00  13.39
+sd  stagdgR9cV2-01         0        64        0m       16m   0.00  11.73
+sd  stagdgR9dV2-01         0        70        0m       17m   0.00   9.90
+sd  stagdgR9eV2-01         0        32        0m       16m   0.00  34.43
+sd  stagdgR9fV2-01         0        33        0m       16m   0.00  13.91
+sd  stagdgR91V2-01         0        67        0m       16m   0.00  11.37
+sd  stagdgR92V2-01         0        38        0m       16m   0.00  13.25
+sd  stagdgR93V2-01         0        40        0m       17m   0.00  14.22
+sd  stagdgR94V2-01         0        66        0m       16m   0.00  12.05
+sd  stagdgR95V2-01         0        70        0m       17m   0.00  11.38
+sd  stagdgR96V2-01         0        32        0m       16m   0.00  15.85
+sd  stagdgR97V2-01         0        27        0m       13m   0.00  24.34
+sd  stagdgR98V2-01         0        66        0m       16m   0.00  12.36
+sd  stagdgR99V2-01         0        70        0m       17m   0.00  10.94
+sd  stagdgW9aV2-01         0        70        0m       17m   0.00  23.32
+sd  stagdgW9bV2-01         0        34        0m       17m   0.00  33.71
+sd  stagdgW9cV2-01         0        36        0m       17m   0.00  20.80
+sd  stagdgW9dV2-01         0        65        0m       16m   0.00  23.67
+sd  stagdgW9eV2-01         0        70        0m       17m   0.00  23.78
+sd  stagdgW9fV2-01         0        34        0m       17m   0.00  38.03
+sd  stagdgW91V2-01         0        34        0m       17m   0.00  38.88
+sd  stagdgW92V2-01         0        37        0m       16m   0.00  22.21
+sd  stagdgW93V2-01         0        64        0m       15m   0.00 306.66
+sd  stagdgW94V2-01         0        64        0m       15m   0.00  27.69
+sd  stagdgW95V2-01         0        40        0m       17m   0.00  30.68
+sd  stagdgW96V2-01         0        31        0m       15m   0.00  27.50
+sd  stagdgW97V2-01         0        88        0m       21m   0.00  98.67
+sd  stagdgW98V2-01         0        68        0m       16m   0.00  38.94
+sd  stagdgW99V2-01         0        35        0m       17m   0.00  38.67
+                     OPERATIONS          BLOCKS           AVG TIME(ms)
+TYP NAME              READ     WRITE      READ     WRITE   READ  WRITE
+Sun Jul 19 19:00:01 2015
+sd  DRman_V1-01          0        37        0m       18m   0.00  22.45
+sd  DRman_V2-01          0        75        0m       18m   0.00  11.60
+sd  DRman_V3-01          0        79        0m       19m   0.00  19.01
+sd  DRman_V4-01          0        39        0m       19m   0.00  16.77
+sd  DRman_V5-01          0        75        0m       18m   0.00  18.98
+sd  DRman_V6-01          0        84        0m       19m   0.00  11.78
+sd  DRman_V7-01          0        39        0m       18m   0.00  23.49
+sd  DRman_V8-01          0        78        0m       19m   0.00  12.29
+sd  DRman_V9-01          0        38        0m       19m   0.00  23.11
+sd  WRman_V1-01          0        80        0m       18m   0.00  20.53
+sd  WRman_V2-01          0        38        0m       18m   0.00  13.51
+sd  WRman_V3-01          0        74        0m       18m   0.00  20.41
+sd  WRman_V4-01          0        36        0m       18m   0.00  13.80
+sd  WRman_V5-01          0        76        0m       18m   0.00  10.82
+sd  WRman_V6-01          0        37        0m       18m   0.00  22.03
+sd  WRman_V7-01          0        75        0m       18m   0.00  10.92
+sd  WRman_V8-01          0        37        0m       18m   0.00  24.29
+sd  WRman_V9-01          0        71        0m       17m   0.00  10.47
+sd  stagdgR9aV2-01         0        38        0m       18m   0.00  18.00
+sd  stagdgR9bV2-01         0        38        0m       18m   0.00  24.96
+sd  stagdgR9cV2-01         0        73        0m       18m   0.00  14.19
+sd  stagdgR9dV2-01         0        76        0m       18m   0.00  20.71
+sd  stagdgR9eV2-01         0        36        0m       18m   0.00  16.62
+sd  stagdgR9fV2-01         0        38        0m       19m   0.00  25.45
+sd  stagdgR91V2-01         0        67        0m       16m   0.00  17.07
+sd  stagdgR92V2-01         0        42        0m       18m   0.00  15.03
+sd  stagdgR93V2-01         0        36        0m       16m   0.00  22.55
+sd  stagdgR94V2-01         0        72        0m       18m   0.00  12.18
+sd  stagdgR95V2-01         0        67        0m       16m   0.00  19.11
+sd  stagdgR96V2-01         0        39        0m       18m   0.00  16.33
+sd  stagdgR97V2-01         0        40        0m       20m   0.00 110.71
+sd  stagdgR98V2-01         0        74        0m       18m   0.00  13.19
+sd  stagdgR99V2-01         0        72        0m       17m   0.00  19.27
+sd  stagdgW9aV2-01         0        71        0m       17m   0.00  48.79
+sd  stagdgW9bV2-01         0        35        0m       17m   0.00  45.86
+sd  stagdgW9cV2-01         0        37        0m       18m   0.00  37.02
+sd  stagdgW9dV2-01         0        69        0m       17m   0.00  37.38
+sd  stagdgW9eV2-01         0        73        0m       18m   0.00  49.59
+sd  stagdgW9fV2-01         0        35        0m       17m   0.00  52.08
+sd  stagdgW91V2-01         0        34        0m       17m   0.00  52.98
+sd  stagdgW92V2-01         0        41        0m       17m   0.00  27.31
+sd  stagdgW93V2-01         0        89        0m       22m   0.00 199.03
+sd  stagdgW94V2-01         0        71        0m       17m   0.00  39.47
+sd  stagdgW95V2-01         0        37        0m       17m   0.00  53.11
+sd  stagdgW96V2-01         0        39        0m       18m   0.00  40.53
+sd  stagdgW97V2-01         0        68        0m       17m   0.00  36.55
+sd  stagdgW98V2-01         0        69        0m       17m   0.00  43.58
+sd  stagdgW99V2-01         0        34        0m       17m   0.00  46.20
+
+

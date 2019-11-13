@@ -1,0 +1,15 @@
+1.) Verify the Axiom is in a good state to perform the downgrade
+    - Slammers need to be powered-off 
+
+2.) Downgrade Axiom firmware to official 05.04.18
+    What are we downgrading - the Slammers powered off?
+	
+3.) Replace the disk-drives on Brick005 and Brick001 as per action plan
+
+4.) Wait 10 minutes for the Brick replacements
+
+5.) When Pilots are ready for the COD reset, the pilots will reboot and we will need to poweron the slammers
+
+
+
+	

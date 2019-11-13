@@ -1,0 +1,18 @@
+vi /etc/centrifydc/centrifydc.conf
+#
+# Allow these users to authenticate locally.
+# If something goes wrong with either the network, AD, or adclient, no AD
+# users will be able to get in. Users listed here - provided they are also
+# mapped users - will still have local access.
+# To log in locally, append "@localhost" to your user name when logging in
+# (example "root@localhost"). Otherwise, your AD password will be required.
+#
+# This value is controlled by group policy under
+#      "Computer Configuration"
+#      -> "Centrify Settings"
+#         -> "DirectControl Settings"
+#            -> "Login Settings"
+#               -> "Allow localhost users"
+
+pam.allow.override: root
+

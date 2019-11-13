@@ -1,0 +1,32 @@
+Vector Installation
+
+docker pull netflixoss/vector:latest
+
+Install Performance Co-Pilot (Centos 7)
+yum install pcp
+yum install pcp-webapi
+
+
+systemctl start pmcd
+systemctl start pmlogger
+systemctl start pmwebd
+
+systemctl status pmcd pmlogger pmwebd
+
+docker run -d --name vector -p 80:80 netflixoss/vector:latest
+
+Point browser to webserver where vector is running ... http://10.26.45.160:80
+
+DATE=`date '+%Y.%d.%m.%H.%M.%S'`
+/usr/sbin/vxstat -g proddg -i 1 -c 3600 -u m >> /var/tmp/perf_stats/output/prddg_vxstat.${DATE}.out &
+/usr/sbin/vxstat -g proddg -s -i 1 -c 3600 -u m >> /var/tmp/perf_stats/output/prddg_vxstat_subdisks.${DATE}.out &
+
+
+# yum install pcp
+# firewall-cmd --add-port=44321/tcp --permanent
+# firewall-cmd --reload
+# systemctl start pmcd
+# systemctl enable pmcd
+
+
+

@@ -1,0 +1,194 @@
+Adding a License Keys
+---------------------
+
+swd77:admin> licenseadd JA7QaNJFYWErXrgtEaNYBmEZPYNTTXJPB7YLB
+adding license-key [JA7QaNJFYWErXrgtEaNYBmEZPYNTTXJPB7YLB]
+For license change to take effect, use portdisable/portenable commands on affected ports...
+If not Live quickest option is-
+swd77:admin> switchdisable
+swd77:admin> switchenable
+
+
+
+Brocade Firmware Upgrade Procedure
+----------------------------------
+Prerequisites
+-------------
+- Add additional license keys first. However, port license keys can be added anytime.
+- For a non-disruptive upgrade you will need to upgrade in this order 
+  v6.4.0c --> v7.0.2e1 --> v7.1.2b1 --> v7.2.1c1
+- To skip firmware versions you will need to issue firmwaredownload command with the "-s"  IE.. wksefbrcd01p:admin> firmwaredownload -s  
+- For Oracle downloaded firmware, extract the patch zip file and then extract the brocade version zip file IE unzip v7.2.1.c1.zip
+- For Oracle downloaded firmware the path to the FOS firmwaredownload /<PATH>/<oracle-patchid>/<v7.x.x>/..
+  IE for v7.2.1c1 under a directory called /FOS
+  /FOS/151130-04/v7.2.1c1/
+- Disruptive upgrade from Fabric OS 7.0.x to Fabric OS 7.2.x is supported but not from 6.4.0c.
+- If switch is on 6.4.0c - upgrade to v7.0.2e1 first... the firmware version can be any v7.0.x. NOTE: Use the latest stable f/w version for that release
+- Enable FTP and use you own account or cubicadm. All files f/w should have the correct permissions for that user to be-able to read
+  svcadm enable ftp
+  NOTE: Must be disable afterwards for secrity reasons. Once on v7.0.2e1, SFTP can be used. 
+
+Steps
+-----
+
+1.) F/W Upgrade v6.4.0c --> v7.0.2e1
+    swd77:admin> firmwaredownload -p ftp 10.70.160.110,root,/FOS/149139-03/v7.0.2e1/,Blu5@Wat5r
+	swd77:admin> firmwaredownload -p ftp 10.26.78.61,cubicadm,/FOS/149139-03/v7.0.2e1/,Blu5@Wat5r
+	Password: xxxxxxx
+	Server IP: 10.70.160.110, Protocol IPv4
+    Checking system settings for firmwaredownload...
+    System settings check passed.
+
+    You can run firmwaredownloadstatus to get the status
+    of this command.
+
+    This command will cause a warm/non-disruptive boot but will
+    require that existing telnet, secure telnet or SSH sessions
+    be restarted.
+
+    Do you want to continue (Y/N) [Y]: y
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    Preparing for firmwaredownload...
+	Removing nonet-lib
+    Start to install packages...
+    dir                         ##################################################
+    ldconfig                    ##################################################
+	sysstat                     ##################################################
+    prom-440epx                 ##################################################
+	.....CONTINUED - REDUCED FOR READABILTIY....
+    Please avoid powering off the system during prom update.
+    ipv6                        ##################################################
+    awk                         ##################################################
+    ipsec                       ##################################################
+    Removing unneeded files, please wait ...
+    Finished removing unneeded files.
+	
+    All packages have been downloaded successfully.
+    Firmware has been downloaded to the secondary partition of the switch.
+    HA Rebooting ...
+    **** Reconnect ssh session to switch
+    swd77:admin> firmwaredownloadstatus
+    [1]: Thu Nov 27 14:28:26 2014
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    [2]: Thu Nov 27 14:33:24 2014 
+    Firmware has been downloaded to the secondary partition of the switch.
+    [3]: Thu Nov 27 14:34:53 2014
+    The firmware commit operation has started. This may take up to 10 minutes.
+	[4]: Thu Nov 27 14:38:18 2014
+    The commit operation has completed successfully.
+    [5]: Thu Nov 27 14:38:18 2014
+    Firmwaredownload command has completed successfully. Use firmwareshow to verify the firmware versions.
+    swd77:admin> firmwareshow
+    Appl     Primary/Secondary Versions
+    ------------------------------------------
+    FOS      v7.0.2e1
+             v7.0.2e1
+
+
+2.) F/W Upgrade v7.0.2e1 --> v7.1.2b1
+	swd77:admin> firmwaredownload 10.70.160.110,root,/FOS/151499-03/v7.1.2b1/,Blu5@Wat5r
+	swd77:admin> firmwaredownload -p ftp 10.26.78.61,cubicadm,/FOS/151499-03/v7.1.2b1/,Blu5@Wat5r
+	Password: xxxxxxx
+Server IP: 10.70.160.110, Protocol IPv4
+    Checking system settings for firmwaredownload...
+    System settings check passed.
+
+    You can run firmwaredownloadstatus to get the status
+    of this command.
+
+    This command will cause a warm/non-disruptive boot but will
+    require that existing telnet, secure telnet or SSH sessions
+    be restarted.
+
+    Do you want to continue (Y/N) [Y]: y
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    Preparing for firmwaredownload...
+	Removing nonet-lib
+    Start to install packages...
+    dir                         ##################################################
+    ldconfig                    ##################################################
+	sysstat                     ##################################################
+    prom-440epx                 ##################################################
+	.....CONTINUED - REDUCED FOR READABILTIY....
+    Please avoid powering off the system during prom update.
+    ipv6                        ##################################################
+    awk                         ##################################################
+    ipsec                       ##################################################
+    Removing unneeded files, please wait ...
+    Finished removing unneeded files.
+	
+    All packages have been downloaded successfully.
+    Firmware has been downloaded to the secondary partition of the switch.
+    HA Rebooting ...
+    **** Reconnect ssh session to switch
+    swd77:admin> firmwaredownloadstatus
+    [1]: Thu Nov 27 14:28:26 2014
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    [2]: Thu Nov 27 14:33:24 2014 
+    Firmware has been downloaded to the secondary partition of the switch.
+    [3]: Thu Nov 27 14:34:53 2014
+    The firmware commit operation has started. This may take up to 10 minutes.
+	[4]: Thu Nov 27 14:38:18 2014
+    The commit operation has completed successfully.
+    [5]: Thu Nov 27 14:38:18 2014
+    Firmwaredownload command has completed successfully. Use firmwareshow to verify the firmware versions.
+    swd77:admin> firmwareshow
+    Appl     Primary/Secondary Versions
+    ------------------------------------------
+    FOS      v7.1.2b1
+             v7.1.2b1
+3.) F/W Upgrade v7.1.2b1 --> v7.2.1c1
+	swd77:admin> firmwaredownload 10.70.160.110,ledgerd,/FOS/151499-03/v7.1.2b1/
+	Password: xxxxxxx
+Server IP: 10.70.160.110, Protocol IPv4
+    Checking system settings for firmwaredownload...
+    System settings check passed.
+
+    You can run firmwaredownloadstatus to get the status
+    of this command.
+
+    This command will cause a warm/non-disruptive boot but will
+    require that existing telnet, secure telnet or SSH sessions
+    be restarted.
+
+    Do you want to continue (Y/N) [Y]: y
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    Preparing for firmwaredownload...
+	Removing nonet-lib
+    Start to install packages...
+    dir                         ##################################################
+    ldconfig                    ##################################################
+	sysstat                     ##################################################
+    prom-440epx                 ##################################################
+	.....CONTINUED - REDUCED FOR READABILTIY....
+    Please avoid powering off the system during prom update.
+    ipv6                        ##################################################
+    awk                         ##################################################
+    ipsec                       ##################################################
+    Removing unneeded files, please wait ...
+    Finished removing unneeded files.
+	
+    All packages have been downloaded successfully.
+    Firmware has been downloaded to the secondary partition of the switch.
+    HA Rebooting ...
+    **** Reconnect ssh session to switch
+    swd77:admin> firmwaredownloadstatus
+    [1]: Thu Nov 27 14:28:26 2014
+    Firmware is being downloaded to the switch. This step may take up to 30 minutes.
+    [2]: Thu Nov 27 14:33:24 2014 
+    Firmware has been downloaded to the secondary partition of the switch.
+    [3]: Thu Nov 27 14:34:53 2014
+    The firmware commit operation has started. This may take up to 10 minutes.
+	[4]: Thu Nov 27 14:38:18 2014
+    The commit operation has completed successfully.
+    [5]: Thu Nov 27 14:38:18 2014
+    Firmwaredownload command has completed successfully. Use firmwareshow to verify the firmware versions.
+    swd77:admin> firmwareshow
+    Appl     Primary/Secondary Versions
+    ------------------------------------------
+    FOS      v7.2.1c1
+             v7.2.1c1			 
+    
+
+
+

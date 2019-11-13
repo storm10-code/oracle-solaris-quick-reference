@@ -1,0 +1,13 @@
+installation ansible
+yum install yum-plugin-versionlock
+yum install policycoreutils-python setroubleshooting
+yum install perl-Expect
+yum install perl-Crypt-SSLeay
+yum install perl-LWP-Protocol-https
+
+yum install ansible
+
+bug with Jenkins - cannot delegate to locahost to self. Probably requires sudo settings up.
+
+
+

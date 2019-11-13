@@ -1,0 +1,370 @@
+root@wksefpd01p # more messages.2
+Apr 10 14:30:31 wksefpd01p ntpd[572]: [ID 702911 daemon.notice] ntpd exiting on signal 15 (Terminated)
+Apr 10 14:30:31 wksefpd01p ntpd[27870]: [ID 702911 daemon.notice] ntpd 4.2.8@1.3265-o Fri Jan  2 19:58:36 UTC 2015 (1): Starting
+Apr 12 00:43:01 wksefpd01p explorer: [ID 702911 daemon.notice] Explorer started
+Apr 12 00:51:41 wksefpd01p genunix: [ID 780570 kern.info] modload of socketmod/sockrds failed
+Apr 12 00:51:41 wksefpd01p last message repeated 3 times
+Apr 12 00:54:21 wksefpd01p SC Alert: [ID 304829 daemon.notice] Audit | minor: root : Open Session : object = "/SP/sessions/18979/type" : value = "she
+ll" : success
+Apr 12 00:54:21 wksefpd01p SC Alert: [ID 473782 daemon.notice] Audit | minor: host_root : Close Session : object = "/SP/sessions/18979/type" : value
+= "shell" : success
+Apr 12 00:56:45 wksefpd01p SC Alert: [ID 486367 daemon.notice] Audit | minor: root : Open Session : object = "/SP/sessions/18980/type" : value = "she
+ll" : success
+Apr 12 00:56:47 wksefpd01p SC Alert: [ID 655320 daemon.notice] Audit | minor: host_root : Close Session : object = "/SP/sessions/18980/type" : value
+= "shell" : success
+Apr 12 01:04:13 wksefpd01p explorer: [ID 702911 daemon.notice] Explorer finished
+Apr 14 03:24:15 wksefpd01p automountd[18267]: [ID 834250 daemon.error] Mount of /export/home/arcsight on /home/arcsight: No such file or directory
+Apr 16 10:40:54 wksefpd01p fctl: [ID 517869 kern.warning] WARNING: fp(9)::GPN_ID for D_ID=b0100 failed
+Apr 16 10:40:54 wksefpd01p fctl: [ID 517869 kern.warning] WARNING: fp(9)::N_x Port with D_ID=b0100, PWWN=21000024ff5ae617 disappeared from fabric
+Apr 16 10:40:54 wksefpd01p fctl: [ID 517869 kern.warning] WARNING: fp(8)::GPN_ID for D_ID=a0100 failed
+Apr 16 10:40:54 wksefpd01p fctl: [ID 517869 kern.warning] WARNING: fp(8)::N_x Port with D_ID=a0100, PWWN=21000024ff5ae616 disappeared from fabric
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1c (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1b (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1a (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=19 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=18 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=17 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=16 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=15 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=14 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=13 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=12 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=11 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=10 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=f (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=e (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=d (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=c (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=b (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=a (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=9 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=8 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=7 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=6 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=5 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=4 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=3 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=2 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0,1/fp@0,0 (fcp9):
+Apr 16 10:41:14 wksefpd01p      offlining lun=0 (trace=0), target=b0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1c (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1b (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1a (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=19 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=18 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=17 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=16 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=15 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=14 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=13 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=12 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=11 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=10 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=f (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=e (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=d (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=c (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=b (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=a (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=9 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=8 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=7 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=6 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=5 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=4 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=3 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=2 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=1 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p scsi: [ID 243001 kern.info] /pci@300/pci@1/pci@0/pci@4/SUNW,emlxs@0/fp@0,0 (fcp8):
+Apr 16 10:41:14 wksefpd01p      offlining lun=0 (trace=0), target=a0100 (trace=2800004)
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080022004796 (ssd44) multipath status: optimal: path 3 fp8/ssd@w2100002
+4ff5ae616,1c is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080021004796 (ssd43) multipath status: optimal: path 4 fp8/ssd@w2100002
+4ff5ae616,1b is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080020004796 (ssd42) multipath status: optimal: path 5 fp8/ssd@w2100002
+4ff5ae616,1a is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001f004796 (ssd40) multipath status: optimal: path 6 fp8/ssd@w2100002
+4ff5ae616,19 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001e004796 (ssd41) multipath status: optimal: path 7 fp8/ssd@w2100002
+4ff5ae616,18 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001d004796 (ssd38) multipath status: optimal: path 8 fp8/ssd@w2100002
+4ff5ae616,17 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001c004796 (ssd39) multipath status: optimal: path 9 fp8/ssd@w2100002
+4ff5ae616,16 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001b004796 (ssd37) multipath status: optimal: path 10 fp8/ssd@w210000
+24ff5ae616,15 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001a004796 (ssd36) multipath status: optimal: path 11 fp8/ssd@w210000
+24ff5ae616,14 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080019004796 (ssd35) multipath status: optimal: path 12 fp8/ssd@w210000
+24ff5ae616,13 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080018004796 (ssd34) multipath status: optimal: path 13 fp8/ssd@w210000
+24ff5ae616,12 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080017004796 (ssd33) multipath status: optimal: path 14 fp8/ssd@w210000
+24ff5ae616,11 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080016004796 (ssd32) multipath status: optimal: path 15 fp8/ssd@w210000
+24ff5ae616,10 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080015004796 (ssd16) multipath status: optimal: path 16 fp8/ssd@w210000
+24ff5ae616,f is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080014004796 (ssd17) multipath status: optimal: path 17 fp8/ssd@w210000
+24ff5ae616,e is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080013004796 (ssd18) multipath status: optimal: path 18 fp8/ssd@w210000
+24ff5ae616,d is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080012004796 (ssd14) multipath status: optimal: path 19 fp8/ssd@w210000
+24ff5ae616,c is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080011004796 (ssd15) multipath status: optimal: path 20 fp8/ssd@w210000
+24ff5ae616,b is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080010004796 (ssd11) multipath status: optimal: path 21 fp8/ssd@w210000
+24ff5ae616,a is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000f004796 (ssd12) multipath status: optimal: path 22 fp8/ssd@w210000
+24ff5ae616,9 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000e004796 (ssd13) multipath status: optimal: path 23 fp8/ssd@w210000
+24ff5ae616,8 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000d004796 (ssd10) multipath status: optimal: path 24 fp8/ssd@w210000
+24ff5ae616,7 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000c004796 (ssd8) multipath status: optimal: path 25 fp8/ssd@w2100002
+4ff5ae616,6 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000b004796 (ssd9) multipath status: optimal: path 26 fp8/ssd@w2100002
+4ff5ae616,5 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000a004796 (ssd7) multipath status: optimal: path 27 fp8/ssd@w2100002
+4ff5ae616,4 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080009004796 (ssd6) multipath status: optimal: path 28 fp8/ssd@w2100002
+4ff5ae616,3 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080007004796 (ssd3) multipath status: optimal: path 29 fp8/ssd@w2100002
+4ff5ae616,2 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080005004796 (ssd2) multipath status: optimal: path 30 fp8/ssd@w2100002
+4ff5ae616,1 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080002004796 (ssd0) multipath status: optimal: path 31 fp8/ssd@w2100002
+4ff5ae616,0 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080022004796 (ssd44) multipath status: optimal: path 94 fp9/ssd@w210000
+24ff5ae617,1c is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080021004796 (ssd43) multipath status: optimal: path 95 fp9/ssd@w210000
+24ff5ae617,1b is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080020004796 (ssd42) multipath status: optimal: path 96 fp9/ssd@w210000
+24ff5ae617,1a is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001f004796 (ssd40) multipath status: optimal: path 97 fp9/ssd@w210000
+24ff5ae617,19 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001e004796 (ssd41) multipath status: optimal: path 98 fp9/ssd@w210000
+24ff5ae617,18 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001d004796 (ssd38) multipath status: optimal: path 99 fp9/ssd@w210000
+24ff5ae617,17 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001c004796 (ssd39) multipath status: optimal: path 100 fp9/ssd@w21000
+024ff5ae617,16 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001b004796 (ssd37) multipath status: optimal: path 101 fp9/ssd@w21000
+024ff5ae617,15 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08001a004796 (ssd36) multipath status: optimal: path 102 fp9/ssd@w21000
+024ff5ae617,14 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080019004796 (ssd35) multipath status: optimal: path 103 fp9/ssd@w21000
+024ff5ae617,13 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080018004796 (ssd34) multipath status: optimal: path 104 fp9/ssd@w21000
+024ff5ae617,12 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080017004796 (ssd33) multipath status: optimal: path 105 fp9/ssd@w21000
+024ff5ae617,11 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080016004796 (ssd32) multipath status: optimal: path 106 fp9/ssd@w21000
+024ff5ae617,10 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080015004796 (ssd16) multipath status: optimal: path 107 fp9/ssd@w21000
+024ff5ae617,f is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080014004796 (ssd17) multipath status: optimal: path 108 fp9/ssd@w21000
+024ff5ae617,e is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080013004796 (ssd18) multipath status: optimal: path 109 fp9/ssd@w21000
+024ff5ae617,d is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080012004796 (ssd14) multipath status: optimal: path 110 fp9/ssd@w21000
+024ff5ae617,c is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080011004796 (ssd15) multipath status: optimal: path 111 fp9/ssd@w21000
+024ff5ae617,b is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080010004796 (ssd11) multipath status: optimal: path 112 fp9/ssd@w21000
+024ff5ae617,a is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000f004796 (ssd12) multipath status: optimal: path 113 fp9/ssd@w21000
+024ff5ae617,9 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000e004796 (ssd13) multipath status: optimal: path 114 fp9/ssd@w21000
+024ff5ae617,8 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000d004796 (ssd10) multipath status: optimal: path 115 fp9/ssd@w21000
+024ff5ae617,7 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000c004796 (ssd8) multipath status: optimal: path 116 fp9/ssd@w210000
+24ff5ae617,6 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000b004796 (ssd9) multipath status: optimal: path 117 fp9/ssd@w210000
+24ff5ae617,5 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b08000a004796 (ssd7) multipath status: optimal: path 118 fp9/ssd@w210000
+24ff5ae617,4 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080009004796 (ssd6) multipath status: optimal: path 119 fp9/ssd@w210000
+24ff5ae617,3 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080007004796 (ssd3) multipath status: optimal: path 120 fp9/ssd@w210000
+24ff5ae617,2 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080005004796 (ssd2) multipath status: optimal: path 121 fp9/ssd@w210000
+24ff5ae617,1 is offline
+Apr 16 10:41:14 wksefpd01p genunix: [ID 483743 kern.info] /scsi_vhci/ssd@g000b080002004796 (ssd0) multipath status: optimal: path 122 fp9/ssd@w210000
+24ff5ae617,0 is offline
+Apr 16 13:23:29 wksefpd01p fctl: [ID 517869 kern.warning] WARNING: fp(8)::N_x Port with D_ID=a0100, PWWN=21000024ff5ae616 reappeared in fabric
+Apr 16 13:23:29 wksefpd01p fctl: [ID 517869 kern.warning] WARNING: fp(9)::N_x Port with D_ID=b0100, PWWN=21000024ff5ae617 reappeared in fabric
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080022004796 (ssd44) multipath status: optimal: path 3 fp8/ssd@w2100002
+4ff5ae616,1c is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080021004796 (ssd43) multipath status: optimal: path 4 fp8/ssd@w2100002
+4ff5ae616,1b is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080020004796 (ssd42) multipath status: optimal: path 5 fp8/ssd@w2100002
+4ff5ae616,1a is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001f004796 (ssd40) multipath status: optimal: path 6 fp8/ssd@w2100002
+4ff5ae616,19 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001e004796 (ssd41) multipath status: optimal: path 7 fp8/ssd@w2100002
+4ff5ae616,18 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001d004796 (ssd38) multipath status: optimal: path 8 fp8/ssd@w2100002
+4ff5ae616,17 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001c004796 (ssd39) multipath status: optimal: path 9 fp8/ssd@w2100002
+4ff5ae616,16 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001b004796 (ssd37) multipath status: optimal: path 10 fp8/ssd@w210000
+24ff5ae616,15 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001a004796 (ssd36) multipath status: optimal: path 11 fp8/ssd@w210000
+24ff5ae616,14 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080019004796 (ssd35) multipath status: optimal: path 12 fp8/ssd@w210000
+24ff5ae616,13 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080018004796 (ssd34) multipath status: optimal: path 13 fp8/ssd@w210000
+24ff5ae616,12 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080017004796 (ssd33) multipath status: optimal: path 14 fp8/ssd@w210000
+24ff5ae616,11 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080016004796 (ssd32) multipath status: optimal: path 15 fp8/ssd@w210000
+24ff5ae616,10 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080015004796 (ssd16) multipath status: optimal: path 16 fp8/ssd@w210000
+24ff5ae616,f is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080014004796 (ssd17) multipath status: optimal: path 17 fp8/ssd@w210000
+24ff5ae616,e is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080013004796 (ssd18) multipath status: optimal: path 18 fp8/ssd@w210000
+24ff5ae616,d is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080012004796 (ssd14) multipath status: optimal: path 19 fp8/ssd@w210000
+24ff5ae616,c is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080011004796 (ssd15) multipath status: optimal: path 20 fp8/ssd@w210000
+24ff5ae616,b is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080010004796 (ssd11) multipath status: optimal: path 21 fp8/ssd@w210000
+24ff5ae616,a is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000f004796 (ssd12) multipath status: optimal: path 22 fp8/ssd@w210000
+24ff5ae616,9 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000e004796 (ssd13) multipath status: optimal: path 23 fp8/ssd@w210000
+24ff5ae616,8 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000d004796 (ssd10) multipath status: optimal: path 24 fp8/ssd@w210000
+24ff5ae616,7 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000c004796 (ssd8) multipath status: optimal: path 25 fp8/ssd@w2100002
+4ff5ae616,6 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000b004796 (ssd9) multipath status: optimal: path 26 fp8/ssd@w2100002
+4ff5ae616,5 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000a004796 (ssd7) multipath status: optimal: path 27 fp8/ssd@w2100002
+4ff5ae616,4 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080009004796 (ssd6) multipath status: optimal: path 28 fp8/ssd@w2100002
+4ff5ae616,3 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080007004796 (ssd3) multipath status: optimal: path 29 fp8/ssd@w2100002
+4ff5ae616,2 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080005004796 (ssd2) multipath status: optimal: path 30 fp8/ssd@w2100002
+4ff5ae616,1 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080002004796 (ssd0) multipath status: optimal: path 31 fp8/ssd@w2100002
+4ff5ae616,0 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080022004796 (ssd44) multipath status: optimal: path 94 fp9/ssd@w210000
+24ff5ae617,1c is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080021004796 (ssd43) multipath status: optimal: path 95 fp9/ssd@w210000
+24ff5ae617,1b is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080020004796 (ssd42) multipath status: optimal: path 96 fp9/ssd@w210000
+24ff5ae617,1a is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001f004796 (ssd40) multipath status: optimal: path 97 fp9/ssd@w210000
+24ff5ae617,19 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001e004796 (ssd41) multipath status: optimal: path 98 fp9/ssd@w210000
+24ff5ae617,18 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001d004796 (ssd38) multipath status: optimal: path 99 fp9/ssd@w210000
+24ff5ae617,17 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001c004796 (ssd39) multipath status: optimal: path 100 fp9/ssd@w21000
+024ff5ae617,16 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001b004796 (ssd37) multipath status: optimal: path 101 fp9/ssd@w21000
+024ff5ae617,15 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08001a004796 (ssd36) multipath status: optimal: path 102 fp9/ssd@w21000
+024ff5ae617,14 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080019004796 (ssd35) multipath status: optimal: path 103 fp9/ssd@w21000
+024ff5ae617,13 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080018004796 (ssd34) multipath status: optimal: path 104 fp9/ssd@w21000
+024ff5ae617,12 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080017004796 (ssd33) multipath status: optimal: path 105 fp9/ssd@w21000
+024ff5ae617,11 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080016004796 (ssd32) multipath status: optimal: path 106 fp9/ssd@w21000
+024ff5ae617,10 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080015004796 (ssd16) multipath status: optimal: path 107 fp9/ssd@w21000
+024ff5ae617,f is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080014004796 (ssd17) multipath status: optimal: path 108 fp9/ssd@w21000
+024ff5ae617,e is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080013004796 (ssd18) multipath status: optimal: path 109 fp9/ssd@w21000
+024ff5ae617,d is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080012004796 (ssd14) multipath status: optimal: path 110 fp9/ssd@w21000
+024ff5ae617,c is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080011004796 (ssd15) multipath status: optimal: path 111 fp9/ssd@w21000
+024ff5ae617,b is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080010004796 (ssd11) multipath status: optimal: path 112 fp9/ssd@w21000
+024ff5ae617,a is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000f004796 (ssd12) multipath status: optimal: path 113 fp9/ssd@w21000
+024ff5ae617,9 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000e004796 (ssd13) multipath status: optimal: path 114 fp9/ssd@w21000
+024ff5ae617,8 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000d004796 (ssd10) multipath status: optimal: path 115 fp9/ssd@w21000
+024ff5ae617,7 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000c004796 (ssd8) multipath status: optimal: path 116 fp9/ssd@w210000
+24ff5ae617,6 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000b004796 (ssd9) multipath status: optimal: path 117 fp9/ssd@w210000
+24ff5ae617,5 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b08000a004796 (ssd7) multipath status: optimal: path 118 fp9/ssd@w210000
+24ff5ae617,4 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080009004796 (ssd6) multipath status: optimal: path 119 fp9/ssd@w210000
+24ff5ae617,3 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080007004796 (ssd3) multipath status: optimal: path 120 fp9/ssd@w210000
+24ff5ae617,2 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080005004796 (ssd2) multipath status: optimal: path 121 fp9/ssd@w210000
+24ff5ae617,1 is online: Load balancing: round-robin
+Apr 16 13:23:29 wksefpd01p genunix: [ID 530209 kern.info] /scsi_vhci/ssd@g000b080002004796 (ssd0) multipath status: optimal: path 122 fp9/ssd@w210000
+24ff5ae617,0 is online: Load balancing: round-robin

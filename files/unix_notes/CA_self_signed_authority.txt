@@ -1,0 +1,97 @@
+https://gitlab.com/big-cubic/ansible-roles/openssl-ca
+
+---
+- name: Install OpenSSL
+  yum: name=openssl state=latest
+
+- name: Create CA Admin user
+  user: name=ca-admin createhome=yes home=/opt/ca
+
+- name: Create a working directory for CSRs generated during CA installation
+  file: name=/opt/ca/csr state=directory
+
+- name: Create Root CA directory
+  file: name=/opt/ca/root state=directory
+
+- name: Create Root CA Certs directory
+  file: name=/opt/ca/root/certs state=directory
+
+- name: Create Root CA CRL directory
+  file: name=/opt/ca/root/crl state=directory
+
+- name: Create Root CA newcerts directory
+  file: name=/opt/ca/root/newcerts state=directory
+
+- name: Create Root CA private directory
+  file: name=/opt/ca/root/private state=directory mode=0700
+
+- name: Copy OpenSSL configuration for the Root CA
+  copy: src=root-openssl.cnf dest=/opt/ca/root/openssl.cnf
+
+- name: Touch Root CA index.txt
+  file: name=/opt/ca/root/index.txt state=touch
+
+- name: Create Root Serial file
+  copy: src=serial dest=/opt/ca/root/serial force=no
+
+- name: Create Intermediate CA directory
+  file: name=/opt/ca/intermediate state=directory
+  
+- name: Create Intermediate Serial file
+  copy: src=serial dest=/opt/ca/intermediate/serial force=no
+
+- name: Create Intermediate CA Certs directory
+  file: name=/opt/ca/intermediate/certs state=directory
+
+- name: Create Intermediate CA CRL directory
+  file: name=/opt/ca/intermediate/crl state=directory
+
+- name: Create Intermediate CA newcerts directory
+  file: name=/opt/ca/intermediate/newcerts state=directory
+
+- name: Create Intermediate CA private directory
+  file: name=/opt/ca/intermediate/private state=directory mode=0700
+
+- name: Copy OpenSSL configuration for the Intermediate CA
+  copy: src=int-openssl.cnf dest=/opt/ca/intermediate/openssl.cnf
+
+- name: Touch Intermediate CA index.txt
+  file: name=/opt/ca/intermediate/index.txt state=touch
+
+- name: Set crlnumber for Intermediate CA
+  copy: src=crlnumber dest=/opt/ca/intermediate/crlnumber force=no
+
+- name: Create Root CA Key
+  shell: openssl genrsa -aes256 -passout pass:{{ root_key_passphrase }} -out /opt/ca/root/private/ca.key.pem 4096
+  args:
+    creates: /opt/ca/root/private/ca.key.pem
+
+- name: Set CA Key permissions
+  file: name=/opt/ca/root/private/ca.key.pem mode=0400
+
+- name: Create Root CA Certificate
+  shell: openssl req -config /opt/ca/root/openssl.cnf -new -x509 -days 7300 -sha256 -extensions v3_ca -key /opt/ca/root/private/ca.key.pem -passin pass:{{root_key_passphrase}} -out /opt/ca/root/certs/ca.crt.pem -subj "{{ root_ca_subject }}"
+  args:
+    creates: /opt/ca/root/certs/ca.crt.pem
+
+- name: Set Root CA Certificate visibility
+  file: name=/opt/ca/root/certs/ca.crt.pem mode=0444
+
+- name: Create Intermediate CA Key
+  shell: openssl genrsa -aes256 -passout pass:{{intermediate_key_passphrase}} -out /opt/ca/intermediate/private/intermediate.key.pem 4096
+  args:
+    creates: /opt/ca/intermediate/private/intermediate.key.pem
+
+- name: Set Intermediate Key permissions
+  file: name=/opt/ca/intermediate/private/intermediate.key.pem mode=0400
+
+- name: Create Intermediate CA Certificate Signing Request
+  shell: openssl req -config /opt/ca/intermediate/openssl.cnf -new -sha256 -key /opt/ca/intermediate/private/intermediate.key.pem -passin pass:{{ intermediate_key_passphrase }} -out /opt/ca/csr/intermediate.csr.pem -subj "{{ intermediate_ca_subject }}"
+  args:
+    creates: /opt/ca/csr/intermediate.csr.pem
+
+- name: Sign Intermediate CA CSR with Root CA Key
+  shell: openssl ca -config /opt/ca/root/openssl.cnf -key {{ root_key_passphrase }} -extensions v3_intermediate_ca -days 3650 -md sha256 -in /opt/ca/csr/intermediate.csr.pem -out /opt/ca/intermediate/certs/intermediate.crt.pem
+
+- name: Set owner on ca directories and files to ca-admin
+  file: name=/opt/ca owner=ca-admin group=ca-admin recurse=yes state=directory

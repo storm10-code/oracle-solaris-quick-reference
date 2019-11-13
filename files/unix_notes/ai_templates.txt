@@ -1,0 +1,93 @@
+sol_ai_profile_dir: "/export/install/configs/profiles"			# Base directory to store AI profile data
+sol_ai_install_service: s11_3-sparc-large						# Default AI service
+
+sol_ai_server:
+  name: zmgtai01u
+  proto: "{{ pkg_publisher_proto }}"
+  ip: "{{ pkg_publisher_ip }}"
+  wanboot_port: "{{ 5555 }}"
+
+# Some of the following settings may already be set in the site parameters in ansible playbook root group_vars dir
+# Template info
+# General profile contains AI information applicable to all hosts, in this case DNS configuration
+sol_ai_profile_general:
+  template: templates/profile_general_template.xml.j2
+  nsswitch_hosts: "files"
+  dns_search: prestige.test
+  dns_servers:
+    - 10.28.43.26
+    - 10.28.43.27
+    - 10.28.43.28
+
+# User profile relating to creation of root role and default admin account
+sol_ai_profile_user:
+  template: templates/profile_user_template.xml.j2
+  root_passwd_hash: "{{ lookup('csvfile', 'root file=secrets/pw_hash.csv' ) }}"
+ 
+# Admin account information 
+sol_ai_profile_user_admin:
+  roles: root
+  shell: /usr/bin/bash
+  login: cubicadm
+  passwd_hash: "{{ lookup('csvfile', 'cubicadm file=secrets/pw_hash.csv' ) }}"
+  uid: 10001
+  gid: 14
+  desc: "Cubic Group Admin Account"
+  sshkeys:
+    - "{{ lookup('file', 'files/ssh_pubkeys/ansible@zmgtans01u_id_rsa.pub') }}"
+
+# Base client profile info
+sol_ai_profile_client:
+  template: templates/profile_client_template.xml.j2
+
+# Deployment of the first boot script 
+sol_ai_first_boot:
+  template: templates/first_boot_script_template.sh.j2
+  dest: /export/cub-manifest/proto/opt/site
+  pkg_source: /export/cub-manifest/proto
+  repo_path: /export/repo/cub
+  manifest: /export/cub-manifest/first-boot-script.p5m
+  
+  
+sol_ai_client_state: absent                             # Must be absent for role to have any effect
+sol_ai_profile_dir: "/export/install/configs/profiles"  # Base directory to store AI profile data
+sol_ai_install_service: s11-3_sparc_large               # Default AI service
+
+# Some of the following setttings may already be set in the site parameters in ansible playbook root group_vars dir
+sol_ai_server:
+  name: slsol11302t					# Name of AI serber
+  proto: "{{ pkg_publisher_proto }}"			# Protocol to be used for AI service, eg. http, NFS
+  ip: "{{ pkg_publisher_ip }}"				# IP of the IPS publisher containing miniroot
+  wanboot_port: "5555"					# TCP port for wanboot requests
+
+# Template info
+# General profile contains AI information applicable to all hosts, in this case DNS configuration
+sol_ai_profile_general:								# general profile dict
+  template: roles/sol_ai_client/templates/profile_general_template.xml.j2	# location of general profile
+  nsswitch_hosts: "files dns"							# nswitch hosts values
+  dns_search: prestige.test							# search param for DNS client
+  dns_servers:									# List of IPs for DNS resolvers
+    - 10.28.43.26
+    - 10.28.43.27
+    - 10.28.43.28
+
+# User profile relating to creation of root role and default admin account
+sol_ai_profile_user:								# user profile doct
+  template: roles/sol_ai_client/templates/profile_user_template.xml.j2		# template location
+  root_passwd_hash: "{{ lookup('csvfile', 'root file=vault/pw_hash.csv' ) }}"	# root password hash lookup
+
+# Admin account information
+sol_ai_profile_user_admin:
+  roles: root
+  shell: /usr/bin/bash
+  login: cubicadm
+  passwd_hash: "{{ lookup('csvfile', 'cubicadm file=vault/pw_hash.csv' ) }}"
+  uid: 10001
+  gid: 14
+  desc: "Cubic Group Admin Account"
+  sshkeys:
+    - "{{ lookup('file', 'files/ssh_pubkeys/cubicadm@slcentos01t.prestige.test_rsa.pub') }}"
+
+# Base client profile info
+sol_ai_profile_client:								# client dict
+  template: roles/cub_ai_client/templates/profile_client_template.xml.j2	# location of jinja client template  

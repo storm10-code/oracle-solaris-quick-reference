@@ -1,0 +1,153 @@
+root@dc5hops01u # dladm show-aggr -x
+LINK       PORT           SPEED DUPLEX   STATE     ADDRESS            PORTSTATE
+aggr0      --             10000Mb full   up        90:e2:ba:d0:6:e0   --
+           net8           10000Mb full   up        90:e2:ba:d0:6:e0   attached
+           net14          10000Mb full   up        90:e2:ba:cf:fa:18  attached
+
+root@dc5hops02u # dladm show-aggr -x
+LINK       PORT           SPEED DUPLEX   STATE     ADDRESS            PORTSTATE
+aggr0      --             10000Mb full   up        90:e2:ba:cf:fd:24  --
+           net8           10000Mb full   up        90:e2:ba:cf:fd:24  attached
+           net14          10000Mb full   up        90:e2:ba:cf:fd:2c  attached
+
+Baremetal Build Guide
+---------------------
+
+Prerequisites:
+- iLO access (serial or network)
+- AIServer setup and configured
+- Oracle Solaris Repository Server (Patch Server)
+- Custom Solaris Repositroy -  ormally hosted on the same server as above for custom packages
+- Minimum 10GbE Network card FCode: 4.2.0
+  Notes: Check by running 
+         # /usr/sbin/fwupdate list all
+         Model Code: 0x10fb
+		 Update using latest FCode from Oracle Support https://support.oracle.com
+		 unzip niantic-lp-1-210-9.zip
+         # /usr/sbin/fwupdate update all -x metadata.xml
+- Understand where the PCI BUS locations of the 10GbE network cards are
+/pci@303/pci@2/network@0,1    net9    
+/pci@303/pci@2/network@0      net8    <-- first 10GbE PCI card port that will be probed by operating system
+/pci@302/pci@2/network@0,1    net15
+/pci@302/pci@2/network@0      net14   <-- next 10GbE PCI card port that will be probed by operating system
+
+
+SPARC T7-1, No Keyboard
+Copyright (c) 1998, 2017, Oracle and/or its affiliates. All rights reserved.
+OpenBoot 4.42.3, 254.2500 GB memory installed, Serial #112971972.
+Ethernet address 0:10:e0:bb:d0:c4, Host ID: 86bbd0c4.
+
+
+
+{0} ok set-defaults
+Setting configuration variables to default values.
+{0} ok setenv auto-boot? false
+auto-boot? =            false
+
+{0} ok setenv auto-boot? false
+auto-boot? =            false
+{0} ok show-nets
+a) /pci@303/pci@2/network@0,1
+b) /pci@303/pci@2/network@0
+c) /pci@303/pci@1/network@0,3
+d) /pci@303/pci@1/network@0,2
+e) /pci@303/pci@1/network@0,1
+f) /pci@303/pci@1/network@0
+g) /pci@300/pci@3/network@0,1
+h) /pci@300/pci@3/network@0
+i) /pci@300/pci@1/network@0,1
+j) /pci@300/pci@1/network@0
+m) MORE SELECTIONS
+q) NO SELECTION
+Enter Selection, q to quit: b
+/pci@303/pci@2/network@0 has been selected.
+Type ^Y ( Control-Y ) to insert it in the command line.
+e.g. ok nvalias mydev ^Y
+         for creating devalias mydev for /pci@303/pci@2/network@0
+{0} ok nvalias net-boot0 /pci@303/pci@2/network@0
+{0} ok .properties
+vf-assigned-addresses    83020000 00000001 10084000 00000000 00004000
+                         83020003 00000001 10184000 00000000 00004000
+assigned-addresses       83020010 00000001 10000000 00000000 00080000
+                         81020018 00000000 00000000 00000000 00000020
+                         83020020 00000001 10080000 00000000 00004000
+                         82020030 00000000 00800000 00000000 00080000
+vf-reg                   03020000 00000000 00000000 00000000 00004000
+                         03020003 00000000 00000000 00000000 00004000
+reg                      00020000 00000000 00000000 00000000 00000000
+                         03020010 00000000 00000000 00000000 00080000
+                         01020018 00000000 00000000 00000000 00000020
+                         03020020 00000000 00000000 00000000 00004000
+                         02020030 00000000 00000000 00000000 00080000
+local-mac-address        90 e2 ba cf fd 2c
+
+Edit/Create the YAML host_vars for describing our server. We are only interested in the Global Zone configuration Section (GZ)
+vi ~/environments/test/host_vars/dc5hops02u.yml
+
+{0} ok devalias
+net-boot0                /pci@303/pci@2/network@0
+
+Run the following play-book
+---------------------------
+ansible-playbook pb_cub_ai_client.yml --extra-vars="sol_ai_client_name=dc5hops02u"
+
+setenv network-boot-arguments host-ip=10.28.23.97,router-ip=10.28.23.1,subnet-mask=255.255.255.0,hostname=dc5hops02u,file=http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+
+boot net-boot0 - install 
+
+Boot device: /pci@303/pci@2/network@0  File and args: - install
+10G full duplex link up.
+<time unavailable> wanboot info: WAN boot messages->console
+<time unavailable> wanboot info: configuring /pci@303/pci@2/network@0
+
+10G full duplex link up.
+<time unavailable> wanboot info: http://10.28.23.101:5555/cgi-bin/wanboot-cgi
+Requesting Ethernet address for: 10.28.23.101
+<time unavailable> wanboot progress: wanbootfs: Read 368 of 368 kB (100%)
+<time unavailable> wanboot info: wanbootfs: Download complete
+Mon Apr 23 12:24:41 wanboot progress: miniroot: Read 291870 of 291870 kB (100%)
+Mon Apr 23 12:24:41 wanboot info: miniroot: Download complete
+SunOS Release 5.11 Version 11.3 64-bit
+Copyright (c) 1983, 2016, Oracle and/or its affiliates. All rights reserved.
+Remounting root read/write
+Probing for device nodes ...
+Preparing network image for use
+Downloading solaris.zlib
+curl arguments --insecure for http://zmgtai01u:5555//export/auto_install/s11_3-sparc-large//solaris.zlib
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  300M  100  300M    0     0   263M      0  0:00:0
+
+** There will be couple of reboots while the server performs post install configutation changes (first-boot)
+
+Check you can login from tvmgt01 server as cubicadm (the admin account)
+ansible@tvmgt01:~$ ssh -l cubicadm dc5hops02u
+Warning: Permanently added the RSA host key for IP address '10.28.23.97' to the list of known hosts.
+Oracle Corporation SunOS 5.11 11.3 January 2018
+cubicadm@dc5hops02u:~$ exit
+
+Run the Solaris base build play-book. This will customise our host to Cubic and a CIS security standard.
+
+Manual steps
+- Add format volnames to identify disk drives
+root@dc5hops02u # format
+Searching for disks...done
+
+
+AVAILABLE DISK SELECTIONS:
+       0. c0t5000CCA0800A73C0d0 <HGST-H101812SFSUN1.2T-A990-1.09TB>  rootdisk
+          /scsi_vhci/disk@g5000cca0800a73c0
+          /dev/chassis/SYS/DBP/HDD0/disk
+       1. c0t5000CCA0800A7A40d0 <HGST-H101812SFSUN1.2T-A990-1.09TB>  rootmirr
+
+	   
+root@dc5hops01u # dladm show-aggr -x
+LINK       PORT           SPEED DUPLEX   STATE     ADDRESS            PORTSTATE
+aggr0      --             10000Mb full   up        90:e2:ba:d0:6:e0   --
+           net8           10000Mb full   up        90:e2:ba:d0:6:e0   attached
+           net14          10000Mb full   up        90:e2:ba:cf:fa:18  attached
+	   
+	   
+	   
+
+ansible-playbook pb_sol11-3_base.yml --limit="dc5hops02u"

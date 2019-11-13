@@ -1,0 +1,3 @@
+Use ansible-inventory-grapher (pip install ansible-inventory-grapher) along with graphviz to help visualize inventory hierarchies:
+ ansible-inventory-grapher -q target | \
+  dot -Tpng | display png:-

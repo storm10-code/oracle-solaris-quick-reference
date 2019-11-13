@@ -1,0 +1,45 @@
+Test
+----
+IP-Address		FQDN							Gateway			NOTES
+10.26.76.112	zastdb02m.cubiccloud.test		10.26.76.1		Statis route required to use management/admin VLAN to Nessus server
+10.26.77.90		slsefgd01s.cubiccloud.test		10.26.77.1		10.26.77.0 is admin/management VLAN
+10.26.77.100	slsefpd01t.cubiccloud.test		10.26.77.1		10.26.77.0 is admin/management VLAN
+10.26.77.101	slsefgd01m.cubiccloud.test		10.26.77.1		10.26.77.0 is admin/management VLAN
+10.26.77.103	slsefgd02m.cubiccloud.test		10.26.77.1		10.26.77.0 is admin/management VLAN
+10.26.77.105	slsefgd03m.cubiccloud.test		10.26.77.1		10.26.77.0 is admin/management VLAN
+10.26.81.28		tvrds01.cubiccloud.test							Test remote desktop server (Windows)
+
+NOTES: Unix Management VLAN is on 10.26.77.0. This IP ranged should be used for authenticated scans.
+       Production Management VLAN is on 10.26.76.0. This IP ranged should not be used for authenticated scans and should use the management VLAN on 10.26.77.0.
+	   For the Nessus a static route will need to be added to 10.70.90.24, as the default gateway is via production on 10.26.76.1
+
+Production
+----------
+10.70.140.15	wkshdigiip01.cubiccloud.local
+10.70.140.19	dlshdigiip01.cubiccloud.local
+10.70.140.48	wkhp2vm2-prd.cubiccloud.local
+10.70.140.90	dlhp2vm12-prd.cubiccloud.local rtd2.seft.ecebs.com
+10.70.160.50	wkshvmhost01-ilo.cubiccloud.local
+10.70.160.51	wkshvmhost02-ilo.cubiccloud.local
+10.70.160.52	dlshvmhost01-ilo.cubiccloud.local
+10.70.160.53	dlshvmhost02-ilo.cubiccloud.local
+10.70.160.54	wkshpdu1.cubiccloud.local						PDU Management Web service
+10.70.160.55	wkshpdu2.cubiccloud.local						PDU Management Web service
+10.70.160.56	wkshpdu3.cubiccloud.local						PDU Management Web service
+10.70.160.57	wkshpdu4.cubiccloud.local						PDU Management Web service
+10.70.160.58	dlshpdu1.cubiccloud.local						PDU Management Web service
+10.70.160.59	dlshpdu2.cubiccloud.local						PDU Management Web service
+10.70.160.60	dlshpdu3.cubiccloud.local						PDU Management Web service
+10.70.160.61	dlshpdu4.cubiccloud.local						PDU Management Web service
+10.70.160.62	dlshkvmsw01.cubiccloud.local
+10.70.160.63	wkshkvmsw01.cubiccloud.local
+10.70.190.47	rtda.seft.ecebs.com greaterangliaa.model.seft.ecebs.com
+10.70.190.71	rtdb.seft.ecebs.com greaterangliab.model.seft.ecebs.com dlhp2vm1-prd.cubiccloud.local
+10.70.46.244	vtocarnbdp01.cubiccloud.local
+10.70.46.245	vtocarndgc01.cubiccloud.local
+10.70.46.246	vtocarndpf01.cubiccloud.local
+
+
+NOTES: Unix Management VLAN is 10.70.150.0/24. This IP ranged should be used for authenticated scans. Static route is already in place for 10.70.90.24.
+       Unix Production VLAN is 10.70.140.0/24. This IP ranged should not be used for authenticated scans and should use the management VLAN on 10.70.150.0. 
+Nessus Server IP: 10.70.90.24

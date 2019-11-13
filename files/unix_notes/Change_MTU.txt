@@ -1,0 +1,96 @@
+Change MTU
+
+To display the current mtu of an interface
+
+# dladm show-linkprop -p mtu bge0
+LINK         PROPERTY        PERM VALUE          DEFAULT        POSSIBLE
+bge0         mtu             rw   1500           1500           1500
+To set the mtu to enable jumbo frames
+
+# dladm set-linkprop -p mtu=9000 bge0
+To set the mtu to not use jumbo frames
+
+# dladm set-linkprop -p mtu=1500 bge0
+
+edit /kernel/drv/ixgbe.conf
+default_mtu = 9000;
+
+ldm set-vswitch mtu=9000 vsw-10g-priv-primary
+
+Solaris 11: Network Configuration Advanced
+ matthew.mattoon  March 29, 2011
+In my previous post we went over the basics of configuring a network interface in Solaris 11, without using the Network Auto Magic (NWAM) which is enabled by default.  In this article we will go over some of the more advanced features which can be leveraged including VLANs, aggregation groups, and jumbo frames.
+
+Configure VLAN Tagging
+
+Create a VLAN, specify the VLAN id with the “-v”, then specify the interface with the “-l”, and finally create a name for the tagged interface (in this case user0 since this particular system is the user VLAN, if you have more descriptive names of your VLANs you can use them here).
+
+# dladm create-vlan -v 20 -l bge0 user0
+# dladm show-vlan
+LINK            VID      OVER         FLAGS
+user0           20       bge0         -----
+# ipadm show-if
+IFNAME     STATE    CURRENT      PERSISTENT
+lo0        ok       -m-v------46 ---
+bge0       ok       bm--------46 -46
+user0      ok       bm--------46 -46
+For simplicity I will delete the IP configuration on the untagged interface.
+
+# ipadm delete-addr bge0/v4
+As we did in our previous article you can now create an IP configuration on top of the new tagged interface (which in this case is DHCP).
+
+# ipadm create-addr -T dhcp user0/v4
+Keep in mind if you change the VLAN you will most likely need to change your default route.  The below options “-fp” f will flush meaning delete all current routes, while the p will make the new settings persistent.  In this case afterwards we will only have 192.168.100.1 as a default gateway.
+
+# route -fp add default 192.168.100.1
+Delete a VLAN
+
+If you have used the VLAN before you will need to “unwind” the configuration before deleting the VLAN.
+
+# ipadm delete-addr user0/v4
+# ipadm delete-if user0
+Now that this is done you can delete the VLAN.
+
+# dladm delete-vlan user0
+Create an Aggregation Group
+
+With this command we create a new aggregation group and assign interfaces to the aggregation group.  If the interface is already in use then you will need to delete the interface before adding it to an aggregation group.
+
+# dladm create-aggr -l bnx0 -l bnx1 aggr0
+Now we can view the details of our aggregation group.
+
+# dladm show-aggr
+LINK            POLICY   ADDRPOLICY           LACPACTIVITY  LACPTIMER   FLAGS
+aggr0           L4       auto                 off           short       -----
+# dladm show-link
+LINK        CLASS     MTU    STATE    BRIDGE     OVER
+bnx0        phys      1500   up     --         --
+bnx1        phys      1500   up       --         --
+aggr0       aggr      1500   up  --         bnx0, bnx1
+Now we add an IP configuration against the aggregated interface.
+
+# ipadm create-addr -T static -a 192.168.100.172/24 aggr0/v4
+Modify an Aggregration Group
+
+If you need to add or remove an interface from an aggregation group then the following commands will allow you to do that.
+
+# dladm add-aggr -l bnx2 aggr0
+# dladm remove-aggr -l bnx1 aggr0
+You can also adjust the LACP Policy using the below command.  Where L4 is L2, L3, L4, or any combination of them based on the desired behavior.
+
+# dladm modify-aggr -P L4 aggr0
+The LACP mode can be configured using the below command where active is either auto, active, or passive.  Additionally if configuring active mode you must also configure a timer value of short or long, this option is not needed for auto or passive.
+
+# dladm modify-aggr -L active -T short aggr0
+Delete Aggregation Group
+
+Delete the IP configuration from the aggregation group
+
+# ipadm delete-addr aggr0/v4
+Delete the Aggregated Interface
+
+# ipadm delete-if aggr0
+Delete the Aggregation Group
+
+# dladm delete-aggr aggr0
+Enable Jumbo Frames

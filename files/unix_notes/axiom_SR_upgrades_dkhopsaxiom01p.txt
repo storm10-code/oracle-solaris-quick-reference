@@ -1,0 +1,37 @@
+dkhopsaxiom01p Axiom 600 software upgrade from 05.04.14 - 05.04.18 health checks 
+
+Hi Oracle Support Team, 
+
+We are currently planning an upgrade on our Production Axiom 600 storage arrays from software release 05.04.14 to 05.04.18.
+
+Our current process when upgrading the software is to log SR# with yourselves for a pre-health check. 
+
+Details
+
+1.) Perform a pre-health check of the storage array in view that it will be upgraded to 05.04.18 
+
+Model: Axiom 600 
+Storage Array Name: dkhopsaxiom01p 
+Slammer Number: 1 
+Bricks: 1 (FC 600GB)
+Current software release: 05.04.14 
+SN: A004194BVJ 
+Pilot IP-address: 172.21.22.31
+Planned Upgrade Date: 16/07/2015 @10:30am BST (July 14th)*
+
+*Upgrade is pending change-control but will confirm when approved.
+
+I will upload initial logs for review.
+
+Kind Regards, 
+Darren 
+
+Non-Disruptive Pitman
+
+Run Pitman Diagnotics
+SetAutoModeOff -->execute
+TrafficGenOn mode=auto peer=all pattern=on --> execute
+StartRecordingStats interval=360 duration=1800
+StopRecordingStats
+GetMarksDb RecordCount=all
+TrafficGenOff

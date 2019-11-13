@@ -1,0 +1,5 @@
+restore/archive_vol              4.33G  2.29T  4.33G  /restore/archive_vol
+restore/online_archive_vol        714G  2.29T   714G  /restore/online_archive_vol
+restore/restore_vol                70K  2.29T    70K  /restore/restore_vol
+restore/xfer_bkup                  31K  2.29T    31K  /restore/xfer_bkup
+

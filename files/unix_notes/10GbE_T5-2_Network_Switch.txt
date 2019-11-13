@@ -1,0 +1,112 @@
+10GbE Settings T5-2
+-------------------
+VLAN Name	VLAN-ID(s
+---------------------
+BCK			26
+
+Network Devices
+---------------
+wksefpd01p
+----------
+PCIE3-P0 - net14 - ixgbe6 - WKSH10GSW01 Gi1/0/5
+PCIE6-P0 - net4 - ixgbe0 -  WKSH10GSW01 Gi1/0/6
+wksefpd02p
+----------
+PCIE3-P0 - net14 - ixgbe6 - WKSH10GSW01 Gi1/0/2
+PCIE6-P0 - net4 - ixgbe0 -  WKSH10GSW01 Gi1/0/4
+
+root@wksefpd01p # echo ::devbindings -q ixgbe | mdb -k
+40005961140      pciex8086,10fb, instance #0 (driver name: ixgbe) 
+40005960e60      pciex8086,10fb, instance #1 (driver name: ixgbe)
+4000595f148      pciex8086,1528, instance #2 (driver name: ixgbe)
+4000595ee68      pciex8086,1528, instance #3 (driver name: ixgbe)
+4000595b9f8      pciex8086,1528, instance #4 (driver name: ixgbe)
+4000595b718      pciex8086,1528, instance #5 (driver name: ixgbe)
+40005956e68      pciex8086,10fb, instance #6 (driver name: ixgbe)
+40005956b88      pciex8086,10fb, instance #7 (driver name: ixgbe)
+
+root@wksefpd01p # dladm show-phys | egrep "LINK|ixgbe" | grep -v 1000
+LINK              MEDIA                STATE      SPEED  DUPLEX    DEVICE
+net5              Ethernet             unknown    0      unknown   ixgbe1
+net4              Ethernet             unknown    0      unknown   ixgbe0
+net14             Ethernet             unknown    0      unknown   ixgbe6
+net15             Ethernet             unknown    0      unknown   ixgbe7
+
+hardware node name in the device tree
+"/pci@340/pci@1/pci@0/pci@5/network@0" 0 "ixgbe"
+"/pci@340/pci@1/pci@0/pci@5/network@0,1" 1 "ixgbe"
+"/pci@380/pci@1/pci@0/pci@6/network@0" 6 "ixgbe"
+"/pci@380/pci@1/pci@0/pci@6/network@0,1" 7 "ixgbe"
+
+Examples
+--------
+name = "pciex8086,10fb"
+parent = "/pci@340/pci@1"
+unit-address = "0"
+default_mtu = 9000;
+
+name = "pciex8086,10fb"
+parent = "/pci@380/pci@1"
+unit-address = "0"
+default_mtu = 9000;
+
+
+# Set the default MTU on wksefpd01p/02p
+dladm set-linkprop -p mtu=9000 net4
+dladm set-linkprop -p mtu=9000 net14
+
+* Following 2 lines added for the ZS3-2 Appliance
+set rpcmod:clnt_max_conns=8
+set nfs:nfs3_bsize = 131072
+
+
+Create 10GbE VSW - wksefgd01p
+-----------------------------
+dladm create-aggr -P L4 -L passive -l net4 -l net14 aggrbck0 
+
+ldm bind-domain wksefgd01p 
+ldm add-vsw pvid=26 net-dev=aggrbck0 primary-bck-vsw0 primary
+ldm set-vsw mtu=9000 primary-bck-vsw0 
+ldm add-vnet linkprop=phys-state id=3 vnet3 primary-bck-vsw0 wksefgd01p
+ldm set-vnet alt-mac-addrs=auto,auto,auto,auto,auto,auto,auto,auto vnet3 wksefgd01p
+
+Guest Domain 10GbE Device=net3
+ldm start-domain wksefgd01p
+
+login and update zonecfg file for db environments
+zonecfg -z zastdb01p "add anet; set lower-link=net3; set linkname=dbbck0; set mac-address=auto; set mtu=9000; end"
+zonecfg -z zmtndb01p "add anet; set lower-link=net3; set linkname=dbbck0; set mac-address=auto; set mtu=9000; end"
+
+
+Create 10GbE VSW wksefgd02p
+---------------------------
+dladm create-aggr -P L4 -L passive -l net4 -l net14 aggrbck0 
+
+ldm bind-domain wksefgd02p 
+ldm add-vsw pvid=26 net-dev=aggrbck0 primary-bck-vsw0 primary
+ldm set-vsw mtu=9000 primary-bck-vsw0 
+ldm add-vnet linkprop=phys-state id=3 vnet3 primary-bck-vsw0 wksefgd02p
+ldm set-vnet alt-mac-addrs=auto,auto,auto,auto,auto,auto,auto,auto vnet3 wksefgd02p
+
+Guest Domain 10GbE Device=net3
+ldm start-domain wksefgd02p
+
+login and update zonecfg file for db environments
+zonecfg -z zastdb02p "add anet; set lower-link=net3; set linkname=dbbck0; set mac-address=auto; set mtu=9000; end"
+zonecfg -z zmtndb02p "add anet; set lower-link=net3; set linkname=dbbck0; set mac-address=auto; set mtu=9000; end"
+
+zastdb01p=192.168.26.11
+zastdb02p=192.168.26.12
+zmtndb01p=192.168.26.13
+zmtndb02p=192.168.26.14
+
+ipadm create-ip dbbck0
+ipadm create-addr -T static -a local=192.168.26.11 dbbck0/v4
+
+ipadm create-ip dbbck0
+ipadm create-addr -T static -a local=192.168.26.21 dbbck0/v4
+
+dladm modify-aggr -m dlmp aggrbck0
+dladm modify-aggr -P L4 -L passive -T short aggrbck0
+ipadm create-ip aggrbck0
+ipadm create-addr -T static -a local=192.168.26.20 aggrbck0/v4

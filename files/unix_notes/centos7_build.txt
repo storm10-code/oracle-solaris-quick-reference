@@ -1,0 +1,151 @@
+Centos 7.3 installation
+type: minimum
+additional packages: nc dig nslookup wget bind-utils pwgen yum-utils sysstat
+
+Docker Installation
+-------------------
+yum-config-manager \
+    --add-repo \
+    https://download.docker.com/linux/centos/docker-ce.repo
+yum makecache fast
+yum -y install docker-ce
+
+Production Systems must use device-mapper storage 
+
+Steps
+1) stop docker: systemctl stop docker
+2) mkdir /etc/docker/; 
+  vi /etc/docker/daemon.json
+  {
+    "storage-driver": "devicemapper"
+  }
+3) start docker: systemctl start docker
+
+Configure direct-lvm mode for production
+----------------------------------------
+Production hosts using the devicemapper storage driver must use direct-lvm mode. 
+This mode uses block devices to create the thin pool. This is faster than using loopback devices,
+uses system resources more efficiently, and block devices can grow as needed. However, 
+more set-up is required than loop-lvm mode
+
+Example setup
+{
+  "storage-driver": "devicemapper",
+  "storage-opts": [
+    "dm.directlvm_device=/dev/xdf",
+    "dm.thinp_percent=95",
+    "dm.thinp_metapercent=1",
+    "dm.thinp_autoextend_threshold=80",
+    "dm.thinp_autoextend_percent=20",
+    "dm.directlvm_device_force=false" 
+  ]
+}
+
+Add and create a docker storage
+VMWare add a new Vritual Disk:
+- Here we are adding from storage from the existing datastore, potentially this could be a SAN LUN provisioned to the ESXi server.
+Details of Storage
+- Datastore: datastore1
+  Virtual Disk: SCSI(0:1)
+  Size: 20GB (thin provisioned)
+  Options: Independant, persistent
+- Dynamically add storage - host0 is the internal device path - SAN would be on a different device path.. host[1|2] etc...  
+echo "- - -" > /sys/class/scsi_host/host0/scan
+or 
+echo "- - -" > /sys/class/scsi_host/host2/scan
+Create the PV
+pvcreate /dev/sdb
+vgcreate docker /dev/sdb
+lvcreate --wipesignatures y -n thinpool docker -l 95%VG
+lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
+
+Logical volume "thinpoolmeta" created.
+Convert the volumes to a thin pool and a storage location for metadata for the thin pool, using the lgconvert command.
+lvconvert -y \
+--zero n \
+-c 512K \
+--thinpool docker/thinpool \
+--poolmetadata docker/thinpoolmeta
+Configure autoextension of thin pools via an lvm profile.
+
+$ sudo vi /etc/lvm/profile/docker-thinpool.profile
+activation {
+  thin_pool_autoextend_threshold=80
+  thin_pool_autoextend_percent=20
+}
+
+lvchange --metadataprofile docker-thinpool docker/thinpool
+lvs -o+seg_monitor
+mkdir /var/lib/docker.bk
+mv /var/lib/docker/* /var/lib/docker.bk
+vi /etc/docker/daemon.json
+{
+    "storage-driver": "devicemapper",
+    "storage-opts": [
+    "dm.thinpooldev=/dev/mapper/docker-thinpool",
+    "dm.use_deferred_removal=true",
+    "dm.use_deferred_deletion=true"
+    ]
+}
+systemctl start docker
+
+Docker Deployment: 
+Prerequsits: Docker Registry setup and reqire the openssl generated certificate regsitry.prestige.test.crt
+
+chown root:root /var/tmp/registry.prestige.test.crt; chmod 644 /var/tmp/registry.prestige.test.crt
+cp -p /var/tmp/registry.prestige.test.crt /etc/pki/ca-trust/source/anchors/registry.prestige.test.crt
+update-ca-trust
+/usr/bin/systemctl daemon-reload  &&  /usr/bin/systemctl restart docker
+
+docker login -u cubicadm registry.prestige.test:5000
+
+
+Extra Configuration if behind company proxy server
+--------------------------------------------------
+cd /etc/systemd/system; mkdir docker.service.d; cd docker.service.d/
+vi /etc/systemd/system/docker.service.d/http-proxy.conf
+[Service]
+Environment="HTTP_PROXY=http://10.26.45.175:8880/"
+# Some special NAT rules to redirect calls to 10.26.45.175 on port 8880 to localhost:8880 
+iptables -t nat -I OUTPUT -p tcp -d 10.26.45.175/24 -o lo --dport 8880 -j REDIRECT --to 8880
+#
+/usr/bin/systemctl daemon-reload &&  /usr/bin/systemctl restart docker
+
+
+
+ManageIQ - Fixing Permentant Storage
+------------------------------------
+[root@69ba5d1dd823 data]# rm -rf /var/opt/rh/rh-postgresql95/lib/pgsql/data/*
+[root@69ba5d1dd823 data]# sh -x /usr/bin/appliance-initialize.sh
++ [[ -d /var/opt/rh/rh-postgresql95/lib/pgsql/data/base ]]
++ [[ -s /etc/default/evm ]]
++ source /etc/default/evm
+++ export RAILS_ENV=production
+++ RAILS_ENV=production
+++ export APPLIANCE=true
+++ APPLIANCE=true
+++ export HOME=/root
+++ HOME=/root
+++ export EXECJS_RUNTIME=Node
+++ EXECJS_RUNTIME=Node
+++ export MALLOC_ARENA_MAX=1
+++ MALLOC_ARENA_MAX=1
+++ export KEY_ROOT=/var/www/miq/vmdb/certs
+++ KEY_ROOT=/var/www/miq/vmdb/certs
+++ export APPLIANCE_SOURCE_DIRECTORY=/opt/manageiq/manageiq-appliance
+++ APPLIANCE_SOURCE_DIRECTORY=/opt/manageiq/manageiq-appliance
+++ export APPLIANCE_TEMPLATE_DIRECTORY=/opt/manageiq/manageiq-appliance/TEMPLATE
+++ APPLIANCE_TEMPLATE_DIRECTORY=/opt/manageiq/manageiq-appliance/TEMPLATE
+++ [[ -s /etc/default/evm_ruby ]]
+++ source /etc/default/evm_ruby
++++ export RUBY_GC_HEAP_GROWTH_MAX_SLOTS=300000
+++ CONTAINER=true
++ echo 'Initializing Appliance, please wait ...'
+Initializing Appliance, please wait ...
++ appliance_console_cli --region 0 --internal --password smartvm --force-key
+configuring internal database
+Initialize postgresql starting
+Initialize postgresql complete
+Checking for connections to the database...
+Create region starting
+Create region complete

@@ -1,0 +1,21 @@
+ adjoin prestige.test -z Test -c "cn=Zones,ou=Centrify Test,ou=UNIX Management,ou=windows2008,ou=Servers,dc=prestige,dc=test" -u administrator
+ adjoin prestige.test -z Test -c “cn=Zones,ou=Centrify Test,ou=UNIX Management,ou=windows2008,ou=Servers,dc=prestige,dc=test” -u administrator
+ tcentrify01.prestiage.test (RDP server)
+ tcentrify02.prestiage.test
+ 
+ledgerd@wkemv01p:~$ ssh -V
+OpenSSH_6.0p1 (CentrifyDC build 5.1.0-472) (CentrifyDC build 5.1.0-472), OpenSSL 0.9.8w 23 Apr 2012
+ledgerd@wkemv01p:~$ zoneadm list -cv
+  ID NAME             STATUS     PATH                           BRAND    IP
+   0 global           running    /                              solaris  shared
+   2 cpatstapp01      running    /zones/cpatstapp01             solaris  excl
+   - emvtstapp01      configured /zones/emvtstapp01             solaris  excl
+
+     b. Remove your old ssh server if it's already installed.
+	 
+svccfg network/dns/client
+    listprop	 
+	config/domain                                                  astring     prestige.afc
+	config/search                                                  astring     prestige.afc
+	config/nameserver                                              net_address 10.26.3.69
+	config/host  

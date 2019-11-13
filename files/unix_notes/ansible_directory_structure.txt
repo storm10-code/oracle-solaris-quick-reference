@@ -1,0 +1,61 @@
+ctsl-ansible
+  hosts
+  roles
+  
+  
+ctsl-ansible/
++-- ansible.cfg
++-- secrets/						# git encrypted .cvs file containing password hashs/password
++-- library/
++-- filter_plugins/					# 
++-- requirements.yml
++-- +-- inventories/
+¦   +-- development/				# inventory file for development environment
+¦   |   +-- group_vars
+¦   |   ¦   +-- all
+¦   |   +-- hosts
+¦   +-- test/						# inventory file for test environment
+¦   |   +-- group_vars/
+¦   |   ¦   +-- all
+¦   |   +-- hosts
+¦   +-- staging/					# inventory file for staging environment
+¦   |   +-- group_vars
+¦   |   ¦   +-- all
+¦   |   +-- hosts
+¦   +-- production/					# inventory file for production environment
+¦       +-- group_vars
+¦       ¦   +-- all
+¦       +-- hosts    
++-- site.yml 						# master playbooks
++-- dbservers.yml					# database servers playbooks
++-- webservers.yml					# web servers playbooks
++-- mgtservers.yml					# management servers playbooks
++-- roles/
+    +-- application-specfic-roles
+    +-- cm_ntp
+	
+	
+mkdir ctsl-ansible
+  cd ctsl-ansible
+  touch requirements.yml
+  touch site.yml
+  touch dbservers.yml
+  touch ansible.cfg
+  mkdir secrets library filter_plugins inventories roles utils
+  cd inventories
+    mkdir development
+    cd development
+    mkdir group_vars host_vars files	
+	touch hosts
+	cd ..
+	mkdir test
+    cd test
+    mkdir group_vars host_vars files	
+	touch hosts
+	cd ..
+	mkdir staging
+    cd staging
+    mkdir group_vars host_vars files	
+	touch hosts
+	cd ..
+  

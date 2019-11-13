@@ -1,0 +1,102 @@
+
+- name: Setup AI install service {{ ai_instance_name }}
+  command: >
+    {% if ai_instance_arch == 'x86' %}
+    /usr/sbin/installadm create-service -n s11_3-sparc-large
+    {% else %}
+    /usr/sbin/installadm create-service -a sparc -n {{ ai_instance_name }}
+
+	
+	---
+# sol_ai_server/defaults/main.yml
+
+# Server to host AI service
+ai_server_name: slsol11302t
+
+# AI service name (Required)
+ai_instance_name: s11_3-sparc-large
+
+# AI service archictecture [sparc|x86], default sparc (Optional)
+ai_instance_arch: sparc
+
+# Reboot after installation, defaults to 'true' (Optional)
+ai_auto_reboot: 'true'
+
+# AI publisher name (Required)
+ai_publisher_name: solaris
+
+# IPS repository server URL (e.g, http://10.10.1.100:8081/ , Required, resolvable)
+ai_publisher_origin: "http://10.28.23.100:11003/"
+
+# Version of Solaris to install from IPS repo. This will pick up the latest version of Solaris 11.3 from the IPS host (Required)
+ai_entire_version: "0.5.11-0.175.3"
+
+# Software group name [solaris-large-server|solaris-small-server|solaris-minimal-server|solaris-desktop] (Required)
+ai_software_group: solaris-large-server
+
+# Base directory where AI manifests are stored
+ai_manifest_dir: "/export/install/configs/manifests"
+
+# AI install svc name
+ai_service_name: 'install/server:default'
+
+
+AI Installation
+
+
+zfs create data/zones
+zfs set mountpoint=/zones data/zones
+
+root@dc5mgt01u # zoneadm -z zmgtai01u install
+The following ZFS file system(s) have been created:
+    data/zones/zmgtai01u
+Progress being logged to /var/log/zones/zoneadm.20171114T132410Z.zmgtai01u.install
+       Image: Preparing at /zones/zmgtai01u/root.
+
+ Install Log: /system/volatile/install.11252/install_log
+ AI Manifest: /tmp/manifest.xml..mfBQa
+  SC Profile: /usr/share/auto_install/sc_profiles/enable_sci.xml
+    Zonename: zmgtai01u
+Installation: Starting ...
+
+        Creating IPS image
+Startup linked: 1/1 done
+        Installing packages from:
+            solaris
+
+root@dc5mgt01u # zoneadm -z zmgtai01u boot
+
+zlogin -C zmgtai01u 
+follow wizard on-screen
+		
+ipadm create-ip adm0
+ipadm create-addr -T static -a local=10.28.23.101/24 adm0/v4
+route -p add default 10.28.23.1
+
+root@zmgtai01u:/etc/init.d# /usr/sbin/installadm create-service -a sparc -n s11_3-sparc-large
+Unable to set locale 'en_GB.UTF-8'; locale package may be broken or
+not installed.  Reverting to C locale.
+OK to use subdir of /export/auto_install to store image? [y|N]: y
+  0% : Service svc:/network/dns/multicast:default is not online.  Installation services will not be advertised via multicast DNS.
+  0% : Creating service from: pkg:/install-image/solaris-auto-install
+  
+updatd /etc/sudoers.d/svc* 
+cubicadm ALL=(ALL) NOPASSWD: ALL
+
+install authorized_keys for ansible into cubicadm account
+
+### Ensure /etc/inet/hosts has is correct. I.E has the ip-address and hostname of the server
+
+mkdir -p /export/install/configs/manifests/
+mkdir -p /export/install/configs/profiles/
+
+cp s11_3-sparc-large_frist_boot.xml to /export/install/configs/manifests/s11_3-sparc-large.xml
+
+installadm validate -n s11_3-sparc-large -M /export/install/configs/manifests/s11_3-sparc-large.xml
+
+**DEBUG: default login/password for LiveCD/Boot net installations is username: jack password: jack
+
+ai_instance_name: s11_3-sparc-large
+ai_manifest_dir: "/export/install/configs/manifests"
+
+/usr/sbin/installadm create-manifest -n s11_3-sparc-large -d -f /export/install/configs/manifests/s11_3-sparc-large.xml
