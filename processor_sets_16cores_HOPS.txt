@@ -1,0 +1,75 @@
+# Processor sets
+# Database = 12 Cores
+# WebLogic = 12 Cores
+
+# svcadm enable svc:/system/pools:default
+
+# Database Zone
+pooladm -x
+poolcfg -dc 'create pool pool_cs-prd-db'
+poolcfg -dc 'create pset pset-cs-prd-db'
+poolcfg -dc 'modify pset pset-cs-prd-db (uint pset.min=96 ; uint pset.max=96)'
+(( i = 0 )); while (( i < 96 )); do poolcfg -dc "transfer to pset pset-cs-prd-db
+ (cpu $i)"; (( i = i + 1 )) ; done
+poolcfg -dc 'associate pool pool_cs-prd-db (pset pset-cs-prd-db)'
+pooladm -s
+zoneadm list -iv
+poolbind -p  pool_cs-prd-db -i zoneid 7
+# WebLogic Zone
+pooladm -x
+poolcfg -dc 'create pool pool_cs-prd-app'
+poolcfg -dc 'create pset pset-cs-prd-app'
+poolcfg -dc 'modify pset pset-cs-prd-app (uint pset.min=96 ; uint pset.max=96)'
+(( i = 96 )); while (( i < 192 )); do poolcfg -dc "transfer to pset pset-cs-prd-
+app (cpu $i)"; (( i = i + 1 )) ; done
+poolcfg -dc 'associate pool pool_cs-prd-app (pset pset-cs-prd-app)'
+pooladm -s
+zoneadm list -iv
+poolbind -p   pool_cs-prd-app -i zoneid 2
+# Reporting Database
+pooladm -x
+pooladm -e
+poolcfg -dc 'create pool pool_cs-prd-rdb'
+poolcfg -dc 'create pset pset-cs-prd-rdb'
+poolcfg -dc 'modify pset pset-cs-prd-rdb (uint pset.min=96 ; uint pset.max=96)'
+(( i = 0 )); while (( i < 96 )); do poolcfg -dc "transfer to pset pset-cs-prd-rd
+b (cpu $i)"; (( i = i + 1 )) ; done
+poolcfg -dc 'associate pool pool_cs-prd-rdb (pset pset-cs-prd-rdb)'
+pooladm -s
+zoneadm list -iv
+poolbind -p  pool_cs-prd-rdb -i zoneid 2
+
+
+#The physical processor has 32 cores and 256 virtual processors (0-255)
+#GZ  The core has 8 virtual processors (0-7)
+#GZ  The core has 8 virtual processors (8-15)
+#GZ  The core has 8 virtual processors (16-23)
+#GZ  The core has 8 virtual processors (24-31)
+#GZ  The core has 8 virtual processors (32-39)
+#GZ  The core has 8 virtual processors (40-47)
+#GZ  The core has 8 virtual processors (48-55)
+#GZ  The core has 8 virtual processors (56-63)
+#01  The core has 8 virtual processors (64-71)
+#02  The core has 8 virtual processors (72-79)
+#03  The core has 8 virtual processors (80-87)
+#04  The core has 8 virtual processors (88-95)
+#05  The core has 8 virtual processors (96-103)
+#06  The core has 8 virtual processors (104-111)
+#07  The core has 8 virtual processors (112-119)
+#08  The core has 8 virtual processors (120-127)
+#09  The core has 8 virtual processors (128-135)
+#10  The core has 8 virtual processors (136-143)
+#11  The core has 8 virtual processors (144-151)
+#12  The core has 8 virtual processors (152-159)
+#01  The core has 8 virtual processors (160-167)
+#02  The core has 8 virtual processors (168-175)
+#03  The core has 8 virtual processors (176-183)
+#04  The core has 8 virtual processors (184-191)
+#05  The core has 8 virtual processors (192-199)
+#06  The core has 8 virtual processors (200-207)
+#07  The core has 8 virtual processors (208-215)
+#08  The core has 8 virtual processors (216-223)
+#09  The core has 8 virtual processors (224-231)
+#10  The core has 8 virtual processors (232-239)
+#11  The core has 8 virtual processors (240-247)
+#12  The core has 8 virtual processors (248-255)
